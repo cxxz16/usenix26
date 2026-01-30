@@ -78,12 +78,12 @@ TBA - The full list of program committee members will be announced soon.
 
 Registration details will be available on the conference website in Spring 2026.
 
-### Early Bird Registration (Until June 1, 2026)
+### Early Bird Registration (Until June 15, 2026)
 - Academic/Non-profit: $650
 - Corporate: $950
 - Student: $300
 
-### Regular Registration (After June 1, 2026)
+### Regular Registration (After June 15, 2026)
 - Academic/Non-profit: $800
 - Corporate: $1,100
 - Student: $400
