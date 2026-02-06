@@ -1,0 +1,3752 @@
+{
+    "XSS": {
+        "CVE-2025-27099": {
+            "repo_name": "tuleap",
+            "vuln_type": "XSS",
+            "fixing_commit": "bec10bd5c98f6570a2857f55e9656eec4b211e6c",
+            "fixing_files": [
+                "plugins/tracker/include/Tracker/FormElement/Tracker_FormElement_Field.php"
+            ]
+        },
+        "CVE-2025-27400": {
+            "repo_name": "magento-lts",
+            "vuln_type": "XSS",
+            "fixing_commit": "d307e5bf75729a2347dde0952fe9fd9fcd9c6aea",
+            "fixing_files": [
+                "app/code/core/Mage/Core/Model/Design/Package.php"
+            ]
+        },
+        "CVE-2025-22131": {
+            "repo_name": "phpspreadsheet",
+            "vuln_type": "XSS",
+            "fixing_commit": "4088381ccfaf241d7d42c333de0dc8c98e338743",
+            "fixing_files": [
+                "src/PhpSpreadsheet/Writer/Html.php"
+            ]
+        },
+        "CVE-2025-29772": {
+            "repo_name": "openemr",
+            "vuln_type": "XSS",
+            "fixing_commit": "17c5c424695de50db94f2c01fb9abfc441d09a1a",
+            "fixing_files": [
+                "interface/forms/CAMOS/new.php"
+            ]
+        },
+        "CVE-2025-25197": {
+            "repo_name": "silverstripe-elemental",
+            "vuln_type": "XSS",
+            "fixing_commit": "34ff4ed498ccab94cc5f55ef9a56c37f491eda1d",
+            "fixing_files": [
+                "src/Reports/ElementsInUseReport.php"
+            ]
+        },
+        "CVE-2025-30149": {
+            "repo_name": "openemr",
+            "vuln_type": "XSS",
+            "fixing_commit": "6cb70595f65decfbdd03e70b49acc414e03744b8",
+            "fixing_files": [
+                "interface/super/layout_listitems_ajax.php"
+            ]
+        },
+        "CVE-2025-32027": {
+            "repo_name": "yii",
+            "vuln_type": "XSS",
+            "fixing_commit": "d386d737861c9014269b7ed8c36c65eadb387368",
+            "fixing_files": [
+                "framework/base/CApplication.php"
+            ]
+        },
+        "CVE-2024-28106": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "c94b3deadd87789389e1fad162bc3dd595c0e15a",
+            "fixing_files": [
+                "phpmyfaq/news.php"
+            ]
+        },
+        "CVE-2024-27104": {
+            "repo_name": "glpi",
+            "vuln_type": "XSS",
+            "fixing_commit": "b409ca437864607b03c2014b9e3293b7f141af65",
+            "fixing_files": [
+                "src/Dashboard/Widget.php"
+            ]
+        },
+        "CVE-2024-36819": {
+            "repo_name": "mapos",
+            "vuln_type": "XSS",
+            "fixing_commit": "3559bae4782162faab94670f503fd35b0f331929",
+            "fixing_files": [
+                "application/config/config.php"
+            ]
+        },
+        "CVE-2024-45057": {
+            "repo_name": "i-educar",
+            "vuln_type": "XSS",
+            "fixing_commit": "f2d768534aabc09b2a1fc8a5cc5f9c93925cb273",
+            "fixing_files": [
+                "ieducar/intranet/include/clsCampos.inc.php"
+            ]
+        },
+        "CVE-2024-45406": {
+            "repo_name": "cms",
+            "vuln_type": "XSS",
+            "fixing_commit": "b7348942f8131b3868ec6f46d615baae50151bb8",
+            "fixing_files": [
+                "src/base/Element.php"
+            ]
+        },
+        "CVE-2024-4023": {
+            "repo_name": "flatpress",
+            "vuln_type": "XSS",
+            "fixing_commit": "3c9cc69364a45fd3f92d4bd606344b5dd1205d6a",
+            "fixing_files": [
+                "admin/panels/uploader/admin.uploader.php"
+            ]
+        },
+        "CVE-2024-26128": {
+            "repo_name": "basercms",
+            "vuln_type": "XSS",
+            "fixing_commit": "18f426d63e752b4d22c40e9ea8d1f6e692ef601c",
+            "fixing_files": [
+                "plugins/baser-core/src/View/Helper/BcAdminFormHelper.php"
+            ]
+        },
+        "CVE-2024-58128": {
+            "repo_name": "misp",
+            "vuln_type": "XSS",
+            "fixing_commit": "33a1eb66408e16a7535b2bae48303efd9501a26a",
+            "fixing_files": [
+                "app/Model/Server.php"
+            ]
+        },
+        "CVE-2024-58129": {
+            "repo_name": "misp",
+            "vuln_type": "XSS",
+            "fixing_commit": "09a43870e733f79ffa33753ddc7bce3cbb5a5647",
+            "fixing_files": [
+                "app/Model/Server.php"
+            ]
+        },
+        "CVE-2024-49759": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "237f4d2e818170171dfad6efad36a275cd2ba8d0",
+            "fixing_files": [
+                "includes/html/pages/edituser.inc.php"
+            ]
+        },
+        "CVE-2024-49764": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "af15eabbb1752985d36f337cecf137a947e170f6",
+            "fixing_files": [
+                "includes/html/pages/device/capture.inc.php"
+            ]
+        },
+        "CVE-2024-30618": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "XSS",
+            "fixing_commit": "3b98682199049ebfb170ace16ada9a7c8e9a6622",
+            "fixing_files": [
+                "main/inc/lib/message.lib.php"
+            ]
+        },
+        "CVE-2024-30268": {
+            "repo_name": "cacti",
+            "vuln_type": "XSS",
+            "fixing_commit": "a38b9046e9772612fda847b46308f9391a49891e",
+            "fixing_files": [
+                "settings.php"
+            ]
+        },
+        "CVE-2024-35545": {
+            "repo_name": "mapos",
+            "vuln_type": "XSS",
+            "fixing_commit": "3559bae4782162faab94670f503fd35b0f331929",
+            "fixing_files": [
+                "application/config/config.php"
+            ]
+        },
+        "CVE-2024-24574": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "5479b4a4603cce71aa7eb4437f1c201153a1f1f5",
+            "fixing_files": [
+                "phpmyfaq/admin/attachments.php"
+            ]
+        },
+        "CVE-2024-8680": {
+            "repo_name": "mailchimp-for-wordpress",
+            "vuln_type": "XSS",
+            "fixing_commit": "60c6bfc260a7974f791af1d4ad4a032a3e0bdd3c",
+            "fixing_files": [
+                "includes/views/parts/lists-overview-details.php"
+            ]
+        },
+        "CVE-2024-8661": {
+            "repo_name": "concretecms",
+            "vuln_type": "XSS",
+            "fixing_commit": "ce5ee2ab83fe8de6fa012dd51c5a1dde05cb0dc4",
+            "fixing_files": [
+                "concrete/blocks/next_previous/controller.php"
+            ]
+        },
+        "CVE-2024-8291": {
+            "repo_name": "concretecms",
+            "vuln_type": "XSS",
+            "fixing_commit": "dbce253166f6b10ff3e0c09e50fd395370b8b065",
+            "fixing_files": [
+                "concrete/single_pages/dashboard/system/files/thumbnails.php"
+            ]
+        },
+        "CVE-2024-50352": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "b4af778ca42c5839801f16ece53505bb7fa1e7bc",
+            "fixing_files": [
+                "includes/html/pages/device/overview/services.inc.php"
+            ]
+        },
+        "CVE-2024-50350": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "82a744bfe29017b8b58b5752ab9e1b335bedf0a0",
+            "fixing_files": [
+                "app/Http/Controllers/Table/EditPortsController.php"
+            ]
+        },
+        "CVE-2024-50351": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "6a14a9bd767c6e452e4df77a24126c3eeb93dcbf",
+            "fixing_files": [
+                "includes/functions.php"
+            ]
+        },
+        "CVE-2024-21516": {
+            "repo_name": "opencart",
+            "vuln_type": "XSS",
+            "fixing_commit": "c546199e8f100c1f3797a7a9d3cf4db1887399a2",
+            "fixing_files": [
+                "upload/admin/controller/common/login.php"
+            ]
+        },
+        "CVE-2024-21515": {
+            "repo_name": "opencart",
+            "vuln_type": "XSS",
+            "fixing_commit": "c546199e8f100c1f3797a7a9d3cf4db1887399a2",
+            "fixing_files": [
+                "upload/admin/controller/common/login.php"
+            ]
+        },
+        "CVE-2024-21504": {
+            "repo_name": "livewire",
+            "vuln_type": "XSS",
+            "fixing_commit": "c65b3f0798ab2c9338213ede3588c3cdf4e6fcc0",
+            "fixing_files": [
+                "src/Features/SupportQueryString/BrowserTest.php"
+            ]
+        },
+        "CVE-2024-21628": {
+            "repo_name": "prestashop",
+            "vuln_type": "XSS",
+            "fixing_commit": "c3d78b7e49f5fe49a9d07725c3174d005deaa597",
+            "fixing_files": [
+                "classes/CustomerMessage.php"
+            ]
+        },
+        "CVE-2024-56112": {
+            "repo_name": "cyberpanel",
+            "vuln_type": "XSS",
+            "fixing_commit": "f0cf648c7851c96c36bb0c390d13e60931f45900",
+            "fixing_files": [
+                "plogical/phpmyadminsignin.php"
+            ]
+        },
+        "CVE-2024-56411": {
+            "repo_name": "phpspreadsheet",
+            "vuln_type": "XSS",
+            "fixing_commit": "45052f88e04c735d56457a8ffcdc40b2635a028e",
+            "fixing_files": [
+                "src/PhpSpreadsheet/Writer/Html.php"
+            ]
+        },
+        "CVE-2024-56412": {
+            "repo_name": "phpspreadsheet",
+            "vuln_type": "XSS",
+            "fixing_commit": "45052f88e04c735d56457a8ffcdc40b2635a028e",
+            "fixing_files": [
+                "src/PhpSpreadsheet/Writer/Html.php"
+            ]
+        },
+        "CVE-2024-56517": {
+            "repo_name": "lgsl",
+            "vuln_type": "XSS",
+            "fixing_commit": "7ecb839df9358d21f64cdbff5b2536af25a77de1",
+            "fixing_files": [
+                "lgsl_files/lgsl_list.php"
+            ]
+        },
+        "CVE-2024-56410": {
+            "repo_name": "phpspreadsheet",
+            "vuln_type": "XSS",
+            "fixing_commit": "45052f88e04c735d56457a8ffcdc40b2635a028e",
+            "fixing_files": [
+                "src/PhpSpreadsheet/Writer/Html.php"
+            ]
+        },
+        "CVE-2024-56508": {
+            "repo_name": "linkace",
+            "vuln_type": "XSS",
+            "fixing_commit": "8cf3670d71a8629d33408da76f9d441a1aa933f6",
+            "fixing_files": [
+                "app/Actions/ImportHtmlBookmarks.php"
+            ]
+        },
+        "CVE-2024-56361": {
+            "repo_name": "lgsl",
+            "vuln_type": "XSS",
+            "fixing_commit": "3fbd3bb581b636f7fd3ea0592c5f8df87d3a2843",
+            "fixing_files": [
+                "lgsl_files/lgsl_details.php"
+            ]
+        },
+        "CVE-2024-9699": {
+            "repo_name": "flatpress",
+            "vuln_type": "XSS",
+            "fixing_commit": "f364391085334a7eae02aa2320edd6de7466ec85",
+            "fixing_files": [
+                "admin/panels/uploader/admin.uploader.php"
+            ]
+        },
+        "CVE-2024-31443": {
+            "repo_name": "cacti",
+            "vuln_type": "XSS",
+            "fixing_commit": "f946fa537d19678f938ddbd784a10e3290d275cf",
+            "fixing_files": [
+                "lib/html_tree.php"
+            ]
+        },
+        "CVE-2024-7398": {
+            "repo_name": "concretecms",
+            "vuln_type": "XSS",
+            "fixing_commit": "7c8ed0d1d9db0d7f6df7fa066e0858ea618451a5",
+            "fixing_files": [
+                "concrete/views/dialogs/event/view_version.php"
+            ]
+        },
+        "CVE-2024-51497": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "42b156e42a3811c23758772ce8c63d4d3eaba59b",
+            "fixing_files": [
+                "includes/html/print-customoid.php"
+            ]
+        },
+        "CVE-2024-51495": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "4568188ce9097a2e3a3b563311077f2bb82455c0",
+            "fixing_files": [
+                "includes/html/dev-overview-data.inc.php"
+            ]
+        },
+        "CVE-2024-51494": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "82a744bfe29017b8b58b5752ab9e1b335bedf0a0",
+            "fixing_files": [
+                "app/Http/Controllers/Table/EditPortsController.php"
+            ]
+        },
+        "CVE-2024-47184": {
+            "repo_name": "ampache",
+            "vuln_type": "XSS",
+            "fixing_commit": "7e64d140dafcbe0d61f1a07e94486f6ed67932d6",
+            "fixing_files": [
+                "public/templates/show_democratic.inc.php"
+            ]
+        },
+        "CVE-2024-47525": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "7620d220e48563938d869da7689b8ac3f7721490",
+            "fixing_files": [
+                "includes/html/print-alert-rules.php"
+            ]
+        },
+        "CVE-2024-47528": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "d959bf1b366319eda16e3cd6dfda8a22beb203be",
+            "fixing_files": [
+                "app/Http/Controllers/Maps/CustomMapBackgroundController.php"
+            ]
+        },
+        "CVE-2024-47527": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "36b38a50cc10d4ed16caab92bdc18ed6abac9685",
+            "fixing_files": [
+                "includes/html/pages/device-dependencies.inc.php"
+            ]
+        },
+        "CVE-2024-37383": {
+            "repo_name": "roundcubemail",
+            "vuln_type": "XSS",
+            "fixing_commit": "43aaaa528646877789ec028d87924ba1accf5242",
+            "fixing_files": [
+                "program/lib/Roundcube/rcube_washtml.php"
+            ]
+        },
+        "CVE-2024-32877": {
+            "repo_name": "yii2",
+            "vuln_type": "XSS",
+            "fixing_commit": "f7baab16e79f2369d4838ab5653c3c07ecf26615",
+            "fixing_files": [
+                "framework/web/ErrorHandler.php"
+            ]
+        },
+        "CVE-2024-32479": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "19344f0584d4d6d4526fdf331adc60530e3f685b",
+            "fixing_files": [
+                "resources/views/service-template/index.blade.php"
+            ]
+        },
+        "CVE-2024-0875": {
+            "repo_name": "openemr",
+            "vuln_type": "XSS",
+            "fixing_commit": "d141d2ca06fb2171a202c7302dd5d5af8539f255",
+            "fixing_files": [
+                "portal/messaging/messages.php"
+            ]
+        },
+        "CVE-2024-52526": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "30e522c29bbb1f9b72951025e7049a26c7e1d76e",
+            "fixing_files": [
+                "includes/html/pages/device/services.inc.php"
+            ]
+        },
+        "CVE-2023-28884": {
+            "repo_name": "misp",
+            "vuln_type": "XSS",
+            "fixing_commit": "b94c7978e5e6b1db369abeedbbf00bca975b08b7",
+            "fixing_files": [
+                "app/Lib/Tools/CustomPaginationTool.php"
+            ]
+        },
+        "CVE-2023-28106": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "c59d0bf1d03a5037b586fe06230694fa3818dbf2",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/Document/DocumentControllerBase.php"
+            ]
+        },
+        "CVE-2023-46235": {
+            "repo_name": "fogproject",
+            "vuln_type": "XSS",
+            "fixing_commit": "2e2421f19620669b9930f72fb73a8dbc5efe4980",
+            "fixing_files": [
+                "packages/web/status/logtoview.php"
+            ]
+        },
+        "CVE-2023-46448": {
+            "repo_name": "mejiro",
+            "vuln_type": "XSS",
+            "fixing_commit": "309639339f5816408865902befe8c90cb6862537",
+            "fixing_files": [
+                "index.php"
+            ]
+        },
+        "CVE-2023-36828": {
+            "repo_name": "cms",
+            "vuln_type": "XSS",
+            "fixing_commit": "c714893ad92de6e5ede17b501003441af505b30d",
+            "fixing_files": [
+                "src/Tags/Svg.php"
+            ]
+        },
+        "CVE-2023-45957": {
+            "repo_name": "thirtybees",
+            "vuln_type": "XSS",
+            "fixing_commit": "f5b2c1e0094ce53fded1443bab99a604ae8e2968",
+            "fixing_files": [
+                "controllers/admin/AdminRequestSqlController.php"
+            ]
+        },
+        "CVE-2023-43770": {
+            "repo_name": "roundcubemail",
+            "vuln_type": "XSS",
+            "fixing_commit": "e92ec206a886461245e1672d8530cc93c618a49b",
+            "fixing_files": [
+                "program/lib/Roundcube/rcube_string_replacer.php"
+            ]
+        },
+        "CVE-2023-4982": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "2c5960631c49f7414f61b6d4dcd305b07da05769",
+            "fixing_files": [
+                "includes/html/pages/search/fdb.inc.php"
+            ]
+        },
+        "CVE-2023-4321": {
+            "repo_name": "cockpit",
+            "vuln_type": "XSS",
+            "fixing_commit": "34ab31ee9362da51b9709e178469dbffd7717249",
+            "fixing_files": [
+                "modules/Assets/bootstrap.php"
+            ]
+        },
+        "CVE-2023-4451": {
+            "repo_name": "cockpit",
+            "vuln_type": "XSS",
+            "fixing_commit": "30609466c817e39f9de1871559603e93cd4d0d0c",
+            "fixing_files": [
+                "install/index.php"
+            ]
+        },
+        "CVE-2023-4395": {
+            "repo_name": "cockpit",
+            "vuln_type": "XSS",
+            "fixing_commit": "36d1d4d256cbbab028342ba10cc493e5c119172c",
+            "fixing_files": [
+                "modules/Assets/bootstrap.php"
+            ]
+        },
+        "CVE-2023-4196": {
+            "repo_name": "cockpit",
+            "vuln_type": "XSS",
+            "fixing_commit": "039a00cc310bff128ca6e6c1c46c6fbad0385c2c",
+            "fixing_files": [
+                "modules/Assets/bootstrap.php"
+            ]
+        },
+        "CVE-2023-4978": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "e4c46a45364cb944b94abf9b83f0558b2c4c2fb7",
+            "fixing_files": [
+                "includes/html/pages/search/ipv4.inc.php"
+            ]
+        },
+        "CVE-2023-4422": {
+            "repo_name": "cockpit",
+            "vuln_type": "XSS",
+            "fixing_commit": "b8dad5e070608bb5e4ec58fabbee101b5af737cf",
+            "fixing_files": [
+                "modules/Assets/bootstrap.php"
+            ]
+        },
+        "CVE-2023-4007": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "40eb9685198128908e83c2bef4c228751fd43a0e",
+            "fixing_files": [
+                "phpmyfaq/src/phpMyFAQ/Link.php"
+            ]
+        },
+        "CVE-2023-4220": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "XSS",
+            "fixing_commit": "3b487a55076fb06f96809b790a35dcdd42f8ec49",
+            "fixing_files": [
+                "main/inc/lib/javascript/bigupload/inc/bigUpload.php"
+            ]
+        },
+        "CVE-2023-4653": {
+            "repo_name": "icms2",
+            "vuln_type": "XSS",
+            "fixing_commit": "7e9d79818bd52dfa7811d5978c72785054c65242",
+            "fixing_files": [
+                "wysiwyg/redactor/wysiwyg.class.php"
+            ]
+        },
+        "CVE-2023-4829": {
+            "repo_name": "froxlor",
+            "vuln_type": "XSS",
+            "fixing_commit": "4711a414360782fe4fc94f7c25027077cbcdf73d",
+            "fixing_files": [
+                "lib/Froxlor/Api/Commands/HostingPlans.php"
+            ]
+        },
+        "CVE-2023-4433": {
+            "repo_name": "cockpit",
+            "vuln_type": "XSS",
+            "fixing_commit": "36d1d4d256cbbab028342ba10cc493e5c119172c",
+            "fixing_files": [
+                "modules/Assets/bootstrap.php"
+            ]
+        },
+        "CVE-2023-4517": {
+            "repo_name": "hestiacp",
+            "vuln_type": "XSS",
+            "fixing_commit": "d30e3edbca5915235643e46ab222cb7aed9b319a",
+            "fixing_files": [
+                "web/templates/pages/edit_server.php"
+            ]
+        },
+        "CVE-2023-4979": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "49d66fa31b43acef02eaa09ee9af15fe7e16cd03",
+            "fixing_files": [
+                "includes/html/common/outages.inc.php"
+            ]
+        },
+        "CVE-2023-4913": {
+            "repo_name": "cecil",
+            "vuln_type": "XSS",
+            "fixing_commit": "00dc79f10ce723034b7140d79f4ac731d1d902eb",
+            "fixing_files": [
+                "resources/server/router.php"
+            ]
+        },
+        "CVE-2023-4980": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "cfd642be6a1e988453bd63069d17db3664e7de97",
+            "fixing_files": [
+                "includes/html/pages/ports.inc.php"
+            ]
+        },
+        "CVE-2023-2947": {
+            "repo_name": "openemr",
+            "vuln_type": "XSS",
+            "fixing_commit": "8d2d601ac40aca75bcd2c3cf193f59c8e56d8425",
+            "fixing_files": [
+                "admin.php"
+            ]
+        },
+        "CVE-2023-2630": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "7e32cc28145274ddfc30fb791012d26c1278bd38",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/TranslationController.php"
+            ]
+        },
+        "CVE-2023-2998": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "c120070a66e6c497c328d3b6b067eebcd8ea8493",
+            "fixing_files": [
+                "phpmyfaq/src/phpMyFAQ/News.php"
+            ]
+        },
+        "CVE-2023-2566": {
+            "repo_name": "openemr",
+            "vuln_type": "XSS",
+            "fixing_commit": "a2adac7320dfc631b1da688c3b04f54b8240fc7b",
+            "fixing_files": [
+                "library/htmlspecialchars.inc.php"
+            ]
+        },
+        "CVE-2023-2428": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "0a4980d870bac92df945f6d022726c4e3ed584ab",
+            "fixing_files": [
+                "phpmyfaq/admin/record.edit.php"
+            ]
+        },
+        "CVE-2023-2550": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "20ac51594db11604a4518aacc28a51f67d4f11bf",
+            "fixing_files": [
+                "phpmyfaq/admin/record.questions.php"
+            ]
+        },
+        "CVE-2023-2427": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "514f4df2ad918e69575028d58b2e33aaf536e59b",
+            "fixing_files": [
+                "phpmyfaq/src/phpMyFAQ/Tags.php"
+            ]
+        },
+        "CVE-2023-2323": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "e88fa79de7b5903fb58ddbc231130b04d937d79e",
+            "fixing_files": [
+                "bundles/EcommerceFrameworkBundle/PricingManager/Rule.php"
+            ]
+        },
+        "CVE-2023-2342": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "42a5bbe5f16b97371fdbfdcf2bb3ee759dea8564",
+            "fixing_files": [
+                "models/WebsiteSetting.php"
+            ]
+        },
+        "CVE-2023-2328": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "e3562bfe249c557d15474c9a0acd5e06628521fe",
+            "fixing_files": [
+                "models/DataObject/QuantityValue/Unit.php"
+            ]
+        },
+        "CVE-2023-2341": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "66f1089fb1b9bcd575bfce9b1d4abb0f0499df11",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/LoginController.php"
+            ]
+        },
+        "CVE-2023-2102": {
+            "repo_name": "easyappointments",
+            "vuln_type": "XSS",
+            "fixing_commit": "bddc5cbeb7ff237a72943b304dcb01c653781767",
+            "fixing_files": [
+                "application/views/components/backend_header.php"
+            ]
+        },
+        "CVE-2023-2614": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "c36ef54ce33f7b5e74b7b0ab9eabfed47c018fc7",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Reports/CustomReportController.php"
+            ]
+        },
+        "CVE-2023-2332": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "a4491551967d879141a3fdf0986a9dd3d891abfe",
+            "fixing_files": [
+                "bundles/EcommerceFrameworkBundle/PricingManager/Condition/DateRange.php"
+            ]
+        },
+        "CVE-2023-2014": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "1a9b904722b35b00653c6ae72dca2969149159b3",
+            "fixing_files": [
+                "userfiles/modules/settings/group/template.php"
+            ]
+        },
+        "CVE-2023-2615": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "7a799399e6843cd049e85da27ceb75b78505317f",
+            "fixing_files": [
+                "models/Property/Predefined.php"
+            ]
+        },
+        "CVE-2023-2753": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "5401ab75d022932b8d5d7adaa771acf44fed18ba",
+            "fixing_files": [
+                "phpmyfaq/src/phpMyFAQ/Helper/FaqHelper.php"
+            ]
+        },
+        "CVE-2023-2591": {
+            "repo_name": "teampass",
+            "vuln_type": "XSS",
+            "fixing_commit": "57a977c6323656e5dc06ab5c227e75c3465a1a4a",
+            "fixing_files": [
+                "pages/items.js.php"
+            ]
+        },
+        "CVE-2023-44276": {
+            "repo_name": "core",
+            "vuln_type": "XSS",
+            "fixing_commit": "484753b2abe3fd0fcdb73d8bf00c3fc3709eb8b7",
+            "fixing_files": [
+                "src/www/index.php"
+            ]
+        },
+        "CVE-2023-44383": {
+            "repo_name": "october",
+            "vuln_type": "XSS",
+            "fixing_commit": "b7eed0bbf54d07ff310fcdc7037a8e8bf1f5043b",
+            "fixing_files": [
+                "config/media.php"
+            ]
+        },
+        "CVE-2023-44275": {
+            "repo_name": "core",
+            "vuln_type": "XSS",
+            "fixing_commit": "484753b2abe3fd0fcdb73d8bf00c3fc3709eb8b7",
+            "fixing_files": [
+                "src/www/index.php"
+            ]
+        },
+        "CVE-2023-44393": {
+            "repo_name": "piwigo",
+            "vuln_type": "XSS",
+            "fixing_commit": "cc99c0f1e967c5f1722a0cce30ff42374a7bbc23",
+            "fixing_files": [
+                "admin/plugins_new.php"
+            ]
+        },
+        "CVE-2023-49926": {
+            "repo_name": "misp",
+            "vuln_type": "XSS",
+            "fixing_commit": "dc73287ee2000476e3a5800ded402825ca10f7e8",
+            "fixing_files": [
+                "app/Lib/Tools/EventTimelineTool.php"
+            ]
+        },
+        "CVE-2023-30177": {
+            "repo_name": "cms",
+            "vuln_type": "XSS",
+            "fixing_commit": "00fb253d5318e10204433e5d93934108e574005e",
+            "fixing_files": [
+                "src/elements/Asset.php"
+            ]
+        },
+        "CVE-2023-24070": {
+            "repo_name": "misp",
+            "vuln_type": "XSS",
+            "fixing_commit": "f7238fe5e71ac065daa43c8607d02f8ac682f18f",
+            "fixing_files": [
+                "app/Controller/Component/CRUDComponent.php"
+            ]
+        },
+        "CVE-2023-48295": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "faf66035ea1f4c1c4f34559b9d0ed40ee4a19f90",
+            "fixing_files": [
+                "app/Http/Controllers/DeviceGroupController.php"
+            ]
+        },
+        "CVE-2023-23010": {
+            "repo_name": "ecommerce-codeigniter-bootstrap",
+            "vuln_type": "XSS",
+            "fixing_commit": "d5904379ca55014c5df34c67deda982c73dc7fe5",
+            "fixing_files": [
+                "application/modules/vendor/views/add_product.php"
+            ]
+        },
+        "CVE-2023-6981": {
+            "repo_name": "wp-sms",
+            "vuln_type": "XSS",
+            "fixing_commit": "6656de201efe67c7983102c344a546eed976a819",
+            "fixing_files": [
+                "includes/admin/subscribers/class-wpsms-subscribers-table.php"
+            ]
+        },
+        "CVE-2023-6889": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "1037a8f012e0d9ec4bf4c8107972f6695e381392",
+            "fixing_files": [
+                "phpmyfaq/admin/ajax.tags.php"
+            ]
+        },
+        "CVE-2023-3073": {
+            "repo_name": "corebos",
+            "vuln_type": "XSS",
+            "fixing_commit": "e87f77c64061b43186c80ad1b50d313c67d7f6cf",
+            "fixing_files": [
+                "modules/Documents/SaveFolder.php"
+            ]
+        },
+        "CVE-2023-3020": {
+            "repo_name": "i-librarian-free",
+            "vuln_type": "XSS",
+            "fixing_commit": "3f2c64768a70fc0d529bc29d47bc706ecf26314e",
+            "fixing_files": [
+                "app/views/items.php"
+            ]
+        },
+        "CVE-2023-3071": {
+            "repo_name": "corebos",
+            "vuln_type": "XSS",
+            "fixing_commit": "5e87fbc4292cf7a96fa5139ede88f4baefad104b",
+            "fixing_files": [
+                "modules/PickList/PickListAction.php"
+            ]
+        },
+        "CVE-2023-3009": {
+            "repo_name": "teampass",
+            "vuln_type": "XSS",
+            "fixing_commit": "6ba8cf1f4b89d62a08d122d533ccf4cb4e26a4ee",
+            "fixing_files": [
+                "pages/items.js.php"
+            ]
+        },
+        "CVE-2023-3479": {
+            "repo_name": "hestiacp",
+            "vuln_type": "XSS",
+            "fixing_commit": "2326aa525a7ba14513af783f29cb5e62a476e67a",
+            "fixing_files": [
+                "web/templates/pages/debug_panel.php"
+            ]
+        },
+        "CVE-2023-3021": {
+            "repo_name": "i-librarian-free",
+            "vuln_type": "XSS",
+            "fixing_commit": "187e5ff4f413047fb522a9ab24c3c42555d7cfe7",
+            "fixing_files": [
+                "app/views/dashboard.php"
+            ]
+        },
+        "CVE-2023-5452": {
+            "repo_name": "snipe-it",
+            "vuln_type": "XSS",
+            "fixing_commit": "eea2eabaeef16fc8f3a1d61b19c06e9fc8ed942a",
+            "fixing_files": [
+                "app/Http/Transformers/ActionlogsTransformer.php"
+            ]
+        },
+        "CVE-2023-5060": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "8fd8d9b06a11060de5dc69588a1a83594a7e6f72",
+            "fixing_files": [
+                "includes/html/pages/search/ipv6.inc.php"
+            ]
+        },
+        "CVE-2023-5863": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "97e813dcd2022bd10a8770569a8b02591716365f",
+            "fixing_files": [
+                "phpmyfaq/admin/login.php"
+            ]
+        },
+        "CVE-2023-5323": {
+            "repo_name": "dolibarr",
+            "vuln_type": "XSS",
+            "fixing_commit": "695ca086847b3b6a185afa93e897972c93c43d15",
+            "fixing_files": [
+                "htdocs/main.inc.php"
+            ]
+        },
+        "CVE-2023-5892": {
+            "repo_name": "pkp-lib",
+            "vuln_type": "XSS",
+            "fixing_commit": "a0485a5c7410821e0432c079ca676ee6026bffb9",
+            "fixing_files": [
+                "controllers/grid/queries/QueryTitleGridColumn.php"
+            ]
+        },
+        "CVE-2023-5319": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "95ed9b20557ed930d4eed1f3a6db713416f31131",
+            "fixing_files": [
+                "phpmyfaq/admin/ajax.user.php"
+            ]
+        },
+        "CVE-2023-5244": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "1cb846f8f54ff6f5c668f3ae64dd81740a7e8968",
+            "fixing_files": [
+                "userfiles/modules/microweber/toolbar/editor_tools/rte_image_editor/index.php"
+            ]
+        },
+        "CVE-2023-5316": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "332d2e4a83251d406ca58dd11c27c598673aa5fa",
+            "fixing_files": [
+                "phpmyfaq/admin/ajax.config_list.php"
+            ]
+        },
+        "CVE-2023-5864": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "b3e5a053b59dcc072d76a55d6ce0311ea30174fa",
+            "fixing_files": [
+                "phpmyfaq/src/phpMyFAQ/Faq.php"
+            ]
+        },
+        "CVE-2023-5842": {
+            "repo_name": "dolibarr",
+            "vuln_type": "XSS",
+            "fixing_commit": "f569048eb2bd823525bce4ef52316e7a83e3345c",
+            "fixing_files": [
+                "htdocs/main.inc.php"
+            ]
+        },
+        "CVE-2023-5896": {
+            "repo_name": "pkp-lib",
+            "vuln_type": "XSS",
+            "fixing_commit": "18b318f83105ffa7fa214179f8e20507b0754236",
+            "fixing_files": [
+                "classes/components/forms/statistics/users/ReportForm.php"
+            ]
+        },
+        "CVE-2023-47123": {
+            "repo_name": "itop",
+            "vuln_type": "XSS",
+            "fixing_commit": "34ba4fa0ce99534f751d9f170fe0eda103e20c72",
+            "fixing_files": [
+                "sources/Service/Base/ObjectRepository.php"
+            ]
+        },
+        "CVE-2023-37064": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "XSS",
+            "fixing_commit": "91ecc6141de6de9483c5a31fbb9fa91450f24940",
+            "fixing_files": [
+                "main/inc/lib/extra_field.lib.php"
+            ]
+        },
+        "CVE-2023-37067": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "XSS",
+            "fixing_commit": "c75ff227bcf00e9f88e9477b78eaeed9e0668905",
+            "fixing_files": [
+                "main/inc/lib/usergroup.lib.php"
+            ]
+        },
+        "CVE-2023-37065": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "XSS",
+            "fixing_commit": "da61f287d2e508a5e940953b474051d0f21e91c0",
+            "fixing_files": [
+                "main/inc/lib/sessionmanager.lib.php"
+            ]
+        },
+        "CVE-2023-37062": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "XSS",
+            "fixing_commit": "c263933d1d958edee3999820f636c8cb919d03d1",
+            "fixing_files": [
+                "main/inc/lib/course_category.lib.php"
+            ]
+        },
+        "CVE-2023-37061": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "XSS",
+            "fixing_commit": "75e9b3e0acac6f7a643da6ff19a00d55a94417a1",
+            "fixing_files": [
+                "main/admin/languages.php"
+            ]
+        },
+        "CVE-2023-37066": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "XSS",
+            "fixing_commit": "4f7b5ebf90c35999917c231276e47a4184275690",
+            "fixing_files": [
+                "main/inc/lib/skill.lib.php"
+            ]
+        },
+        "CVE-2023-1703": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "765832f0dc5f6cfb296a82e089b701066f27bcef",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/DataObject/ClassController.php"
+            ]
+        },
+        "CVE-2023-1081": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "29d418461d8407688f2720e7b4be915e03fc16c1",
+            "fixing_files": [
+                "src/MicroweberPackages/Helper/XSSClean.php"
+            ]
+        },
+        "CVE-2023-1755": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "2156573100fd3abf4c65270def77aed20ffc8994",
+            "fixing_files": [
+                "phpmyfaq/admin/configuration.php"
+            ]
+        },
+        "CVE-2023-1317": {
+            "repo_name": "osticket",
+            "vuln_type": "XSS",
+            "fixing_commit": "daee20fdd8ac926d9aee700b201ac2cb35d448ca",
+            "fixing_files": [
+                "include/ajax.orgs.php"
+            ]
+        },
+        "CVE-2023-1756": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "ca75f4688a8b0f14d5d0697b9f4b6ea66088f726",
+            "fixing_files": [
+                "phpmyfaq/src/phpMyFAQ/Export/Html5.php"
+            ]
+        },
+        "CVE-2023-1318": {
+            "repo_name": "osticket",
+            "vuln_type": "XSS",
+            "fixing_commit": "343a2b47e164dd9090a3c9477ef273f0efa16a7d",
+            "fixing_files": [
+                "include/class.osticket.php"
+            ]
+        },
+        "CVE-2023-1116": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "f6d322efa207a737eedd8726b7c92e957a83341e",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/EmailController.php"
+            ]
+        },
+        "CVE-2023-1316": {
+            "repo_name": "osticket",
+            "vuln_type": "XSS",
+            "fixing_commit": "091ddba965132d26bdbeb004fcc44bd8fd056b71",
+            "fixing_files": [
+                "include/class.email.php"
+            ]
+        },
+        "CVE-2023-1107": {
+            "repo_name": "flatpress",
+            "vuln_type": "XSS",
+            "fixing_commit": "d3f329496536dc99f9707f2f295d571d65a496f5",
+            "fixing_files": [
+                "fp-plugins/mediamanager/panels/panel.mediamanager.file.php"
+            ]
+        },
+        "CVE-2023-1115": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "c6368b7cc69a3ebf2c83de7586f492ca1f404dd3",
+            "fixing_files": [
+                "models/Document/Editable/Link.php"
+            ]
+        },
+        "CVE-2023-1878": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "e018823f8e3bca103c11e5a98b0dd469e41ed417",
+            "fixing_files": [
+                "phpmyfaq/admin/stat.adminlog.php"
+            ]
+        },
+        "CVE-2023-1104": {
+            "repo_name": "flatpress",
+            "vuln_type": "XSS",
+            "fixing_commit": "f6394eac7a0e001d2b1ac638d3313e531d19ea93",
+            "fixing_files": [
+                "admin/panels/uploader/admin.uploader.php"
+            ]
+        },
+        "CVE-2023-1147": {
+            "repo_name": "flatpress",
+            "vuln_type": "XSS",
+            "fixing_commit": "264217f318a8852c4f3e34350d4a0e1363cdd727",
+            "fixing_files": [
+                "fp-includes/core/core.comment.php"
+            ]
+        },
+        "CVE-2023-1106": {
+            "repo_name": "flatpress",
+            "vuln_type": "XSS",
+            "fixing_commit": "5f23b4c2eac294cc0ba5e541f83a6f8a26f9fed1",
+            "fixing_files": [
+                "setup/lib/main.lib.php"
+            ]
+        },
+        "CVE-2023-1319": {
+            "repo_name": "osticket",
+            "vuln_type": "XSS",
+            "fixing_commit": "9fb01bc12fbae06aa2c2b4d1bc9b4a08db4bb3e0",
+            "fixing_files": [
+                "include/class.role.php"
+            ]
+        },
+        "CVE-2023-1146": {
+            "repo_name": "flatpress",
+            "vuln_type": "XSS",
+            "fixing_commit": "0ee4f2e8a7b9276880b56858e408cc9c6643cc3b",
+            "fixing_files": [
+                "admin/panels/config/admin.config.php"
+            ]
+        },
+        "CVE-2023-1117": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "b9ba69f66d6a9986fb36f239661b98cd33a89853",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/SettingsController.php"
+            ]
+        },
+        "CVE-2023-1760": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "56295b54062a284020fccce12a5044f9fa7d2770",
+            "fixing_files": [
+                "phpmyfaq/src/phpMyFAQ/Helper/UserHelper.php"
+            ]
+        },
+        "CVE-2023-1527": {
+            "repo_name": "corebos",
+            "vuln_type": "XSS",
+            "fixing_commit": "aaaca69185bce2be6a82956c69541938dc871268",
+            "fixing_files": [
+                "include/utils/VtlibUtils.php"
+            ]
+        },
+        "CVE-2023-1885": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "fecc803ab9c3e82718c4bcea7fe919d7a22ec024",
+            "fixing_files": [
+                "phpmyfaq/admin/category.main.php"
+            ]
+        },
+        "CVE-2023-1875": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "dcf7dd43a3412aa951d7087b86a8b917fae2133a",
+            "fixing_files": [
+                "phpmyfaq/admin/user.php"
+            ]
+        },
+        "CVE-2023-1148": {
+            "repo_name": "flatpress",
+            "vuln_type": "XSS",
+            "fixing_commit": "3a32aad0dec5df24c6576d7567d4f2eadbfc75de",
+            "fixing_files": [
+                "admin/panels/config/admin.config.php"
+            ]
+        },
+        "CVE-2023-39527": {
+            "repo_name": "prestashop",
+            "vuln_type": "XSS",
+            "fixing_commit": "afc14f8eaa058b3e6a20ac43e033ee2656fb88b4",
+            "fixing_files": [
+                "classes/Validate.php"
+            ]
+        },
+        "CVE-2023-39000": {
+            "repo_name": "core",
+            "vuln_type": "XSS",
+            "fixing_commit": "d1f350ce70e477adc86d445f5cda9b24f9ff0168",
+            "fixing_files": [
+                "src/opnsense/mvc/app/controllers/OPNsense/Diagnostics/LogController.php"
+            ]
+        },
+        "CVE-2023-39007": {
+            "repo_name": "core",
+            "vuln_type": "XSS",
+            "fixing_commit": "5edff49db1cd8b5078611e2f542d91c02af2b25c",
+            "fixing_files": [
+                "src/opnsense/mvc/app/controllers/OPNsense/Cron/ItemController.php"
+            ]
+        },
+        "CVE-2023-41098": {
+            "repo_name": "misp",
+            "vuln_type": "XSS",
+            "fixing_commit": "09fb0cba65eab9341e81f1cbebc2ae10be34a2b7",
+            "fixing_files": [
+                "app/Controller/DashboardsController.php"
+            ]
+        },
+        "CVE-2023-0676": {
+            "repo_name": "phpipam",
+            "vuln_type": "XSS",
+            "fixing_commit": "94ec73ff1d33926b75b811ded6f0b4a46088a7ec",
+            "fixing_files": [
+                "app/tools/ip-calculator/bw-calculator-result.php"
+            ]
+        },
+        "CVE-2023-0794": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "edf0f6f90d4deaf46b4fd97ae92f16c1e10a2635",
+            "fixing_files": [
+                "phpmyfaq/admin/header.php"
+            ]
+        },
+        "CVE-2023-0787": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "b76d58321a7a595eeaf4f7a30403ca6cd8506612",
+            "fixing_files": [
+                "phpmyfaq/src/phpMyFAQ/Faq.php"
+            ]
+        },
+        "CVE-2023-0791": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "26663efcb0b67e421e4ecccad8f19e7106bb03ce",
+            "fixing_files": [
+                "phpmyfaq/admin/instances.php"
+            ]
+        },
+        "CVE-2023-0827": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "f4050586136cb4c44e3d6042111a1b87b340df95",
+            "fixing_files": [
+                "models/DataObject/ClassDefinition/Data/UrlSlug.php"
+            ]
+        },
+        "CVE-2023-0323": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "746fac1a342841624f63ab13edcd340358e1bc04",
+            "fixing_files": [
+                "models/DataObject/ClassDefinition/Service.php"
+            ]
+        },
+        "CVE-2023-0607": {
+            "repo_name": "projectsend",
+            "vuln_type": "XSS",
+            "fixing_commit": "698be4ade1db6ae0eaf27c843a03ffc9683cca0a",
+            "fixing_files": [
+                "templates.php"
+            ]
+        },
+        "CVE-2023-0310": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "53099a9bcc928f5f6f7cce111c04b79a72a04142",
+            "fixing_files": [
+                "phpmyfaq/admin/record.comments.php"
+            ]
+        },
+        "CVE-2023-0314": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "3872e7eac2ddeac182fc1335cc312d1392d56f98",
+            "fixing_files": [
+                "phpmyfaq/admin/index.php"
+            ]
+        },
+        "CVE-2023-0309": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "376d1d3e5a42edf07260e98461d2fddbee74419b",
+            "fixing_files": [
+                "phpmyfaq/admin/header.php"
+            ]
+        },
+        "CVE-2023-0312": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "65d419ca04111ee2612ae81cdd59753654cfe18a",
+            "fixing_files": [
+                "phpmyfaq/add.php"
+            ]
+        },
+        "CVE-2023-52084": {
+            "repo_name": "winter",
+            "vuln_type": "XSS",
+            "fixing_commit": "517f65dfae679b57575b047de13c5af48915a5ba",
+            "fixing_files": [
+                "modules/backend/formwidgets/colorpicker/partials/_colorpicker.php"
+            ]
+        },
+        "CVE-2023-52083": {
+            "repo_name": "winter",
+            "vuln_type": "XSS",
+            "fixing_commit": "2969daeea8dee64d292dbaa3778ea251e2a7e491",
+            "fixing_files": [
+                "modules/system/classes/MediaLibrary.php"
+            ]
+        },
+        "CVE-2021-27902": {
+            "repo_name": "cms",
+            "vuln_type": "XSS",
+            "fixing_commit": "8ee85a8f03c143fa2420e7d6f311d95cae3b19ce",
+            "fixing_files": [
+                "src/config/GeneralConfig.php"
+            ]
+        },
+        "CVE-2021-27279": {
+            "repo_name": "mybb",
+            "vuln_type": "XSS",
+            "fixing_commit": "cb781b49116bf5c4d8deca3e17498122b701677a",
+            "fixing_files": [
+                "inc/class_parser.php"
+            ]
+        },
+        "CVE-2021-22889": {
+            "repo_name": "revive-adserver",
+            "vuln_type": "XSS",
+            "fixing_commit": "2f868414",
+            "fixing_files": [
+                "lib/OA/Admin/Statistics/Common.php"
+            ]
+        },
+        "CVE-2021-22871": {
+            "repo_name": "revive-adserver",
+            "vuln_type": "XSS",
+            "fixing_commit": "89b88ce26",
+            "fixing_files": [
+                "plugins_repo/openXInvocationTags/plugins/invocationTags/oxInvocationTags/spc.class.php"
+            ]
+        },
+        "CVE-2021-22874": {
+            "repo_name": "revive-adserver",
+            "vuln_type": "XSS",
+            "fixing_commit": "e2a67ce8",
+            "fixing_files": [
+                "lib/OA/Admin/UI/Field/AuditDaySpanField.php"
+            ]
+        },
+        "CVE-2021-43725": {
+            "repo_name": "spotweb",
+            "vuln_type": "XSS",
+            "fixing_commit": "2bfa001689aae96009688a193c64478647ba45a1",
+            "fixing_files": [
+                "lib/page/SpotPage_login.php"
+            ]
+        },
+        "CVE-2021-4139": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "d5c3e876d910784000335061c3bd24d301351245",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/DataObject/ClassificationstoreController.php"
+            ]
+        },
+        "CVE-2021-4176": {
+            "repo_name": "livehelperchat",
+            "vuln_type": "XSS",
+            "fixing_commit": "1f67cf9f251289a5094774307c2c3d638f9f0ba6",
+            "fixing_files": [
+                "lhc_web/design/defaulttheme/tpl/pagelayouts/widget.php"
+            ]
+        },
+        "CVE-2021-4018": {
+            "repo_name": "snipe-it",
+            "vuln_type": "XSS",
+            "fixing_commit": "ff81e6d5366c2cfb15618793ad919ae4cbb3ac57",
+            "fixing_files": [
+                "app/Http/Transformers/AccessoriesTransformer.php"
+            ]
+        },
+        "CVE-2021-4116": {
+            "repo_name": "yetiforcecrm",
+            "vuln_type": "XSS",
+            "fixing_commit": "9cdb012ca64ff1f719f8120d5fd162cd5ef1013f",
+            "fixing_files": [
+                "app/Fields/File.php"
+            ]
+        },
+        "CVE-2021-4107": {
+            "repo_name": "yetiforcecrm",
+            "vuln_type": "XSS",
+            "fixing_commit": "a062d3d5fecb000db207a2ad8a446db97ad96b89",
+            "fixing_files": [
+                "modules/Vtiger/actions/Fields.php"
+            ]
+        },
+        "CVE-2021-4072": {
+            "repo_name": "elgg",
+            "vuln_type": "XSS",
+            "fixing_commit": "c30b17bf75256ed3fcc84e2083147cc3951423d0",
+            "fixing_files": [
+                "mod/reportedcontent/actions/reportedcontent/add.php"
+            ]
+        },
+        "CVE-2021-4108": {
+            "repo_name": "snipe-it",
+            "vuln_type": "XSS",
+            "fixing_commit": "9d5d1a9f9aae2c8baee48551185da5de0cdb62c2",
+            "fixing_files": [
+                "app/Http/Transformers/AssetsTransformer.php"
+            ]
+        },
+        "CVE-2021-4175": {
+            "repo_name": "livehelperchat",
+            "vuln_type": "XSS",
+            "fixing_commit": "162892013eb07b21461ceffe6702140acc0fef57",
+            "fixing_files": [
+                "lhc_web/design/defaulttheme/tpl/lhmobile/settings.tpl.php"
+            ]
+        },
+        "CVE-2021-26799": {
+            "repo_name": "omeka",
+            "vuln_type": "XSS",
+            "fixing_commit": "08bfdf470e234edb68e5307a2fef8c899d89256c",
+            "fixing_files": [
+                "application/libraries/Omeka/Controller/Plugin/HtmlPurifier.php"
+            ]
+        },
+        "CVE-2021-26746": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "XSS",
+            "fixing_commit": "d939402d83bf68af5377b629883d8e5437d843ec",
+            "fixing_files": [
+                "main/calendar/agenda_list.php"
+            ]
+        },
+        "CVE-2021-26925": {
+            "repo_name": "roundcubemail",
+            "vuln_type": "XSS",
+            "fixing_commit": "9dc276d5f26042db02754fa1bac6fbd683c6d596",
+            "fixing_files": [
+                "program/lib/Roundcube/rcube_utils.php"
+            ]
+        },
+        "CVE-2021-44916": {
+            "repo_name": "open-audit",
+            "vuln_type": "XSS",
+            "fixing_commit": "e37b64bbd0219f03cb71cc1cd5bb010166a2b846",
+            "fixing_files": [
+                "code_igniter/application/helpers/output_helper.php"
+            ]
+        },
+        "CVE-2021-44584": {
+            "repo_name": "emlog",
+            "vuln_type": "XSS",
+            "fixing_commit": "3f89610f721120ded3ff491cb9cd99d9927c7582",
+            "fixing_files": [
+                "admin/globals.php"
+            ]
+        },
+        "CVE-2021-29625": {
+            "repo_name": "adminer",
+            "vuln_type": "XSS",
+            "fixing_commit": "4043092ec2c0de2258d60a99d0c5958637d051a7",
+            "fixing_files": [
+                "adminer/include/editing.inc.php"
+            ]
+        },
+        "CVE-2021-21258": {
+            "repo_name": "glpi",
+            "vuln_type": "XSS",
+            "fixing_commit": "e7802fc051696de1f76108ea8dc3bd4e2c880f15",
+            "fixing_files": [
+                "ajax/kanban.php"
+            ]
+        },
+        "CVE-2021-3862": {
+            "repo_name": "icecoder",
+            "vuln_type": "XSS",
+            "fixing_commit": "51cf24b2a39138e6a7b5739ef59eb38cd7c39763",
+            "fixing_files": [
+                "editor.php"
+            ]
+        },
+        "CVE-2021-3768": {
+            "repo_name": "bookstack",
+            "vuln_type": "XSS",
+            "fixing_commit": "5e6092aaf8fd420202016038286554860bf8ea64",
+            "fixing_files": [
+                "app/Util/HtmlContentFilter.php"
+            ]
+        },
+        "CVE-2021-3938": {
+            "repo_name": "snipe-it",
+            "vuln_type": "XSS",
+            "fixing_commit": "9ed1442bd124710f4178992cc4eca5236c7396b9",
+            "fixing_files": [
+                "app/Http/Controllers/Api/AssetsController.php"
+            ]
+        },
+        "CVE-2021-3785": {
+            "repo_name": "yourls",
+            "vuln_type": "XSS",
+            "fixing_commit": "1d8e224ebabb8a4c75b97f026950ed710faab0ff",
+            "fixing_files": [
+                "includes/functions-shorturls.php"
+            ]
+        },
+        "CVE-2021-3961": {
+            "repo_name": "snipe-it",
+            "vuln_type": "XSS",
+            "fixing_commit": "7ce5993f5ae9d713a0955c2fd8e2dff7a7ce886e",
+            "fixing_files": [
+                "app/Http/Transformers/AssetsTransformer.php"
+            ]
+        },
+        "CVE-2021-3879": {
+            "repo_name": "snipe-it",
+            "vuln_type": "XSS",
+            "fixing_commit": "bda23bb1e66fd7ce42c75c69cf5eea4e80865c1c",
+            "fixing_files": [
+                "resources/views/partials/bootstrap-table.blade.php"
+            ]
+        },
+        "CVE-2021-3831": {
+            "repo_name": "gnuboard5",
+            "vuln_type": "XSS",
+            "fixing_commit": "2e81619ea87bc9c0b4a073d8df3c7693a6fdbf0d",
+            "fixing_files": [
+                "bbs/memo.php"
+            ]
+        },
+        "CVE-2021-3977": {
+            "repo_name": "invoiceninja",
+            "vuln_type": "XSS",
+            "fixing_commit": "1186eaa82375692d01d5ef3369c5b7bc7315b55f",
+            "fixing_files": [
+                "app/Http/Controllers/Auth/ContactForgotPasswordController.php"
+            ]
+        },
+        "CVE-2021-3904": {
+            "repo_name": "grav",
+            "vuln_type": "XSS",
+            "fixing_commit": "afc69a3229bb6fe120b2c1ea27bc6f196ed7284d",
+            "fixing_files": [
+                "system/src/Grav/Common/Security.php"
+            ]
+        },
+        "CVE-2021-3767": {
+            "repo_name": "bookstack",
+            "vuln_type": "XSS",
+            "fixing_commit": "040997fdc4414776bcac06a3cbaac3b26b5e8a64",
+            "fixing_files": [
+                "app/Util/HtmlContentFilter.php"
+            ]
+        },
+        "CVE-2021-37390": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "XSS",
+            "fixing_commit": "3fcc751d5cc7da311532a8756fba5a8778f50ca0",
+            "fixing_files": [
+                "main/social/search.php"
+            ]
+        },
+        "CVE-2021-37524": {
+            "repo_name": "fusionpbx",
+            "vuln_type": "XSS",
+            "fixing_commit": "c3b811393de63e324eaa64fe5c9ea3fce428fe1a",
+            "fixing_files": [
+                "resources/login.php"
+            ]
+        },
+        "CVE-2021-37391": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "XSS",
+            "fixing_commit": "de43a77049771cce08ea7234c5c1510b5af65bc8",
+            "fixing_files": [
+                "main/inc/lib/social.lib.php"
+            ]
+        },
+        "CVE-2021-32857": {
+            "repo_name": "cockpit",
+            "vuln_type": "XSS",
+            "fixing_commit": "0c6628cbff3e49bc317c97b03a4666b3a75f76cc",
+            "fixing_files": [
+                "modules/Cockpit/module/auth.php"
+            ]
+        },
+        "CVE-2021-32856": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "f3b86d59ab674dbf514f9f9948ddfa091739ab75",
+            "fixing_files": [
+                "src/MicroweberPackages/Content/ContentManagerHelpers.php"
+            ]
+        },
+        "CVE-2021-41236": {
+            "repo_name": "platform",
+            "vuln_type": "XSS",
+            "fixing_commit": "2a089c971fc70bc63baf8770d29ee515ce5a415a",
+            "fixing_files": [
+                "src/Oro/Bundle/EmailBundle/Provider/EmailRenderer.php"
+            ]
+        },
+        "CVE-2022-27462": {
+            "repo_name": "avideo",
+            "vuln_type": "XSS",
+            "fixing_commit": "3722335f808484e6bfb5e71028fedddd942add4a",
+            "fixing_files": [
+                "objects/functions.php"
+            ]
+        },
+        "CVE-2022-27475": {
+            "repo_name": "hotel-mgmt-system",
+            "vuln_type": "XSS",
+            "fixing_commit": "3aa5fdd736927f4ba8d4b7efbba850a258ab42ce",
+            "fixing_files": [
+                "app/Util.php"
+            ]
+        },
+        "CVE-2022-36108": {
+            "repo_name": "typo3",
+            "vuln_type": "XSS",
+            "fixing_commit": "6863f73818c36b0b88c677ba533765c8074907b4",
+            "fixing_files": [
+                "typo3/sysext/fluid/Classes/ViewHelpers/Asset/CssViewHelper.php"
+            ]
+        },
+        "CVE-2022-36107": {
+            "repo_name": "typo3",
+            "vuln_type": "XSS",
+            "fixing_commit": "bd58d2ff2eeef89e63ef754a2389597d22622a39",
+            "fixing_files": [
+                "typo3/sysext/core/Classes/Controller/FileDumpController.php"
+            ]
+        },
+        "CVE-2022-42247": {
+            "repo_name": "pfsense",
+            "vuln_type": "XSS",
+            "fixing_commit": "73ca6743954ac9f35ca293e3f2af63eac20cf32e",
+            "fixing_files": [
+                "src/usr/local/www/vendor/filebrowser/browser.php"
+            ]
+        },
+        "CVE-2022-22109": {
+            "repo_name": "daybydaycrm",
+            "vuln_type": "XSS",
+            "fixing_commit": "002dc75f400cf307bd00b71a5a93f1e26e52cee2",
+            "fixing_files": [
+                "app/Http/Controllers/TasksController.php"
+            ]
+        },
+        "CVE-2022-4605": {
+            "repo_name": "flatpress",
+            "vuln_type": "XSS",
+            "fixing_commit": "742f8b04f233e3cc52bed11f79fcc9911faee776",
+            "fixing_files": [
+                "admin/panels/uploader/admin.uploader.php"
+            ]
+        },
+        "CVE-2022-4067": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "8e85698aa3aa4884c2f3d6c987542477eb64f07c",
+            "fixing_files": [
+                "includes/html/pages/notifications.inc.php"
+            ]
+        },
+        "CVE-2022-4617": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "df8add930ecfa7f5b18c67c3f748c137fe890906",
+            "fixing_files": [
+                "userfiles/modules/settings/group/language_import.php"
+            ]
+        },
+        "CVE-2022-4407": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "XSS",
+            "fixing_commit": "1d73af34bf42764f9f9491c7ba5e9495d70e3ca5",
+            "fixing_files": [
+                "phpmyfaq/admin/index.php"
+            ]
+        },
+        "CVE-2022-2016": {
+            "repo_name": "facturascripts",
+            "vuln_type": "XSS",
+            "fixing_commit": "7b4ddb9269a230e2dd07c6a8d3211c9a88f4f09f",
+            "fixing_files": [
+                "Core/Model/Balance.php"
+            ]
+        },
+        "CVE-2022-2300": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "70b46e231e7b2c113666745a0ab6de9a8b7ef08e",
+            "fixing_files": [
+                "src/MicroweberPackages/Utils/System/Files.php"
+            ]
+        },
+        "CVE-2022-2130": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "dbd37dda91911360db23269897c737e0abae2c24",
+            "fixing_files": [
+                "userfiles/modules/microweber/toolbar/editor_tools/rte_css_editor/index.php"
+            ]
+        },
+        "CVE-2022-2495": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "d35e691e72d358430abc8e99f5ba9eb374423b9f",
+            "fixing_files": [
+                "src/MicroweberPackages/App/functions/plupload.php"
+            ]
+        },
+        "CVE-2022-2733": {
+            "repo_name": "openemr",
+            "vuln_type": "XSS",
+            "fixing_commit": "59458bc15ab0cb556c521de9d5187167d6f88945",
+            "fixing_files": [
+                "interface/forms/fee_sheet/review/fee_sheet_options_ajax.php"
+            ]
+        },
+        "CVE-2022-2777": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "60eef7494211d1c458228c321e986edeaa401a58",
+            "fixing_files": [
+                "src/MicroweberPackages/App/Http/Middleware/XSS.php"
+            ]
+        },
+        "CVE-2022-2280": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "9ebbb4dd35da74025ab6965f722829a7f8f86566",
+            "fixing_files": [
+                "src/MicroweberPackages/App/functions/plupload.php"
+            ]
+        },
+        "CVE-2022-2731": {
+            "repo_name": "openemr",
+            "vuln_type": "XSS",
+            "fixing_commit": "285fb234bd27ea4c46a29f2797edda7f38f1d8db",
+            "fixing_files": [
+                "interface/main/backup.php"
+            ]
+        },
+        "CVE-2022-2036": {
+            "repo_name": "rosariosis",
+            "vuln_type": "XSS",
+            "fixing_commit": "6e213b17e6ac3a3961e1eabcdaba1c892844398a",
+            "fixing_files": [
+                "functions/PreparePHP_SELF.fnc.php"
+            ]
+        },
+        "CVE-2022-2065": {
+            "repo_name": "facturascripts",
+            "vuln_type": "XSS",
+            "fixing_commit": "1d1edb40b40016d7fd2893b410b98569d7facca1",
+            "fixing_files": [
+                "Core/App/AppRouter.php"
+            ]
+        },
+        "CVE-2022-2060": {
+            "repo_name": "dolibarr",
+            "vuln_type": "XSS",
+            "fixing_commit": "2b5b9957c3010a5db9d1988c2efe5b209b16b47f",
+            "fixing_files": [
+                "htdocs/user/bank.php"
+            ]
+        },
+        "CVE-2022-2066": {
+            "repo_name": "facturascripts",
+            "vuln_type": "XSS",
+            "fixing_commit": "73a6595ca85984d65f656c6356fabb23d1936c54",
+            "fixing_files": [
+                "Core/App/AppController.php"
+            ]
+        },
+        "CVE-2022-2729": {
+            "repo_name": "openemr",
+            "vuln_type": "XSS",
+            "fixing_commit": "74d21039aec641b2c406e3baf238ae4602a968b6",
+            "fixing_files": [
+                "interface/super/manage_site_files.php"
+            ]
+        },
+        "CVE-2022-2174": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "c51285f791e48e536111cd57a9544ccbf7f33961",
+            "fixing_files": [
+                "userfiles/modules/microweber/toolbar/editor_tools/module_settings/index.php"
+            ]
+        },
+        "CVE-2022-2885": {
+            "repo_name": "yetiforcecrm",
+            "vuln_type": "XSS",
+            "fixing_commit": "a9ad9ee089b575855b9e5e202b4990a15811e8d2",
+            "fixing_files": [
+                "modules/Rss/models/Record.php"
+            ]
+        },
+        "CVE-2022-29710": {
+            "repo_name": "limesurvey",
+            "vuln_type": "XSS",
+            "fixing_commit": "f7b35619a1c4b0893754594c7d5870fd599a0f9c",
+            "fixing_files": [
+                "application/views/admin/pluginmanager/uploadConfirm.php"
+            ]
+        },
+        "CVE-2022-29531": {
+            "repo_name": "misp",
+            "vuln_type": "XSS",
+            "fixing_commit": "bb3b7a7e91862742cae228c43b3091bad476dcc0",
+            "fixing_files": [
+                "app/Controller/AppController.php"
+            ]
+        },
+        "CVE-2022-29533": {
+            "repo_name": "misp",
+            "vuln_type": "XSS",
+            "fixing_commit": "ce6bc88e330f5ef50666b149d86c0d94f545f24e",
+            "fixing_files": [
+                "app/Controller/OrganisationsController.php"
+            ]
+        },
+        "CVE-2022-29711": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "cc6112b8fb36039b862b42d86eb79ef7ee89d31b",
+            "fixing_files": [
+                "app/Http/Controllers/Table/GraylogController.php"
+            ]
+        },
+        "CVE-2022-24851": {
+            "repo_name": "lam",
+            "vuln_type": "XSS",
+            "fixing_commit": "3c6f09a3579e048e224eb5a4c4e3eefaa8bccd49",
+            "fixing_files": [
+                "lam/templates/pdfedit/pdfpage.php"
+            ]
+        },
+        "CVE-2022-23993": {
+            "repo_name": "pfsense",
+            "vuln_type": "XSS",
+            "fixing_commit": "5d82cce0d615a76b738798577a28a15803e59aeb",
+            "fixing_files": [
+                "src/usr/local/www/pkg.php"
+            ]
+        },
+        "CVE-2022-21648": {
+            "repo_name": "latte",
+            "vuln_type": "XSS",
+            "fixing_commit": "9e1b4f7d70f7a9c3fa6753ffa7d7e450a3d4abb0",
+            "fixing_files": [
+                "src/Latte/Compiler/PhpWriter.php"
+            ]
+        },
+        "CVE-2022-21719": {
+            "repo_name": "glpi",
+            "vuln_type": "XSS",
+            "fixing_commit": "e9b16bc8e9b61ebb2d35b96b9c71cd25c5af9e48",
+            "fixing_files": [
+                "ajax/common.tabs.php"
+            ]
+        },
+        "CVE-2022-31889": {
+            "repo_name": "osticket-plugins",
+            "vuln_type": "XSS",
+            "fixing_commit": "047a1c3ae4f12f8952bbdad8143d5b74fdac14b1",
+            "fixing_files": [
+                "audit/templates/auditlogs.tmpl.php"
+            ]
+        },
+        "CVE-2022-34133": {
+            "repo_name": "jorani",
+            "vuln_type": "XSS",
+            "fixing_commit": "3d01cef4ee9cdd70cfe1ac4fd7f5d607dda0d0ca",
+            "fixing_files": [
+                "application/controllers/Leaves.php"
+            ]
+        },
+        "CVE-2022-3072": {
+            "repo_name": "rosariosis",
+            "vuln_type": "XSS",
+            "fixing_commit": "dcd3b86156bf9e981944e1a9e01ea23d8ad7c83a",
+            "fixing_files": [
+                "ProgramFunctions/FileUpload.fnc.php"
+            ]
+        },
+        "CVE-2022-3561": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "d86cbcd96d684e4de8dfa50b4490e4e02782d242",
+            "fixing_files": [
+                "includes/html/print-alert-rules.php"
+            ]
+        },
+        "CVE-2022-3231": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "08050020861230ff96a6507b309cc172a9e70af8",
+            "fixing_files": [
+                "app/Http/Controllers/Table/AlertScheduleController.php"
+            ]
+        },
+        "CVE-2022-3245": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "f20abf30a1d9c1426c5fb757ac63998dc5b92bfc",
+            "fixing_files": [
+                "userfiles/modules/tags/edit_tagging_tag.php"
+            ]
+        },
+        "CVE-2022-3123": {
+            "repo_name": "dokuwiki",
+            "vuln_type": "XSS",
+            "fixing_commit": "63e9a247c072008a031f9db39fa496f6aca489b6",
+            "fixing_files": [
+                "inc/Ui/PageDiff.php"
+            ]
+        },
+        "CVE-2022-3516": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "8e85698aa3aa4884c2f3d6c987542477eb64f07c",
+            "fixing_files": [
+                "includes/html/pages/notifications.inc.php"
+            ]
+        },
+        "CVE-2022-37247": {
+            "repo_name": "cms",
+            "vuln_type": "XSS",
+            "fixing_commit": "cedeba0609e4b173cd584dae7f33c5f713f19627",
+            "fixing_files": [
+                "src/helpers/Cp.php"
+            ]
+        },
+        "CVE-2022-37248": {
+            "repo_name": "cms",
+            "vuln_type": "XSS",
+            "fixing_commit": "cedeba0609e4b173cd584dae7f33c5f713f19627",
+            "fixing_files": [
+                "src/helpers/Cp.php"
+            ]
+        },
+        "CVE-2022-37250": {
+            "repo_name": "cms",
+            "vuln_type": "XSS",
+            "fixing_commit": "cdc9cb66d0716c9552e4113c8e426fd1a31f9516",
+            "fixing_files": [
+                "src/helpers/Cp.php"
+            ]
+        },
+        "CVE-2022-1514": {
+            "repo_name": "facturascripts",
+            "vuln_type": "XSS",
+            "fixing_commit": "aa9f28cb86467468f43486b77ddef7ff4d3c687e",
+            "fixing_files": [
+                "Core/Base/PluginManager.php"
+            ]
+        },
+        "CVE-2022-1439": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "ad3928f67b2cd4443f4323d858b666d35a919ba8",
+            "fixing_files": [
+                "src/MicroweberPackages/App/Http/Controllers/ApiController.php"
+            ]
+        },
+        "CVE-2022-1682": {
+            "repo_name": "facturascripts",
+            "vuln_type": "XSS",
+            "fixing_commit": "8e31d8434014a6d1e8791a489d84268fd74b0c9a",
+            "fixing_files": [
+                "Core/Controller/EditPageOption.php"
+            ]
+        },
+        "CVE-2022-1226": {
+            "repo_name": "phpipam",
+            "vuln_type": "XSS",
+            "fixing_commit": "50e36b9e4fff5eaa51dc6e42bc684748da378002",
+            "fixing_files": [
+                "app/admin/import-export/import-load-data.php"
+            ]
+        },
+        "CVE-2022-1909": {
+            "repo_name": "organizr",
+            "vuln_type": "XSS",
+            "fixing_commit": "d5245cab1f4b9180856330266911d6ceda14858b",
+            "fixing_files": [
+                "api/classes/organizr.class.php"
+            ]
+        },
+        "CVE-2022-1997": {
+            "repo_name": "rosariosis",
+            "vuln_type": "XSS",
+            "fixing_commit": "6b22c0b5b40fad891c8cf9e7eeff3e42a35c0bf8",
+            "fixing_files": [
+                "functions/PreparePHP_SELF.fnc.php"
+            ]
+        },
+        "CVE-2022-1571": {
+            "repo_name": "facturascripts",
+            "vuln_type": "XSS",
+            "fixing_commit": "482c5a82b4d79e7a19614f5a67dc24593046cefd",
+            "fixing_files": [
+                "Core/Model/Subcuenta.php"
+            ]
+        },
+        "CVE-2022-1555": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "724e2d186a33c0c27273107dc4f160a09384877f",
+            "fixing_files": [
+                "src/MicroweberPackages/Order/resources/views/admin/orders/partials/order_filtering.blade.php"
+            ]
+        },
+        "CVE-2022-1457": {
+            "repo_name": "facturascripts",
+            "vuln_type": "XSS",
+            "fixing_commit": "b3e7527d1e100898c15fec067825b6bc738613df",
+            "fixing_files": [
+                "Core/Controller/EditPageOption.php"
+            ]
+        },
+        "CVE-2022-1173": {
+            "repo_name": "grav",
+            "vuln_type": "XSS",
+            "fixing_commit": "1c0ed43afa5dc14169e6aa693b38e1a2f7aecad9",
+            "fixing_files": [
+                "system/src/Grav/Common/Security.php"
+            ]
+        },
+        "CVE-2022-1458": {
+            "repo_name": "openemr",
+            "vuln_type": "XSS",
+            "fixing_commit": "31f08005e53b17d1bc921d23f7ee774930ad416d",
+            "fixing_files": [
+                "interface/super/manage_document_templates.php"
+            ]
+        },
+        "CVE-2022-1988": {
+            "repo_name": "facturascripts",
+            "vuln_type": "XSS",
+            "fixing_commit": "93fc65ced3847a8e0837561e9fdfa0dbace2cfcb",
+            "fixing_files": [
+                "Core/Model/Cuenta.php"
+            ]
+        },
+        "CVE-2022-40704": {
+            "repo_name": "phoronix-test-suite",
+            "vuln_type": "XSS",
+            "fixing_commit": "d3880d9d3ba795138444da83f1153c3c3ac27640",
+            "fixing_files": [
+                "pts-core/phoromatic/phoromatic_functions.php"
+            ]
+        },
+        "CVE-2022-41442": {
+            "repo_name": "picuploader",
+            "vuln_type": "XSS",
+            "fixing_commit": "2b0411bddb7942e0ace136a82d4ccde0fe66f263",
+            "fixing_files": [
+                "settings/SettingController.php"
+            ]
+        },
+        "CVE-2022-41938": {
+            "repo_name": "framework",
+            "vuln_type": "XSS",
+            "fixing_commit": "690de9ce0ffe7ac4d45b73e303f44340c3433138",
+            "fixing_files": [
+                "framework/core/views/frontend/app.blade.php"
+            ]
+        },
+        "CVE-2022-0260": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "3125d5f0c04cfb5835857ca9416f0bb143130a2f",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/TargetingController.php"
+            ]
+        },
+        "CVE-2022-0256": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "dff1cb0c466abcd55f1268934de3ed937b7436a7",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Reports/CustomReportController.php"
+            ]
+        },
+        "CVE-2022-0965": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "3caa32334db0c277b84e993eaca2036f5d1dbef8",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0957": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "d1c9ed0d77ea5d56f09be0c492361dca8af745bb",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0678": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "2b8fa5aac31e51e2aca83c7ef5d1281ba2e755f8",
+            "fixing_files": [
+                "src/MicroweberPackages/Helper/UrlManager.php"
+            ]
+        },
+        "CVE-2022-0966": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "3caa32334db0c277b84e993eaca2036f5d1dbef8",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0395": {
+            "repo_name": "livehelperchat",
+            "vuln_type": "XSS",
+            "fixing_commit": "8fdb4f67ac1a095331aa0fb4630ef9dfe8e75dcb",
+            "fixing_files": [
+                "lhc_web/design/defaulttheme/tpl/pagelayouts/parts/user_box.tpl.php"
+            ]
+        },
+        "CVE-2022-0251": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "3ae96b9d41c117aafa45873ad10077d4b873a3cb",
+            "fixing_files": [
+                "models/DataObject/ClassDefinition/Service.php"
+            ]
+        },
+        "CVE-2022-0575": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "4f86915866703e2fcd1e34b3fc1181ec2ad78e54",
+            "fixing_files": [
+                "includes/html/pages/addhost.inc.php"
+            ]
+        },
+        "CVE-2022-0719": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "a5925f74d39775771d4c37c8d4c1acbb762fda0a",
+            "fixing_files": [
+                "src/MicroweberPackages/Helper/UrlManager.php"
+            ]
+        },
+        "CVE-2022-0268": {
+            "repo_name": "grav",
+            "vuln_type": "XSS",
+            "fixing_commit": "6f2fa9311afb9ecd34030dec2aff7b39e9e7e735",
+            "fixing_files": [
+                "system/src/Grav/Common/Security.php"
+            ]
+        },
+        "CVE-2022-0942": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "3caa32334db0c277b84e993eaca2036f5d1dbef8",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0378": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "fc7e1a026735b93f0e0047700d08c44954fce9ce",
+            "fixing_files": [
+                "src/MicroweberPackages/App/Http/Controllers/ApiController.php"
+            ]
+        },
+        "CVE-2022-0956": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "56e450c3adf75c707500d7231a78c9fc894c7f13",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0348": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "832c34aeb9f21f213295a0c28377132df996352a",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/DataObject/ClassController.php"
+            ]
+        },
+        "CVE-2022-0510": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "b5a9ad65e5a4dde1916f02019f8686ad835681ce",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/DataObject/ClassController.php"
+            ]
+        },
+        "CVE-2022-0941": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "4b6e6603c714aab1de346c5f5cb0bbb4c871be1f",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0571": {
+            "repo_name": "phoronix-test-suite",
+            "vuln_type": "XSS",
+            "fixing_commit": "1eac9260c8313f0cfc77837ec676f4e6d68bd833",
+            "fixing_files": [
+                "pts-core/phoromatic/phoromatic_functions.php"
+            ]
+        },
+        "CVE-2022-0960": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "92bc6a83a3a60e01a0d2effb98ab47d8d7eab28f",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0772": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "703745d0ed3948623153117d761ce48514e2f281",
+            "fixing_files": [
+                "includes/html/modal/alert_rule_list.inc.php"
+            ]
+        },
+        "CVE-2022-0954": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "955471c27e671c49e4b012e3b120b004082ac3f7",
+            "fixing_files": [
+                "src/MicroweberPackages/Option/Http/Controllers/Api/SaveOptionApiController.php"
+            ]
+        },
+        "CVE-2022-0763": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "c897d0dc159849763a813184d9b75b966c6360bf",
+            "fixing_files": [
+                "src/MicroweberPackages/Media/MediaManager.php"
+            ]
+        },
+        "CVE-2022-0906": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "d9bae9df873c2d2a13a2eb08d512019d49ebca68",
+            "fixing_files": [
+                "src/MicroweberPackages/Utils/System/Files.php"
+            ]
+        },
+        "CVE-2022-0262": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "6f36e841ce55f67e2e95253dd58f80659ef166c7",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/SettingsController.php"
+            ]
+        },
+        "CVE-2022-0940": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "78522520892d4e29cc94148c6ec84a204a607b73",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0278": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "b64ef574b82dbf89a908e1569d790c7012d1ccd7",
+            "fixing_files": [
+                "userfiles/modules/admin/notifications/notif_form_entry.php"
+            ]
+        },
+        "CVE-2022-0576": {
+            "repo_name": "librenms",
+            "vuln_type": "XSS",
+            "fixing_commit": "135717a9a05c5bf8921f1389cbb469dcbf300bfd",
+            "fixing_files": [
+                "includes/html/forms/alert-transports.inc.php"
+            ]
+        },
+        "CVE-2022-0501": {
+            "repo_name": "beanstalk_console",
+            "vuln_type": "XSS",
+            "fixing_commit": "e351c8260ec1d3718d9e475ee57c7e12c47f19da",
+            "fixing_files": [
+                "lib/include.php"
+            ]
+        },
+        "CVE-2022-0743": {
+            "repo_name": "grav",
+            "vuln_type": "XSS",
+            "fixing_commit": "3dd0cabeac9835fe64dcb4b68c658b39f1f6be2f",
+            "fixing_files": [
+                "system/src/Grav/Common/Security.php"
+            ]
+        },
+        "CVE-2022-0937": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "42c0d9813df3035728b36116a6ce9116e6fa8ed3",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0145": {
+            "repo_name": "forkcms",
+            "vuln_type": "XSS",
+            "fixing_commit": "981730f1a3d59b423ca903b1f4bf79b848a1766e",
+            "fixing_files": [
+                "src/Backend/Modules/Extensions/Engine/Model.php"
+            ]
+        },
+        "CVE-2022-0963": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "975fc1d6d3fba598ee550849ceb81af23ce72e08",
+            "fixing_files": [
+                "src/MicroweberPackages/Utils/System/Files.php"
+            ]
+        },
+        "CVE-2022-0946": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "e5d575928b1371a7e07b09b6592822298335062a",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0964": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "3caa32334db0c277b84e993eaca2036f5d1dbef8",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0938": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "830c89a4c2c5fd0dd491422bf8e97b4eb5713f55",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0880": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "818d7fe731f452acccacf731ce47ec27ad68049c",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0257": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "dfaf78b26fb77990267c0cc05b9fcb9f8de7b66d",
+            "fixing_files": [
+                "bundles/EcommerceFrameworkBundle/Controller/PricingController.php"
+            ]
+        },
+        "CVE-2022-0285": {
+            "repo_name": "pimcore",
+            "vuln_type": "XSS",
+            "fixing_commit": "b432225952e2a5ab0268f401b85a14480369b835",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/SettingsController.php"
+            ]
+        },
+        "CVE-2022-0962": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "3caa32334db0c277b84e993eaca2036f5d1dbef8",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0945": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "ba45d19e1d77a7eea866dab30eff5da552694891",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0955": {
+            "repo_name": "data-hub",
+            "vuln_type": "XSS",
+            "fixing_commit": "15d5b57af2466eebd3bbc531ead5dafa35d0a36e",
+            "fixing_files": [
+                "src/Controller/ConfigController.php"
+            ]
+        },
+        "CVE-2022-0967": {
+            "repo_name": "showdoc",
+            "vuln_type": "XSS",
+            "fixing_commit": "3caa32334db0c277b84e993eaca2036f5d1dbef8",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0926": {
+            "repo_name": "microweber",
+            "vuln_type": "XSS",
+            "fixing_commit": "89200cfcc2cfefe5554721e7fa3cf52f6a2a9120",
+            "fixing_files": [
+                "src/MicroweberPackages/Utils/System/Files.php"
+            ]
+        }
+    },
+    "sql_injection": {
+        "CVE-2025-27617": {
+            "repo_name": "pimcore",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "19a8520895484e68fd254773e32476565d91deea",
+            "fixing_files": [
+                "models/DataObject/ClassDefinition/Data/Extension/RelationFilterConditionParser.php"
+            ]
+        },
+        "CVE-2025-26520": {
+            "repo_name": "cacti",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "7fa60c03ad4a69c701ac6b77c85a8927df7acd51",
+            "fixing_files": [
+                "host_templates.php"
+            ]
+        },
+        "CVE-2024-28107": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "d0fae62a72615d809e6710861c1a7f67ac893007",
+            "fixing_files": [
+                "phpmyfaq/src/phpMyFAQ/Faq.php"
+            ]
+        },
+        "CVE-2024-27299": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "1b68a5f89fb65996c56285fa636b818de8608011",
+            "fixing_files": [
+                "phpmyfaq/src/phpMyFAQ/News.php"
+            ]
+        },
+        "CVE-2024-27096": {
+            "repo_name": "glpi",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "61a0c2302b4f633f5065358adc36058e1abc37f9",
+            "fixing_files": [
+                "src/Search.php"
+            ]
+        },
+        "CVE-2024-45600": {
+            "repo_name": "fields",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "eb927b0f084ee4ef6c87ab2eb7a15e99369e74ae",
+            "fixing_files": [
+                "inc/container.class.php"
+            ]
+        },
+        "CVE-2024-45059": {
+            "repo_name": "i-educar",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "7824b95745fa2da6476b9901041d9c854bf52ffe",
+            "fixing_files": [
+                "ieducar/intranet/include/clsCampos.inc.php"
+            ]
+        },
+        "CVE-2024-55603": {
+            "repo_name": "kanboard",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "7ce61c34d962ca8b5dce776289ddf4b207be6e78",
+            "fixing_files": [
+                "app/Core/Session/SessionHandler.php"
+            ]
+        },
+        "CVE-2024-48251": {
+            "repo_name": "wavelog",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "0bf2675d93602b591850790c8fcfced886eca423",
+            "fixing_files": [
+                "application/models/Stations.php"
+            ]
+        },
+        "CVE-2024-48249": {
+            "repo_name": "wavelog",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "0bf2675d93602b591850790c8fcfced886eca423",
+            "fixing_files": [
+                "application/models/Stations.php"
+            ]
+        },
+        "CVE-2024-48257": {
+            "repo_name": "wavelog",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "0bf2675d93602b591850790c8fcfced886eca423",
+            "fixing_files": [
+                "application/models/Stations.php"
+            ]
+        },
+        "CVE-2024-31445": {
+            "repo_name": "cacti",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "fd93c6e47651958b77c3bbe6a01fff695f81e886",
+            "fixing_files": [
+                "lib/api_automation.php"
+            ]
+        },
+        "CVE-2024-51482": {
+            "repo_name": "zoneminder",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "9e7d31841ed9678a7dd06869037686fc9925e59f",
+            "fixing_files": [
+                "web/ajax/event.php"
+            ]
+        },
+        "CVE-2024-37906": {
+            "repo_name": "admidio",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "3ff02b0c64a6911ab3e81cd61077f392c0b25248",
+            "fixing_files": [
+                "adm_program/modules/ecards/ecard_send.php"
+            ]
+        },
+        "CVE-2024-32461": {
+            "repo_name": "librenms",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "d29201fce134347f891102699fbde7070debee33",
+            "fixing_files": [
+                "includes/html/pages/search/packages.inc.php"
+            ]
+        },
+        "CVE-2024-32480": {
+            "repo_name": "librenms",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "83fe4b10c440d69a47fe2f8616e290ba2bd3a27c",
+            "fixing_files": [
+                "includes/html/api_functions.inc.php"
+            ]
+        },
+        "CVE-2023-46727": {
+            "repo_name": "glpi",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "ee2d674481ebef177037e8e14d35c9455b5cfd46",
+            "fixing_files": [
+                "src/RuleImportAsset.php"
+            ]
+        },
+        "CVE-2023-36813": {
+            "repo_name": "kanboard",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "25b93343baeaf8ad018dcd87b094e47a5c6a3e0a",
+            "fixing_files": [
+                "libs/picodb/lib/PicoDb/Database.php"
+            ]
+        },
+        "CVE-2023-22727": {
+            "repo_name": "cakephp",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "3f463e7084b5a15e67205ced3a622577cca7a239",
+            "fixing_files": [
+                "src/Database/Query.php"
+            ]
+        },
+        "CVE-2023-43813": {
+            "repo_name": "glpi",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "4bd7f02d940953b9cbc9d285f7544bb0e490e75e",
+            "fixing_files": [
+                "ajax/pin_savedsearches.php"
+            ]
+        },
+        "CVE-2023-2338": {
+            "repo_name": "pimcore",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "21e35af721c375ef4676ed50835e30d828e76520",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/Asset/AssetController.php"
+            ]
+        },
+        "CVE-2023-6981": {
+            "repo_name": "wp-sms",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "6656de201efe67c7983102c344a546eed976a819",
+            "fixing_files": [
+                "includes/admin/subscribers/class-wpsms-subscribers-table.php"
+            ]
+        },
+        "CVE-2023-3820": {
+            "repo_name": "pimcore",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "e641968979d4a2377bbea5e2a76bdede040d0b97",
+            "fixing_files": [
+                "bundles/AdminBundle/Helper/GridHelperService.php"
+            ]
+        },
+        "CVE-2023-5591": {
+            "repo_name": "librenms",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "908aef65967ce6184bdc587fd105660d5d55129e",
+            "fixing_files": [
+                "includes/html/table/address-search.inc.php"
+            ]
+        },
+        "CVE-2023-47637": {
+            "repo_name": "pimcore",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "d164d99c90f098d0ccd6b72929c48b727e2953a0",
+            "fixing_files": [
+                "models/DataObject/ClassDefinition/Data/Multiselect.php"
+            ]
+        },
+        "CVE-2023-37270": {
+            "repo_name": "piwigo",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "978425527d6c113887f845d75cf982bbb62d761a",
+            "fixing_files": [
+                "include/functions.inc.php"
+            ]
+        },
+        "CVE-2023-1545": {
+            "repo_name": "teampass",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "4780252fdb600ef2ec2758f17a37d738570cbe66",
+            "fixing_files": [
+                "api/Model/AuthModel.php"
+            ]
+        },
+        "CVE-2023-1578": {
+            "repo_name": "pimcore",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "367b74488808d71ec3f66f4ca9e8df5217c2c8d2",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Searchadmin/SearchController.php"
+            ]
+        },
+        "CVE-2023-1211": {
+            "repo_name": "phpipam",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "16e7a94fb69412e569ccf6f2fe0a1f847309c922",
+            "fixing_files": [
+                "functions/classes/class.Admin.php"
+            ]
+        },
+        "CVE-2023-39524": {
+            "repo_name": "prestashop",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "2047d4c053043102bc46a37d383b392704bf14d7",
+            "fixing_files": [
+                "src/Adapter/Product/Repository/ProductRepository.php"
+            ]
+        },
+        "CVE-2021-42325": {
+            "repo_name": "froxlor",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "eb592340b022298f62a0a3e8450dbfbe29585782",
+            "fixing_files": [
+                "lib/Froxlor/Database/Manager/DbManagerMySQL.php"
+            ]
+        },
+        "CVE-2021-43806": {
+            "repo_name": "tuleap",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "b82be896b00a787ed46a77bd4700e8fccfe2e5ba",
+            "fixing_files": [
+                "src/www/cvs/commit_utils.php"
+            ]
+        },
+        "CVE-2021-43822": {
+            "repo_name": "jackalope-doctrine-dbal",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "9d179a36d320330ddb303ea3a7c98d3a33d231db",
+            "fixing_files": [
+                "src/Jackalope/Transport/DoctrineDBAL/Query/QOMWalker.php"
+            ]
+        },
+        "CVE-2021-43608": {
+            "repo_name": "dbal",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "9dcfa4cb6c03250b78a84737ba7ceb82f4b7ba4d",
+            "fixing_files": [
+                "src/Platforms/AbstractPlatform.php"
+            ]
+        },
+        "CVE-2021-4261": {
+            "repo_name": "pacman-canvas",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "29522c90ca1cebfce6453a5af5a45281d99b0646",
+            "fixing_files": [
+                "data/db-handler.php"
+            ]
+        },
+        "CVE-2021-32615": {
+            "repo_name": "piwigo",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "2ce1e5952238eba0fe5c5d6537ebdc76cb970b52",
+            "fixing_files": [
+                "admin/user_list_backend.php"
+            ]
+        },
+        "CVE-2021-39302": {
+            "repo_name": "misp",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "20d9020b76d1f6790c4d84e020d0cc97c929f66b",
+            "fixing_files": [
+                "app/Model/Log.php"
+            ]
+        },
+        "CVE-2021-39165": {
+            "repo_name": "cachet",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "27bca8280419966ba80c6fa283d985ddffa84bb6",
+            "fixing_files": [
+                "app/Models/Traits/SearchableTrait.php"
+            ]
+        },
+        "CVE-2021-41148": {
+            "repo_name": "tuleap",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "91535add59f4b3a04b6b8eab123c002cd5af180d",
+            "fixing_files": [
+                "plugins/hudson/include/HudsonJobWidget.class.php"
+            ]
+        },
+        "CVE-2021-41800": {
+            "repo_name": "mediawiki",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "781caf83dba90c18349f930bbaaa0e89f003f874",
+            "fixing_files": [
+                "includes/specials/SpecialContributions.php"
+            ]
+        },
+        "CVE-2021-41147": {
+            "repo_name": "tuleap",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "d6b2f8b8c5098938bc094726a4826479ddbee941",
+            "fixing_files": [
+                "plugins/cardwall/include/OnTop/ColumnMappingFieldValueDao.class.php"
+            ]
+        },
+        "CVE-2022-4592": {
+            "repo_name": "crmx",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "8c62d274986137d6a1d06958a6f75c3553f45f8f",
+            "fixing_files": [
+                "index.php"
+            ]
+        },
+        "CVE-2022-35947": {
+            "repo_name": "glpi",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "564309d2c1180d5ba1615f4bbaf6623df81b4962",
+            "fixing_files": [
+                "src/User.php"
+            ]
+        },
+        "CVE-2022-21661": {
+            "repo_name": "wordpress-develop",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "17efac8c8ec64555eff5cf51a3eff81e06317214",
+            "fixing_files": [
+                "src/wp-includes/class-wp-tax-query.php"
+            ]
+        },
+        "CVE-2022-21647": {
+            "repo_name": "codeigniter4",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "ce95ed5765256e2f09f3513e7d42790e0d6948f5",
+            "fixing_files": [
+                "system/Common.php"
+            ]
+        },
+        "CVE-2022-21720": {
+            "repo_name": "glpi",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "5c3eee696b503fdf502f506b00d15cf5b324b326",
+            "fixing_files": [
+                "front/entity.form.php"
+            ]
+        },
+        "CVE-2022-31890": {
+            "repo_name": "osticket-plugins",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "0b59afbd2d4ccd0522552198a9aaf1ec05b5071e",
+            "fixing_files": [
+                "audit/class.audit.php"
+            ]
+        },
+        "CVE-2022-31092": {
+            "repo_name": "pimcore",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "21559c6bf0e4e828d33ff7af6e88caecb5ac6549",
+            "fixing_files": [
+                "lib/Model/Listing/AbstractListing.php"
+            ]
+        },
+        "CVE-2022-31061": {
+            "repo_name": "glpi",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "21ae07d00d0b3230f6235386e98388cfc5bb0514",
+            "fixing_files": [
+                "src/Auth.php"
+            ]
+        },
+        "CVE-2022-31181": {
+            "repo_name": "prestashop",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "b6d96e7c2a4e35a44e96ffbcdfd34439b56af804",
+            "fixing_files": [
+                "classes/Smarty/SmartyCacheResourceMysql.php"
+            ]
+        },
+        "CVE-2022-34132": {
+            "repo_name": "jorani",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "c5c42e29e6a9e59a3c82450bef48b67b8dd48333",
+            "fixing_files": [
+                "application/controllers/Leaves.php"
+            ]
+        },
+        "CVE-2022-3827": {
+            "repo_name": "centreon",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "293b10628f7d9f83c6c82c78cf637cbe9b907369",
+            "fixing_files": [
+                "www/include/configuration/configObject/contactgroup/formContactGroup.php"
+            ]
+        },
+        "CVE-2022-1219": {
+            "repo_name": "pimcore",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "a697830359df06246acca502ee2455614de68017",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/RecyclebinController.php"
+            ]
+        },
+        "CVE-2022-1429": {
+            "repo_name": "pimcore",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "523a735ab94f004459b84ffdfd3db784586bbd82",
+            "fixing_files": [
+                "bundles/AdminBundle/Helper/GridHelperService.php"
+            ]
+        },
+        "CVE-2022-1064": {
+            "repo_name": "forkcms",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "6aca30e10b4181534f73f96d6e2ebeb45ec15069",
+            "fixing_files": [
+                "src/Backend/Modules/Blog/Engine/Model.php"
+            ]
+        },
+        "CVE-2022-0153": {
+            "repo_name": "forkcms",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "7a12046a67ae5d8cf04face3ee75e55f03a1a608",
+            "fixing_files": [
+                "src/Backend/Modules/FormBuilder/Engine/Model.php"
+            ]
+        },
+        "CVE-2022-0258": {
+            "repo_name": "pimcore",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "66281c12479dc01a06258d8533eaddfb1770d5bd",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Admin/DataObject/ClassificationstoreController.php"
+            ]
+        },
+        "CVE-2022-0224": {
+            "repo_name": "dolibarr",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "b9b45fb50618aa8053961f50bc8604b188d0ea79",
+            "fixing_files": [
+                "htdocs/compta/sociales/list.php"
+            ]
+        },
+        "CVE-2022-0362": {
+            "repo_name": "showdoc",
+            "vuln_type": "sql_injection",
+            "fixing_commit": "2b34e267e4186125f99bfa420140634ad45801fb",
+            "fixing_files": [
+                "server/Application/Api/Controller/AdminUserController.class.php"
+            ]
+        }
+    },
+    "command_injection": {
+        "CVE-2024-37385": {
+            "repo_name": "roundcubemail",
+            "vuln_type": "command_injection",
+            "fixing_commit": "5ea9f37ce39374b6124586c0590fec7015d35d7f",
+            "fixing_files": [
+                "program/lib/Roundcube/rcube_image.php"
+            ]
+        },
+        "CVE-2023-30258": {
+            "repo_name": "magnusbilling7",
+            "vuln_type": "command_injection",
+            "fixing_commit": "ccff9f6370f530cc41ef7de2e31d7590a0fdb8c3",
+            "fixing_files": [
+                "lib/icepay/icepay.php"
+            ]
+        },
+        "CVE-2023-51450": {
+            "repo_name": "basercms",
+            "vuln_type": "command_injection",
+            "fixing_commit": "18f426d63e752b4d22c40e9ea8d1f6e692ef601c",
+            "fixing_files": [
+                "plugins/baser-core/src/View/Helper/BcAdminFormHelper.php"
+            ]
+        },
+        "CVE-2023-32073": {
+            "repo_name": "avideo",
+            "vuln_type": "command_injection",
+            "fixing_commit": "1df4af01f80d56ff2c4c43b89d0bac151e7fb6e3",
+            "fixing_files": [
+                "plugin/CloneSite/cloneClient.json.php"
+            ]
+        },
+        "CVE-2023-1877": {
+            "repo_name": "microweber",
+            "vuln_type": "command_injection",
+            "fixing_commit": "93a906d0bf096c3ab1674012a90c88d101e76c8d",
+            "fixing_files": [
+                "src/MicroweberPackages/App/Http/Middleware/XSS.php"
+            ]
+        },
+        "CVE-2023-0789": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "command_injection",
+            "fixing_commit": "40515c74815ace394ab23c6c19cbb33fd49059cb",
+            "fixing_files": [
+                "phpmyfaq/ajaxservice.php"
+            ]
+        },
+        "CVE-2021-37708": {
+            "repo_name": "platform",
+            "vuln_type": "command_injection",
+            "fixing_commit": "82d8d1995f6ce9054323b2c3522b1b3cf04853aa",
+            "fixing_files": [
+                "src/Core/Content/Mail/Service/MailerTransportFactory.php"
+            ]
+        },
+        "CVE-2021-39217": {
+            "repo_name": "magento-lts",
+            "vuln_type": "command_injection",
+            "fixing_commit": "289bd4b4f53622138e3e5c2d2cef7502d780086f",
+            "fixing_files": [
+                "app/code/core/Mage/Core/Helper/Security.php"
+            ]
+        },
+        "CVE-2022-2550": {
+            "repo_name": "hestiacp",
+            "vuln_type": "command_injection",
+            "fixing_commit": "3d4c309cf138943cfd1e71ae51556406987aa4bf",
+            "fixing_files": [
+                "web/src/app/WebApp/Installers/DokuWiki/DokuWikiSetup.php"
+            ]
+        },
+        "CVE-2022-24838": {
+            "repo_name": "calendar",
+            "vuln_type": "command_injection",
+            "fixing_commit": "7b70edfb8a0fcf0926f613ababcbd56c6ecd9f35",
+            "fixing_files": [
+                "lib/Controller/BookingController.php"
+            ]
+        },
+        "CVE-2022-1509": {
+            "repo_name": "hestiacp",
+            "vuln_type": "command_injection",
+            "fixing_commit": "d50f95cf208049dfb6ac67a8020802121745bd60",
+            "fixing_files": [
+                "web/inc/main.php"
+            ]
+        },
+        "CVE-2022-0557": {
+            "repo_name": "microweber",
+            "vuln_type": "command_injection",
+            "fixing_commit": "0a7e5f1d81de884861ca677ee1aaac31f188d632",
+            "fixing_files": [
+                "src/MicroweberPackages/App/functions/plupload.php"
+            ]
+        },
+        "CVE-2022-0848": {
+            "repo_name": "part-db",
+            "vuln_type": "command_injection",
+            "fixing_commit": "9cd4eee393028aa4cab70fcbac284b0028c0bc95",
+            "fixing_files": [
+                "inc/lib.php"
+            ]
+        }
+    },
+    "code_injection": {
+        "CVE-2025-28254": {
+            "repo_name": "leantime",
+            "vuln_type": "code_injection",
+            "fixing_commit": "ce1d2073e4601183e1bdd90f4b433d16aee46a50",
+            "fixing_files": [
+                "app/Domain/Notifications/Services/Notifications.php"
+            ]
+        },
+        "CVE-2025-22605": {
+            "repo_name": "coolify",
+            "vuln_type": "code_injection",
+            "fixing_commit": "353245bb7de9680f238bae30443af1696bc977b0",
+            "fixing_files": [
+                "bootstrap/helpers/remoteProcess.php"
+            ]
+        },
+        "CVE-2025-23209": {
+            "repo_name": "cms",
+            "vuln_type": "code_injection",
+            "fixing_commit": "e59e22b30c9dd39e5e2c7fe02c147bcbd004e603",
+            "fixing_files": [
+                "src/controllers/UpdaterController.php"
+            ]
+        },
+        "CVE-2024-28107": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "code_injection",
+            "fixing_commit": "d0fae62a72615d809e6710861c1a7f67ac893007",
+            "fixing_files": [
+                "phpmyfaq/src/phpMyFAQ/Faq.php"
+            ]
+        },
+        "CVE-2024-28710": {
+            "repo_name": "limesurvey",
+            "vuln_type": "code_injection",
+            "fixing_commit": "c2fd60f94bc1db275f20cbb27a3135a9bdfb7f10",
+            "fixing_files": [
+                "application/controllers/AjaxAlertController.php"
+            ]
+        },
+        "CVE-2024-28116": {
+            "repo_name": "grav",
+            "vuln_type": "code_injection",
+            "fixing_commit": "4149c81339274130742831422de2685f298f3a6e",
+            "fixing_files": [
+                "system/src/Grav/Common/Security.php"
+            ]
+        },
+        "CVE-2024-27299": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "code_injection",
+            "fixing_commit": "1b68a5f89fb65996c56285fa636b818de8608011",
+            "fixing_files": [
+                "phpmyfaq/src/phpMyFAQ/News.php"
+            ]
+        },
+        "CVE-2024-38530": {
+            "repo_name": "openeclass",
+            "vuln_type": "code_injection",
+            "fixing_commit": "4449cf8bed40fd8fc4b267a5726fab9f9fe5a191",
+            "fixing_files": [
+                "include/lib/fileUploadLib.inc.php"
+            ]
+        },
+        "CVE-2024-38529": {
+            "repo_name": "admidio",
+            "vuln_type": "code_injection",
+            "fixing_commit": "3b1cc1cda05747edebe15f2825b79bc5a673d94c",
+            "fixing_files": [
+                "adm_program/modules/messages/messages_send.php"
+            ]
+        },
+        "CVE-2024-55661": {
+            "repo_name": "pulse",
+            "vuln_type": "code_injection",
+            "fixing_commit": "d1a5bf2eca36c6e3bedb4ceecd45df7d002a1ebc",
+            "fixing_files": [
+                "src/Livewire/Concerns/RemembersQueries.php"
+            ]
+        },
+        "CVE-2024-56145": {
+            "repo_name": "cms",
+            "vuln_type": "code_injection",
+            "fixing_commit": "82e893fb794d30563da296bca31379c0df0079b3",
+            "fixing_files": [
+                "bootstrap/bootstrap.php"
+            ]
+        },
+        "CVE-2024-31445": {
+            "repo_name": "cacti",
+            "vuln_type": "code_injection",
+            "fixing_commit": "fd93c6e47651958b77c3bbe6a01fff695f81e886",
+            "fixing_files": [
+                "lib/api_automation.php"
+            ]
+        },
+        "CVE-2024-37879": {
+            "repo_name": "usvn",
+            "vuln_type": "code_injection",
+            "fixing_commit": "6b4678954fca9635154743b95ff9c8947cf5f46f",
+            "fixing_files": [
+                "src/library/USVN/Config.php"
+            ]
+        },
+        "CVE-2024-52293": {
+            "repo_name": "cms",
+            "vuln_type": "code_injection",
+            "fixing_commit": "123e48a696de1e2f63ab519d4730eb3b87beaa58",
+            "fixing_files": [
+                "src/helpers/FileHelper.php"
+            ]
+        },
+        "CVE-2023-4223": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "code_injection",
+            "fixing_commit": "3d74fb7d99bd2e287730552f7a66562417a55047",
+            "fixing_files": [
+                "main/inc/ajax/document.ajax.php"
+            ]
+        },
+        "CVE-2023-4220": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "code_injection",
+            "fixing_commit": "3b487a55076fb06f96809b790a35dcdd42f8ec49",
+            "fixing_files": [
+                "main/inc/lib/javascript/bigupload/inc/bigUpload.php"
+            ]
+        },
+        "CVE-2023-26482": {
+            "repo_name": "server",
+            "vuln_type": "code_injection",
+            "fixing_commit": "5a06b50b10cc9278bbe68bbf897a0c4aeb0c4e60",
+            "fixing_files": [
+                "apps/workflowengine/lib/Manager.php"
+            ]
+        },
+        "CVE-2023-24813": {
+            "repo_name": "dompdf",
+            "vuln_type": "code_injection",
+            "fixing_commit": "95009ea98230f9b084b040c34e3869ef3dccc9aa",
+            "fixing_files": [
+                "src/Image/Cache.php"
+            ]
+        },
+        "CVE-2023-48123": {
+            "repo_name": "pfsense",
+            "vuln_type": "code_injection",
+            "fixing_commit": "f72618c4abb61ea6346938d0c93df9078736b775",
+            "fixing_files": [
+                "src/usr/local/www/diag_packet_capture.php"
+            ]
+        },
+        "CVE-2023-23607": {
+            "repo_name": "dasherr",
+            "vuln_type": "code_injection",
+            "fixing_commit": "445325c7cf1148a8cd38af3a90789c6cbf6c5112",
+            "fixing_files": [
+                "www/include/filesave.php"
+            ]
+        },
+        "CVE-2023-23924": {
+            "repo_name": "dompdf",
+            "vuln_type": "code_injection",
+            "fixing_commit": "7558f07f693b2ac3266089f21051e6b78c6a0c85",
+            "fixing_files": [
+                "src/Image/Cache.php"
+            ]
+        },
+        "CVE-2023-23010": {
+            "repo_name": "ecommerce-codeigniter-bootstrap",
+            "vuln_type": "code_injection",
+            "fixing_commit": "d5904379ca55014c5df34c67deda982c73dc7fe5",
+            "fixing_files": [
+                "application/modules/vendor/views/add_product.php"
+            ]
+        },
+        "CVE-2023-34944": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "code_injection",
+            "fixing_commit": "0d0c88c4806280ac9b70a299d6e3099269c9bc54",
+            "fixing_files": [
+                "main/inc/lib/fileUpload.lib.php"
+            ]
+        },
+        "CVE-2023-34253": {
+            "repo_name": "grav",
+            "vuln_type": "code_injection",
+            "fixing_commit": "71bbed12f950de8335006d7f91112263d8504f1b",
+            "fixing_files": [
+                "system/src/Grav/Common/Utils.php"
+            ]
+        },
+        "CVE-2023-34252": {
+            "repo_name": "grav",
+            "vuln_type": "code_injection",
+            "fixing_commit": "244758d4383034fe4cd292d41e477177870b65ec",
+            "fixing_files": [
+                "system/src/Grav/Common/Twig/Extension/GravExtension.php"
+            ]
+        },
+        "CVE-2023-34251": {
+            "repo_name": "grav",
+            "vuln_type": "code_injection",
+            "fixing_commit": "9d01140a63c77075ef09b26ef57cf186138151a5",
+            "fixing_files": [
+                "system/src/Grav/Common/Twig/Extension/GravExtension.php"
+            ]
+        },
+        "CVE-2023-3393": {
+            "repo_name": "fossbilling",
+            "vuln_type": "code_injection",
+            "fixing_commit": "47343fb58db5c17c14bc6941dacbeb9c96957351",
+            "fixing_files": [
+                "src/library/Box/TwigExtensions.php"
+            ]
+        },
+        "CVE-2023-3545": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "code_injection",
+            "fixing_commit": "dc7bfce429fbd843a95a57c184b6992c4d709549",
+            "fixing_files": [
+                "main/inc/lib/fileUpload.lib.php"
+            ]
+        },
+        "CVE-2023-47130": {
+            "repo_name": "yii",
+            "vuln_type": "code_injection",
+            "fixing_commit": "37142be4dc5831114a375392e86d6450d4951c06",
+            "fixing_files": [
+                "framework/db/schema/CDbCriteria.php"
+            ]
+        },
+        "CVE-2023-32073": {
+            "repo_name": "avideo",
+            "vuln_type": "code_injection",
+            "fixing_commit": "1df4af01f80d56ff2c4c43b89d0bac151e7fb6e3",
+            "fixing_files": [
+                "plugin/CloneSite/cloneClient.json.php"
+            ]
+        },
+        "CVE-2023-40035": {
+            "repo_name": "cms",
+            "vuln_type": "code_injection",
+            "fixing_commit": "0bd33861abdc60c93209cff03eeee54504d3d3b5",
+            "fixing_files": [
+                "src/helpers/FileHelper.php"
+            ]
+        },
+        "CVE-2023-41330": {
+            "repo_name": "snappy",
+            "vuln_type": "code_injection",
+            "fixing_commit": "d3b742d61a68bf93866032c2c0a7f1486128b67e",
+            "fixing_files": [
+                "src/Knp/Snappy/AbstractGenerator.php"
+            ]
+        },
+        "CVE-2023-0792": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "code_injection",
+            "fixing_commit": "d8964568d69488de02f0a0a58acc822eeb5c3cb1",
+            "fixing_files": [
+                "phpmyfaq/admin/tags.php"
+            ]
+        },
+        "CVE-2023-0788": {
+            "repo_name": "phpmyfaq",
+            "vuln_type": "code_injection",
+            "fixing_commit": "77b42b9d0be3990ee7389207a71528b304b03039",
+            "fixing_files": [
+                "phpmyfaq/ajaxservice.php"
+            ]
+        },
+        "CVE-2021-27903": {
+            "repo_name": "cms",
+            "vuln_type": "code_injection",
+            "fixing_commit": "c17728fa0bec11d3b82c34defe0930ed409aec38",
+            "fixing_files": [
+                "src/volumes/Local.php"
+            ]
+        },
+        "CVE-2021-42362": {
+            "repo_name": "wordpress-popular-posts",
+            "vuln_type": "code_injection",
+            "fixing_commit": "d9b274cf6812eb446e4103cb18f69897ec6fe601",
+            "fixing_files": [
+                "src/Image.php"
+            ]
+        },
+        "CVE-2021-23394": {
+            "repo_name": "elfinder",
+            "vuln_type": "code_injection",
+            "fixing_commit": "75ea92decc16a5daf7f618f85dc621d1b534b5e1",
+            "fixing_files": [
+                "php/elFinderVolumeDriver.class.php"
+            ]
+        },
+        "CVE-2021-37391": {
+            "repo_name": "chamilo-lms",
+            "vuln_type": "code_injection",
+            "fixing_commit": "de43a77049771cce08ea7234c5c1510b5af65bc8",
+            "fixing_files": [
+                "main/inc/lib/social.lib.php"
+            ]
+        },
+        "CVE-2021-41749": {
+            "repo_name": "craft-seomatic",
+            "vuln_type": "code_injection",
+            "fixing_commit": "3fee7d50147cdf3f999cfc1e04cbc3fb3d9f2f7d",
+            "fixing_files": [
+                "src/services/Helper.php"
+            ]
+        },
+        "CVE-2021-41560": {
+            "repo_name": "opencats",
+            "vuln_type": "code_injection",
+            "fixing_commit": "b1af3bde1f68bec1c703ad66a3e390f15ed8ebe1",
+            "fixing_files": [
+                "lib/FileUtility.php"
+            ]
+        },
+        "CVE-2022-28368": {
+            "repo_name": "dompdf",
+            "vuln_type": "code_injection",
+            "fixing_commit": "4c70e1025bcd9b7694b95dd552499bd83cd6141d",
+            "fixing_files": [
+                "src/FontMetrics.php"
+            ]
+        },
+        "CVE-2022-27475": {
+            "repo_name": "hotel-mgmt-system",
+            "vuln_type": "code_injection",
+            "fixing_commit": "3aa5fdd736927f4ba8d4b7efbba850a258ab42ce",
+            "fixing_files": [
+                "app/Util.php"
+            ]
+        },
+        "CVE-2022-4136": {
+            "repo_name": "leadshop",
+            "vuln_type": "code_injection",
+            "fixing_commit": "f27e9ca5c93eaadda1097396b65c234b16186d67",
+            "fixing_files": [
+                "web/leadshop.php"
+            ]
+        },
+        "CVE-2022-2073": {
+            "repo_name": "grav",
+            "vuln_type": "code_injection",
+            "fixing_commit": "9d6a2dba09fd4e56f5cdfb9a399caea355bfeb83",
+            "fixing_files": [
+                "system/src/Grav/Common/Twig/Extension/GravExtension.php"
+            ]
+        },
+        "CVE-2022-29806": {
+            "repo_name": "zoneminder",
+            "vuln_type": "code_injection",
+            "fixing_commit": "9fee64b62fbdff5bf5ece1d617f1f53c7b1967cb",
+            "fixing_files": [
+                "web/includes/lang.php"
+            ]
+        },
+        "CVE-2022-24800": {
+            "repo_name": "library",
+            "vuln_type": "code_injection",
+            "fixing_commit": "fe569f3babf3f593be2b1e0a4ae0283506127a83",
+            "fixing_files": [
+                "src/Database/Attach/File.php"
+            ]
+        },
+        "CVE-2022-24734": {
+            "repo_name": "mybb",
+            "vuln_type": "code_injection",
+            "fixing_commit": "92012b9831b330714b9f9b4646a98784113489c1",
+            "fixing_files": [
+                "admin/modules/config/settings.php"
+            ]
+        },
+        "CVE-2022-21705": {
+            "repo_name": "library",
+            "vuln_type": "code_injection",
+            "fixing_commit": "c393c5ce9ca2c5acc3ed6c9bb0dab5ffd61965fe",
+            "fixing_files": [
+                "src/Halcyon/Processors/SectionParser.php"
+            ]
+        },
+        "CVE-2022-31138": {
+            "repo_name": "mailcow-dockerized",
+            "vuln_type": "code_injection",
+            "fixing_commit": "d373164e13a14e058f82c9f1918a5612f375a9f9",
+            "fixing_files": [
+                "data/web/inc/init_db.inc.php"
+            ]
+        },
+        "CVE-2022-1509": {
+            "repo_name": "hestiacp",
+            "vuln_type": "code_injection",
+            "fixing_commit": "d50f95cf208049dfb6ac67a8020802121745bd60",
+            "fixing_files": [
+                "web/inc/main.php"
+            ]
+        },
+        "CVE-2022-39265": {
+            "repo_name": "mybb",
+            "vuln_type": "code_injection",
+            "fixing_commit": "0cd318136a10b029bb5c8a8f6dddf39d87519797",
+            "fixing_files": [
+                "inc/functions.php"
+            ]
+        },
+        "CVE-2022-41922": {
+            "repo_name": "yii",
+            "vuln_type": "code_injection",
+            "fixing_commit": "ed67b7cc57216557c5c595c6650cdd2d3aa41c52",
+            "fixing_files": [
+                "framework/db/schema/CDbCriteria.php"
+            ]
+        },
+        "CVE-2022-0895": {
+            "repo_name": "microweber",
+            "vuln_type": "code_injection",
+            "fixing_commit": "b2baab6e582b2efe63788d367a2bb61a2fa26470",
+            "fixing_files": [
+                "src/MicroweberPackages/Checkout/Http/Controllers/Traits/ContactInformationTrait.php"
+            ]
+        }
+    },
+    "file_inclusion": {
+        "CVE-2025-22145": {
+            "repo_name": "carbon",
+            "vuln_type": "file_inclusion",
+            "fixing_commit": "129700ed449b1f02d70272d2ac802357c8c30c58",
+            "fixing_files": [
+                "src/Carbon/AbstractTranslator.php"
+            ]
+        },
+        "CVE-2024-21544": {
+            "repo_name": "browsershot",
+            "vuln_type": "file_inclusion",
+            "fixing_commit": "fae8396641b961f62bd756920b14f01a4391296e",
+            "fixing_files": [
+                "src/Browsershot.php"
+            ]
+        },
+        "CVE-2023-4195": {
+            "repo_name": "cockpit",
+            "vuln_type": "file_inclusion",
+            "fixing_commit": "800c05f1984db291769ffa5fdfb1d3e50968e95b",
+            "fixing_files": [
+                "modules/Assets/bootstrap.php"
+            ]
+        },
+        "CVE-2021-23340": {
+            "repo_name": "pimcore",
+            "vuln_type": "file_inclusion",
+            "fixing_commit": "1786bdd4962ee51544fad537352c2b4223309442",
+            "fixing_files": [
+                "bundles/AdminBundle/Controller/Reports/CustomReportController.php"
+            ]
+        }
+    },
+    "file_upload": {
+        "CVE-2024-27921": {
+            "repo_name": "grav",
+            "vuln_type": "file_upload",
+            "fixing_commit": "5928411b86bab05afca2b33db4e7386a44858e99",
+            "fixing_files": [
+                "system/src/Grav/Common/Utils.php"
+            ]
+        },
+        "CVE-2024-29859": {
+            "repo_name": "misp",
+            "vuln_type": "file_upload",
+            "fixing_commit": "238010bfd004680757b324cba0c6344f77a25399",
+            "fixing_files": [
+                "app/Controller/EventsController.php"
+            ]
+        },
+        "CVE-2024-56508": {
+            "repo_name": "linkace",
+            "vuln_type": "file_upload",
+            "fixing_commit": "8cf3670d71a8629d33408da76f9d441a1aa933f6",
+            "fixing_files": [
+                "app/Actions/ImportHtmlBookmarks.php"
+            ]
+        },
+        "CVE-2024-9699": {
+            "repo_name": "flatpress",
+            "vuln_type": "file_upload",
+            "fixing_commit": "f364391085334a7eae02aa2320edd6de7466ec85",
+            "fixing_files": [
+                "admin/panels/uploader/admin.uploader.php"
+            ]
+        },
+        "CVE-2023-45197": {
+            "repo_name": "adminerevo",
+            "vuln_type": "file_upload",
+            "fixing_commit": "1cc06d6a1005fd833fa009701badd5641627a1d4",
+            "fixing_files": [
+                "plugins/file-upload.php"
+            ]
+        },
+        "CVE-2021-45010": {
+            "repo_name": "tinyfilemanager",
+            "vuln_type": "file_upload",
+            "fixing_commit": "2046bbde72ed76af0cfdcae082de629bcc4b44c7",
+            "fixing_files": [
+                "tinyfilemanager.php"
+            ]
+        },
+        "CVE-2021-37711": {
+            "repo_name": "platform",
+            "vuln_type": "file_upload",
+            "fixing_commit": "b9f330e652b743dd2374c02bbe68f28b59a3f502",
+            "fixing_files": [
+                "src/Core/Content/Media/File/FileUrlValidator.php"
+            ]
+        },
+        "CVE-2022-1226": {
+            "repo_name": "phpipam",
+            "vuln_type": "file_upload",
+            "fixing_commit": "50e36b9e4fff5eaa51dc6e42bc684748da378002",
+            "fixing_files": [
+                "app/admin/import-export/import-load-data.php"
+            ]
+        },
+        "CVE-2022-0965": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "3caa32334db0c277b84e993eaca2036f5d1dbef8",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0957": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "d1c9ed0d77ea5d56f09be0c492361dca8af745bb",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0966": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "3caa32334db0c277b84e993eaca2036f5d1dbef8",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0942": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "3caa32334db0c277b84e993eaca2036f5d1dbef8",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0956": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "56e450c3adf75c707500d7231a78c9fc894c7f13",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0941": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "4b6e6603c714aab1de346c5f5cb0bbb4c871be1f",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0960": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "92bc6a83a3a60e01a0d2effb98ab47d8d7eab28f",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0906": {
+            "repo_name": "microweber",
+            "vuln_type": "file_upload",
+            "fixing_commit": "d9bae9df873c2d2a13a2eb08d512019d49ebca68",
+            "fixing_files": [
+                "src/MicroweberPackages/Utils/System/Files.php"
+            ]
+        },
+        "CVE-2022-0940": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "78522520892d4e29cc94148c6ec84a204a607b73",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0937": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "42c0d9813df3035728b36116a6ce9116e6fa8ed3",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0946": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "e5d575928b1371a7e07b09b6592822298335062a",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0964": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "3caa32334db0c277b84e993eaca2036f5d1dbef8",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0938": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "830c89a4c2c5fd0dd491422bf8e97b4eb5713f55",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0962": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "3caa32334db0c277b84e993eaca2036f5d1dbef8",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0945": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "ba45d19e1d77a7eea866dab30eff5da552694891",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0967": {
+            "repo_name": "showdoc",
+            "vuln_type": "file_upload",
+            "fixing_commit": "3caa32334db0c277b84e993eaca2036f5d1dbef8",
+            "fixing_files": [
+                "server/Application/Api/Model/AttachmentModel.class.php"
+            ]
+        },
+        "CVE-2022-0926": {
+            "repo_name": "microweber",
+            "vuln_type": "file_upload",
+            "fixing_commit": "89200cfcc2cfefe5554721e7fa3cf52f6a2a9120",
+            "fixing_files": [
+                "src/MicroweberPackages/Utils/System/Files.php"
+            ]
+        }
+    },
+    "deserialization": {
+        "CVE-2024-7067": {
+            "repo_name": "ecommerce-laravel-bootstrap",
+            "vuln_type": "deserialization",
+            "fixing_commit": "a02111a674ab49f65018b31da3011b1e396f59b1",
+            "fixing_files": [
+                "app/Cart.php"
+            ]
+        },
+        "CVE-2023-50252": {
+            "repo_name": "php-svg-lib",
+            "vuln_type": "deserialization",
+            "fixing_commit": "08ce6a96d63ad7216315fae34a61c886dd2dc030",
+            "fixing_files": [
+                "src/Svg/Tag/UseTag.php"
+            ]
+        },
+        "CVE-2021-23592": {
+            "repo_name": "framework",
+            "vuln_type": "deserialization",
+            "fixing_commit": "d3b5aeae94bc71bae97977d05cd12c3e0550905c",
+            "fixing_files": [
+                "src/think/cache/Driver.php"
+            ]
+        },
+        "CVE-2021-3902": {
+            "repo_name": "dompdf",
+            "vuln_type": "deserialization",
+            "fixing_commit": "f56bc8e40be6c0ae0825e6c7396f4db80620b799",
+            "fixing_files": [
+                "src/Image/Cache.php"
+            ]
+        },
+        "CVE-2022-21647": {
+            "repo_name": "codeigniter4",
+            "vuln_type": "deserialization",
+            "fixing_commit": "ce95ed5765256e2f09f3513e7d42790e0d6948f5",
+            "fixing_files": [
+                "system/Common.php"
+            ]
+        }
+    }
+}

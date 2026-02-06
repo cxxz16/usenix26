@@ -156,8 +156,6 @@ def variant_signature_database():
     print("\n" + "=" * 80)
     print("Building VARIANT Signature Database")
     print("=" * 80)
-    
-    # 统计信息
     stats = {
         'total_cves': 0,
         'new_cves': 0,
@@ -316,7 +314,6 @@ def sig_match(vuln_type, potential_signatures, signature_db):
                             if "$Source" not in potential_sig_str:
                                 continue
                             
-                            # 计算相似度
                             similarity_score = Levenshtein.jaro(potential_sig_str, cve_sig_str)
                             
                             if similarity_score >= 0.85:
