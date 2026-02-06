@@ -1,12 +1,9 @@
-# 这是最终的检测步骤。共分为两个路线：首先是使用 LLM 对所有发现的潜在漏洞过一遍（应该弄个自动化的 agent 去看）
-# 第二个就是正常的路线：先通过 签名的相似度进行匹配，然后对匹配到的再使用LLM 进行二次确认。
 import os
 import json
 import pickle
 import Levenshtein
 from hydra_utils import *
 from utils4 import llm_for_fp_prun
-# 先匹配数据流吧
 
 ORIGIN_SLICE_CODE_DIR = "./detection_inter_slice_result_0120_papers_all_files/"
 SIG_DATABASE = "./hydra/sig_database"
@@ -63,13 +60,8 @@ def get_sink_location(repo, sink, vuln_type_num):
     return None, None
 
 
-MODEL = "variant_code_0128"  # 如果需要指定模型子目录，可以在这里设置
+MODEL = "" 
 def is_signature_duplicate(sig, existing_sigs):
-    """
-    检查签名是否已存在
-    sig: 当前要检查的签名（list）
-    existing_sigs: 已存在的签名列表（list of lists）
-    """
     sig_str = json.dumps(sig, sort_keys=True, ensure_ascii=False)
     for existing_sig in existing_sigs:
         if json.dumps(existing_sig, sort_keys=True, ensure_ascii=False) == sig_str:
@@ -77,32 +69,25 @@ def is_signature_duplicate(sig, existing_sigs):
     return False
 
 def vuln_signature_database():
-    """
-    构建/更新已知漏洞签名数据库
-    格式: {vuln_type: {cve_id: [[sig1], [sig2], ...]}}
-    """
     global VULN_SIGNATURE_DATABASE
     
     print("\n" + "=" * 80)
     print("Building KNOWN Vulnerability Signature Database")
     print("=" * 80)
     
-    # 统计信息
     stats = {
         'total_cves': 0,
         'new_cves': 0,
         'total_sigs': 0,
         'new_sigs': 0,
         'existing_sigs': 0,
-        'filtered_sigs': 0  # 被过滤掉的签名数
+        'filtered_sigs': 0  
     }
     
-    # 统计现有签名数量
     for vuln_type, cve_dict in VULN_SIGNATURE_DATABASE.items():
         for cve_id, sig_list in cve_dict.items():
             stats['existing_sigs'] += len(sig_list)
     
-    # 遍历已知漏洞签名目录
     if not os.path.exists(KNOWN_VULN_SIG_DB):
         print(f"[-] Warning: Known vulnerability signature directory not found: {KNOWN_VULN_SIG_DB}")
         return
@@ -121,30 +106,24 @@ def vuln_signature_database():
         with open(cve_sig_path, "r", encoding="utf-8") as f:
             cve_sig = json.load(f)
         
-        cve_new_sigs = 0  # 当前CVE新增的签名数
+        cve_new_sigs = 0  
         
-        # 遍历签名数据：cross_mode -> vuln_type -> sink_id -> sig_list
         for cross_mode, vt_sinkid in cve_sig.items():
             for vuln_type, sink_sig_dict in vt_sinkid.items():
-                # 初始化漏洞类型
                 if vuln_type not in VULN_SIGNATURE_DATABASE:
                     VULN_SIGNATURE_DATABASE[vuln_type] = {}
                 
-                # 初始化CVE ID
                 if cve_id not in VULN_SIGNATURE_DATABASE[vuln_type]:
                     VULN_SIGNATURE_DATABASE[vuln_type][cve_id] = []
                     stats['new_cves'] += 1
                 
-                # 遍历sink的签名
                 for sink_id, sig_list in sink_sig_dict.items():
                     for sig in sig_list:
-                        # 检查签名是否包含 $Source
                         has_source = any("$Source" in str(s) for s in sig)
                         if not has_source:
                             stats['filtered_sigs'] += 1
-                            continue  # 跳过不包含 $Source 的签名
+                            continue 
                         
-                        # 检查签名是否已存在
                         if not is_signature_duplicate(sig, VULN_SIGNATURE_DATABASE[vuln_type][cve_id]):
                             VULN_SIGNATURE_DATABASE[vuln_type][cve_id].append(sig)
                             stats['new_sigs'] += 1
@@ -153,18 +132,15 @@ def vuln_signature_database():
         if cve_new_sigs > 0:
             print(f"  [+] {cve_id}: Added {cve_new_sigs} new signatures")
     
-    # 统计总数
     for vuln_type, cve_dict in VULN_SIGNATURE_DATABASE.items():
         stats['total_cves'] += len(cve_dict)
         for cve_id, sig_list in cve_dict.items():
             stats['total_sigs'] += len(sig_list)
     
-    # 保存更新后的数据库
     os.makedirs(os.path.dirname(FINAL_SIG_DB_FROM_KNOWN_VULN), exist_ok=True)
     with open(FINAL_SIG_DB_FROM_KNOWN_VULN, "w", encoding="utf-8") as f:
         json.dump(VULN_SIGNATURE_DATABASE, f, indent=4, ensure_ascii=False)
     
-    # 输出统计信息
     print("\n" + "-" * 80)
     print("KNOWN Signature Database Statistics:")
     print(f"  Total CVEs: {stats['total_cves']} (New: {stats['new_cves']})")
@@ -175,10 +151,6 @@ def vuln_signature_database():
 
 
 def variant_signature_database():
-    """
-    构建/更新变体签名数据库
-    格式: {vuln_type: {cve_id: [[sig1], [sig2], ...]}}
-    """
     global VARIANT_VULN_SIG_DB, VULN_VARIANT_SIGNATURE_DATABASE
     
     print("\n" + "=" * 80)
@@ -192,15 +164,13 @@ def variant_signature_database():
         'total_sigs': 0,
         'new_sigs': 0,
         'existing_sigs': 0,
-        'filtered_sigs': 0  # 被过滤掉的签名数
+        'filtered_sigs': 0  
     }
     
-    # 统计现有签名数量
     for vuln_type, cve_dict in VULN_VARIANT_SIGNATURE_DATABASE.items():
         for cve_id, sig_list in cve_dict.items():
             stats['existing_sigs'] += len(sig_list)
     
-    # 如果需要模型子目录
     if MODEL:
         variant_db_path = os.path.join(VARIANT_VULN_SIG_DB, MODEL)
     else:
@@ -212,7 +182,6 @@ def variant_signature_database():
     
     print(f"[+] Loading from: {variant_db_path}")
     
-    # 遍历变体签名目录
     for cve_sig_info in sorted(os.listdir(variant_db_path)):
         if not cve_sig_info.endswith("_variant_sig_info"):
             continue
@@ -223,34 +192,27 @@ def variant_signature_database():
         if not os.path.exists(cve_sig_path):
             continue
         
-        # 读取CVE签名文件
         with open(cve_sig_path, "r", encoding="utf-8") as f:
             cve_sig = json.load(f)
         
-        cve_new_sigs = 0  # 当前CVE新增的签名数
+        cve_new_sigs = 0  
         
-        # 遍历签名数据：cross_mode -> vuln_type -> sink_id -> sig_list
         for cross_mode, vt_sinkid in cve_sig.items():
             for vuln_type, sink_sig_dict in vt_sinkid.items():
-                # 初始化漏洞类型
                 if vuln_type not in VULN_VARIANT_SIGNATURE_DATABASE:
                     VULN_VARIANT_SIGNATURE_DATABASE[vuln_type] = {}
                 
-                # 初始化CVE ID
                 if cve_id not in VULN_VARIANT_SIGNATURE_DATABASE[vuln_type]:
                     VULN_VARIANT_SIGNATURE_DATABASE[vuln_type][cve_id] = []
                     stats['new_cves'] += 1
                 
-                # 遍历sink的签名
                 for sink_id, sig_list in sink_sig_dict.items():
                     for sig in sig_list:
-                        # 检查签名是否包含 $Source
                         has_source = any("$Source" in str(s) for s in sig)
                         if not has_source:
                             stats['filtered_sigs'] += 1
-                            continue  # 跳过不包含 $Source 的签名
+                            continue 
                         
-                        # 检查签名是否已存在
                         if not is_signature_duplicate(sig, VULN_VARIANT_SIGNATURE_DATABASE[vuln_type][cve_id]):
                             VULN_VARIANT_SIGNATURE_DATABASE[vuln_type][cve_id].append(sig)
                             stats['new_sigs'] += 1
@@ -259,18 +221,15 @@ def variant_signature_database():
         if cve_new_sigs > 0:
             print(f"  [+] {cve_id}: Added {cve_new_sigs} new signatures")
     
-    # 统计总数
     for vuln_type, cve_dict in VULN_VARIANT_SIGNATURE_DATABASE.items():
         stats['total_cves'] += len(cve_dict)
         for cve_id, sig_list in cve_dict.items():
             stats['total_sigs'] += len(sig_list)
     
-    # 保存更新后的数据库
     os.makedirs(os.path.dirname(FINAL_SIG_DB_FROM_VARIANT), exist_ok=True)
     with open(FINAL_SIG_DB_FROM_VARIANT, "w", encoding="utf-8") as f:
         json.dump(VULN_VARIANT_SIGNATURE_DATABASE, f, indent=4, ensure_ascii=False)
     
-    # 输出统计信息
     print("\n" + "-" * 80)
     print("VARIANT Signature Database Statistics:")
     print(f"  Total CVEs: {stats['total_cves']} (New: {stats['new_cves']})")
@@ -281,7 +240,6 @@ def variant_signature_database():
 
 
 def clean_vuln_variant_sigdb():
-    """去掉签名中不包含 $Source 的签名"""
     print("\n[+] Cleaning VARIANT signature database (removing non-$Source signatures)...")
     removed_count = 0
     
@@ -289,7 +247,6 @@ def clean_vuln_variant_sigdb():
         for cve_id in list(VULN_VARIANT_SIGNATURE_DATABASE[vuln_type].keys()):
             cleaned_sigs = []
             for sig in VULN_VARIANT_SIGNATURE_DATABASE[vuln_type][cve_id]:
-                # sig 是一个列表，检查其中任何一个字符串是否包含 $Source
                 has_source = any("$Source" in str(s) for s in sig)
                 if has_source:
                     cleaned_sigs.append(sig)
@@ -299,23 +256,19 @@ def clean_vuln_variant_sigdb():
             if cleaned_sigs:
                 VULN_VARIANT_SIGNATURE_DATABASE[vuln_type][cve_id] = cleaned_sigs
             else:
-                # 如果该CVE下没有有效签名，删除该CVE
                 del VULN_VARIANT_SIGNATURE_DATABASE[vuln_type][cve_id]
         
-        # 如果该漏洞类型下没有CVE了，删除该类型
         if not VULN_VARIANT_SIGNATURE_DATABASE[vuln_type]:
             del VULN_VARIANT_SIGNATURE_DATABASE[vuln_type]
     
     print(f"    Removed {removed_count} signatures without $Source")
 
-    # 保存清理后的数据库
     with open(FINAL_SIG_DB_FROM_VARIANT, "w", encoding="utf-8") as f:
         json.dump(VULN_VARIANT_SIGNATURE_DATABASE, f, indent=4, ensure_ascii=False)
     print(f"    Cleaned database saved to: {FINAL_SIG_DB_FROM_VARIANT}")
 
 
 def clean_vuln_known_sigdb():
-    """去掉签名中不包含 $Source 的签名"""
     print("\n[+] Cleaning KNOWN signature database (removing non-$Source signatures)...")
     removed_count = 0
     
@@ -323,7 +276,6 @@ def clean_vuln_known_sigdb():
         for cve_id in list(VULN_SIGNATURE_DATABASE[vuln_type].keys()):
             cleaned_sigs = []
             for sig in VULN_SIGNATURE_DATABASE[vuln_type][cve_id]:
-                # sig 是一个列表，检查其中任何一个字符串是否包含 $Source
                 has_source = any("$Source" in str(s) for s in sig)
                 if has_source:
                     cleaned_sigs.append(sig)
@@ -333,70 +285,40 @@ def clean_vuln_known_sigdb():
             if cleaned_sigs:
                 VULN_SIGNATURE_DATABASE[vuln_type][cve_id] = cleaned_sigs
             else:
-                # 如果该CVE下没有有效签名，删除该CVE
                 del VULN_SIGNATURE_DATABASE[vuln_type][cve_id]
         
-        # 如果该漏洞类型下没有CVE了，删除该类型
         if not VULN_SIGNATURE_DATABASE[vuln_type]:
             del VULN_SIGNATURE_DATABASE[vuln_type]
     
     print(f"    Removed {removed_count} signatures without $Source")
 
-    # 保存清理后的数据库
     with open(FINAL_SIG_DB_FROM_KNOWN_VULN, "w", encoding="utf-8") as f:
         json.dump(VULN_SIGNATURE_DATABASE, f, indent=4, ensure_ascii=False)
     print(f"    Cleaned database saved to: {FINAL_SIG_DB_FROM_KNOWN_VULN}")
 
 
 def sig_match(vuln_type, potential_signatures, signature_db):
-    """
-    签名匹配函数 - 适配新格式
-    
-    参数:
-        vuln_type: 漏洞类型（字符串，如 "9"）
-        potential_signatures: 待检测的签名列表，格式: [[sig1], [sig2], ...]
-        signature_db: 签名数据库，格式: {vuln_type: {cve_id: [[sig1], [sig2], ...]}}
-    
-    返回:
-        (matched, potential_sig, matched_sig, score, cve_id)
-        - matched: bool, 是否匹配成功
-        - potential_sig: 匹配的待检测签名（字符串）
-        - matched_sig: 匹配到的数据库签名（字符串）
-        - score: 相似度分数
-        - cve_id: 匹配到的CVE ID
-    """
-    # 检查该漏洞类型是否在签名库中
-    # if vuln_type not in signature_db:
-    #     return False, None, None, None, None
-    
     for vt in signature_db.keys():
 
         cve_dict = signature_db[vt]
         
-        # 遍历该漏洞类型下的所有CVE
         for cve_id, cve_sig_list in cve_dict.items():
-            # cve_sig_list 格式: [[sig1], [sig2], ...]
             for cve_sig in cve_sig_list:
-                # cve_sig 是一个列表，通常包含一个或多个签名字符串
                 for cve_sig_str in cve_sig:
                     if not isinstance(cve_sig_str, str):
                         continue
                     
-                    # 遍历待检测的签名
                     for potential_sig in potential_signatures:
-                        # potential_sig 也是一个列表
                         for potential_sig_str in potential_sig:
                             if not isinstance(potential_sig_str, str):
                                 continue
                             
-                            # 检查是否包含 $Source
                             if "$Source" not in potential_sig_str:
                                 continue
                             
                             # 计算相似度
                             similarity_score = Levenshtein.jaro(potential_sig_str, cve_sig_str)
                             
-                            # 如果相似度达到阈值，返回匹配结果
                             if similarity_score >= 0.85:
                                 return True, potential_sig_str, cve_sig_str, similarity_score, cve_id
     
@@ -404,10 +326,7 @@ def sig_match(vuln_type, potential_signatures, signature_db):
 
 
 def vuln_clone_detection(target_repo_path, detection_mode, redetect=False):
-    """
-    对目标仓库进行漏洞签名匹配，找出可能存在的漏洞位置
-    """
-    VARIANT_DETECTION = (detection_mode == "variant")  # 使用变体签名库进行检测
+    VARIANT_DETECTION = (detection_mode == "variant") 
     if VARIANT_DETECTION:
         sig_DB = VULN_VARIANT_SIGNATURE_DATABASE
         db_type = 'variant'
@@ -424,7 +343,6 @@ def vuln_clone_detection(target_repo_path, detection_mode, redetect=False):
     print(f"\n[+] Starting vulnerability clone detection for: {target_repo_path}")
     print(f"[+] Using {db_type.upper()} signature database")
 
-    # 读取目标仓库的签名
     detection_signature_db_path = "./detection_result_signature_0120_papers_final"
     target_repo_signature_path = os.path.join(detection_signature_db_path, f"{target_repo_path}_prepatch_final_sink_context.json")
     
@@ -435,15 +353,12 @@ def vuln_clone_detection(target_repo_path, detection_mode, redetect=False):
     with open(target_repo_signature_path, "r", encoding="utf-8") as f:
         target_repo_signatures = json.load(f)
 
-    # 匹配签名记录
     matched_sig_record = {}  # vuln_type_str -> list of matched records
     repo = f"{target_repo_path}_prepatch"
     
     total_sinks_checked = 0
     total_matches_found = 0
 
-    # 遍历目标仓库的签名
-    # 格式: {cross_mode: {vuln_type: {sink_id: {file_path: [[sig1], [sig2], ...]}}}}
     for cross_mode, vt_sinkid in target_repo_signatures.items():
         print(f"\n[+] Processing {cross_mode} mode...")
         
@@ -454,16 +369,13 @@ def vuln_clone_detection(target_repo_path, detection_mode, redetect=False):
                 if not isinstance(file_sig_dict, dict):
                     continue
                 
-                # 遍历每个文件的签名
                 for potential_vuln_sink_path, sig_context in file_sig_dict.items():
                     total_sinks_checked += 1
                     
-                    # 提取文件信息
                     code_vuln_type = potential_vuln_sink_path.split("/")[-2]
                     file_idx = potential_vuln_sink_path.split("/")[-1]
                     origin_sink_id = file_idx.split("_")[0]
                     
-                    # 构建原始代码路径
                     origin_sink_code_path = os.path.join(
                         ORIGIN_SLICE_CODE_DIR, 
                         repo, 
@@ -472,11 +384,9 @@ def vuln_clone_detection(target_repo_path, detection_mode, redetect=False):
                         f"src_sink_path_{file_idx}"
                     )
                     
-                    # sig_context 格式: [[sig1], [sig2], ...]
                     if not sig_context or not isinstance(sig_context, list):
                         continue
                     
-                    # 进行签名匹配
                     matched, potential_sig, matched_sig, score, cve_id = sig_match(
                         vuln_type, sig_context, sig_DB
                     )
@@ -490,7 +400,6 @@ def vuln_clone_detection(target_repo_path, detection_mode, redetect=False):
                         print(f"      Similarity: {score:.4f}")
                         print(f"      CVE: {cve_id}")
                         
-                        # 记录匹配结果
                         if code_vuln_type not in matched_sig_record:
                             matched_sig_record[code_vuln_type] = []
                         
@@ -507,12 +416,10 @@ def vuln_clone_detection(target_repo_path, detection_mode, redetect=False):
                             "cross_mode": cross_mode
                         })
 
-    # 保存检测报告
     os.makedirs(DETECTION_REPORT_DIR, exist_ok=True)
     with open(report_path, "w", encoding="utf-8") as f:
         json.dump(matched_sig_record, f, indent=4, ensure_ascii=False)
 
-    # 输出统计信息
     print("\n" + "=" * 80)
     print("Detection Summary:")
     print(f"  Total sinks checked: {total_sinks_checked}")
@@ -527,20 +434,9 @@ def vuln_clone_detection(target_repo_path, detection_mode, redetect=False):
     
     return report_path
 
-# VULN_TYPE_DICT = {
-#     1: 'File_Delete',
-#     2: 'File_Read',
-#     3: 'Code_Injection',
-#     4: 'Command_Injection',
-#     6: 'File_Upload',
-#     7: 'File_Include',
-#     9: 'SQL_Injection',
-#     10: 'XSS',
-#     12: 'File_Write'
-# }
 def FP_reduce_prepare(matched_sig_record_path):
     matched_sig_record = json.load(open(matched_sig_record_path, "r", encoding="utf-8"))
-    fp_analysis = []  # 用于存储误报分析结果
+    fp_analysis = []  
     for vuln_type, sig_records in matched_sig_record.items():
         for record in sig_records:
             origin_vuln_code_path = record["origin_sink_code_path"]
@@ -548,7 +444,6 @@ def FP_reduce_prepare(matched_sig_record_path):
             repo = record["repo"]
             vuln_type_num = STR_TO_VULN_TYPE_DICT.get(vuln_type)
             origin_sink_file, origin_sink_lineno = get_sink_location(repo, origin_sink, vuln_type_num)
-            # 读取源代码片段    
             if "/9/" in origin_vuln_code_path:
                 origin_vuln_code_path = origin_vuln_code_path.replace("/9/", "/SQL_Injection/")
             elif "/10/" in origin_vuln_code_path:
@@ -591,12 +486,10 @@ def FP_reduce_prepare(matched_sig_record_path):
 
 
 def print_signature_database_stats():
-    """打印已加载的签名数据库统计信息"""
     print("\n" + "=" * 80)
     print("Loaded Signature Database Statistics")
     print("=" * 80)
     
-    # 统计已知漏洞签名库
     print("\nKNOWN Vulnerability Signatures:")
     if VULN_SIGNATURE_DATABASE:
         total_known_cves = 0
@@ -612,7 +505,6 @@ def print_signature_database_stats():
     else:
         print("  No known vulnerability signatures loaded")
     
-    # 统计变体签名库
     print("\nVARIANT Signatures:")
     if VULN_VARIANT_SIGNATURE_DATABASE:
         total_variant_cves = 0

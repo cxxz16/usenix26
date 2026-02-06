@@ -165,24 +165,24 @@ class ASTParser:
 
     def find_containing_scope(self, slice_lines: set):
         """
-        查找包含切片行的作用域（function/method/file）
+        function/method/file
         
-        处理流程：
-        1. 先查找所有 function_definition
-        2. 如果没有找到，查找所有 method_declaration
-        3. 检查哪个函数/方法的 body 包含这些行
-        4. 如果都不包含，说明代码直接在文件中，返回根节点
+        
+        1.  function_definition
+        2.  method_declaration
+        3. / body 
+        4. 
         
         Args:
-            slice_lines: 切片行号集合
+            slice_lines: 
             
         Returns:
-            Node: 作用域节点（函数体、方法体或根节点）
+            Node: 
         """
         if not slice_lines:
             return self.root
         
-        # 1. 先查找所有 function_definition
+        # 1.  function_definition
         func_nodes = self.query_from_node(self.root, "(function_definition)@func")
         
         for func_node, _ in func_nodes:
@@ -190,7 +190,7 @@ class ASTParser:
             if body and self._contains_lines(body, slice_lines):
                 return body
         
-        # 2. 如果没找到，查找所有 method_declaration
+        # 2.  method_declaration
         method_nodes = self.query_from_node(self.root, "(method_declaration)@method")
         
         for method_node, _ in method_nodes:
@@ -198,26 +198,26 @@ class ASTParser:
             if body and self._contains_lines(body, slice_lines):
                 return body
         
-        # 3. 都没找到，代码直接在文件中
+        # 3. 
         return self.root
     
     def _contains_lines(self, node, slice_lines: set) -> bool:
         """
-        检查节点是否包含切片行
+        
         
         Args:
-            node: tree-sitter 节点
-            slice_lines: 切片行号集合
+            node: tree-sitter 
+            slice_lines: 
             
         Returns:
-            bool: 是否包含任意切片行
+            bool: 
         """
-        # node.start_point 和 end_point 是 (row, column) 元组
-        # row 是从 0 开始的，所以需要 +1 转换为实际行号
+        # node.start_point  end_point  (row, column) 
+        # row  0  +1 
         start_line = node.start_point[0] + 1
         end_line = node.end_point[0] + 1
         
-        # 检查是否有任何切片行在这个范围内
+        # 
         for line in slice_lines:
             if start_line <= line <= end_line:
                 return True
@@ -227,10 +227,10 @@ class ASTParser:
 
     def get_all_functions(self) -> list[Node]:
         '''
-        获取所有函数定义（包括普通函数和类方法）
+        
         
         Returns:
-            函数节点列表
+            
         '''
         query_str = "(function_definition)@func (method_declaration)@method"
         captures = self.query(query_str)
@@ -241,19 +241,19 @@ class ASTParser:
 
     def get_function_count(self) -> int:
         '''
-        获取函数总数（包括普通函数和类方法）
+        
         
         Returns:
-            函数数量
+            
         '''
         return len(self.get_all_functions())
 
     def get_all_classes(self) -> list[Node]:
         '''
-        获取所有类定义
+        
         
         Returns:
-            类节点列表
+            
         '''
         query_str = "(class_declaration)@class"
         captures = self.query(query_str)
@@ -264,29 +264,29 @@ class ASTParser:
 
     def get_file_stats(self) -> dict:
         '''
-        获取文件的统计信息
+        
         
         Returns:
-            包含以下信息的字典：
-            - function_count: 函数数量
-            - class_count: 类数量
-            - method_count: 方法数量（仅类方法）
-            - standalone_function_count: 独立函数数量（不在类中的函数）
+            
+            - function_count: 
+            - class_count: 
+            - method_count: 
+            - standalone_function_count: 
         '''
-        # 所有函数（包括方法）
+        # 
         all_funcs = self.get_all_functions()
         
-        # 仅方法
+        # 
         method_query = "(method_declaration)@method"
         methods = self.query(method_query)
         method_count = len(methods)
         
-        # 仅独立函数
+        # 
         func_query = "(function_definition)@func"
         funcs = self.query(func_query)
         standalone_count = len(funcs)
         
-        # 类数量
+        # 
         classes = self.get_all_classes()
         class_count = len(classes)
         
@@ -299,10 +299,10 @@ class ASTParser:
 
     def has_syntax_errors(self) -> bool:
         '''
-        检查是否有语法错误
+        
         
         Returns:
-            如果有语法错误返回True，否则返回False
+            TrueFalse
         '''
         error_nodes = self.get_error_nodes()
         return len(error_nodes) > 0

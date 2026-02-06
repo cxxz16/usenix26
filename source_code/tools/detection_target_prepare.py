@@ -20,22 +20,6 @@ base_url = config["database"]["api_base"]
 
 # API Keys
 API_KEYS = [
-    "sk-c73w",
-    "sk-GrBl",
-    "sk-s81Z",
-    "sk-PW4F",
-    "sk-SfW8",
-    "sk-fwUn",
-    "sk-AU73",
-    "sk-vumL",
-    "sk-Jx3j",
-    "sk-e4qK",
-    "sk-TpGD",
-    "sk-uxqk",
-    "sk-raOQ",
-    "sk-qHVV",
-    "sk-upFK",
-    "sk-kEe4"
 ]
 
 # Global lock for writing to shared files
@@ -46,9 +30,9 @@ STAR_RANGE = "_".join(os.path.basename(PHP_REPOS_JSON).split(".")[0].split("_")[
 print(f"Using STAR_RANGE: {STAR_RANGE}")
 DETECTION_PROJECTS_DIR = f"./detection_projects_{STAR_RANGE}"
 NEO4J_HOME = f"./detection_projects_neo4j_{STAR_RANGE}"
-CPG_BASE_DIR = "./projects_cpg_multi"  # 新的CPG根目录
+CPG_BASE_DIR = "./projects_cpg_multi"  # CPG
 # Configuration
-PHPJOERN_HOME = "./phpjoy"
+PHPJOERN_HOME = "./"
 
 # Flags
 EXTRACT_SINK_FLAG = True
@@ -61,39 +45,24 @@ os.makedirs(DETECTION_PROJECTS_DIR, exist_ok=True)
 
 
 def prepare_detection_proj(repo_name_with_suffix, repo_dir=None):
-    """
-    准备检测项目：检查项目是否存在，不存在则克隆
-    
-    Args:
-        repo_name_with_suffix: 项目名称（可能带-latest后缀）
-        repo_dir: 项目存储目录（默认使用DETECTION_PROJECTS_DIR）
-    
-    Returns:
-        (bool, str): (是否成功, 项目路径)
-    """
     if repo_dir is None:
         repo_dir = DETECTION_PROJECTS_DIR
     
-    # 移除-latest后缀，统一使用小写
     repo_name = repo_name_with_suffix.replace("-latest", "").lower()
     repo_path = os.path.join(repo_dir, repo_name)
     
-    # 如果项目已存在，直接返回
     if os.path.exists(repo_path):
         print(f"[+] Project {repo_name} already exists at {repo_path}")
         return True, repo_path
     
-    # 项目不存在，需要克隆
     print(f"[+] Project {repo_name} not found, cloning...")
 
     if os.path.exists(os.path.join("./SanCheck/php-vuln-lab", repo_name)):
         print(f"[+] Found local copy of {repo_name}, copying...")
-        # 直接移动
         shutil.move(os.path.join("./SanCheck/php-vuln-lab", repo_name), repo_path)
         return True, repo_path
     
     try:
-        # 读取repo URL映射
         with open(PHP_REPOS_JSON, 'r', encoding='utf-8') as f:
             repos_dict = json.load(f)
         
@@ -103,11 +72,9 @@ def prepare_detection_proj(repo_name_with_suffix, repo_dir=None):
         
         repo_url = repos_dict[repo_name]
 
-        # 切换到目标目录进行克隆
         current_dir = os.getcwd()
         os.chdir(repo_dir)
         
-        # 尝试克隆，最多3次
         is_clone_success = False
         for attempt in range(3):
             print(f"[+] Cloning {repo_name} (attempt {attempt + 1}/3)...")
@@ -115,7 +82,7 @@ def prepare_detection_proj(repo_name_with_suffix, repo_dir=None):
                 ["git", "clone", repo_url],
                 capture_output=True,
                 text=True,
-                timeout=300  # 5分钟超时
+                timeout=300  
             )
             
             output = result.stdout + result.stderr
@@ -125,16 +92,14 @@ def prepare_detection_proj(repo_name_with_suffix, repo_dir=None):
                 is_clone_success = True
                 break
             
-            time.sleep(2)  # 重试前等待2秒
+            time.sleep(2)  
         
-        # 恢复原工作目录
         os.chdir(current_dir)
         
         if not is_clone_success:
             print(f"[-] Failed to clone {repo_name} after 3 attempts.")
             return False, None
         
-        # 重命名为统一的小写名称
         real_name = repo_url.split("/")[-1].replace(".git", "")
         cloned_path = os.path.join(repo_dir, real_name)
         
@@ -160,12 +125,10 @@ def prepare_detection_proj(repo_name_with_suffix, repo_dir=None):
         return False, None
 
 
-# 不处理的项目列表（如果需要的话）
-buchuli_process_repo = set()  # 可以添加需要跳过的项目名称
+buchuli_process_repo = set()  
 
 
 def llm_find_potential_sink(potential_sink_funcname: set, api_key: str, model: str) -> List[str]:
-    """使用指定的API key调用LLM"""
     from func_timeout import func_timeout, FunctionTimedOut
     
     try:
@@ -177,7 +140,6 @@ def llm_find_potential_sink(potential_sink_funcname: set, api_key: str, model: s
 
 
 def _inner_llm_find_potential_sink(potential_sink_funcname: set, api_key: str, model: str, temp=0.1) -> List[str]:
-    """实际的LLM调用逻辑"""
     prompt = """
         ### Task:
         You are a senior PHP expert. Your task is to fully utilize your existing knowledge of PHP frameworks and third-party libraries, as well as the semantics of the given functions and methods, to carefully determine which ones directly perform database operations or wrapper interfaces that perform database operations. This includes native interfaces, third-party library interfaces, and wrapper functions/methods for database interfaces. Please follow the steps below, think through them sequentially, and return only the function call APIs that satisfy all the conditions.
@@ -244,7 +206,7 @@ def _inner_llm_find_potential_sink(potential_sink_funcname: set, api_key: str, m
         answer = response.split("<answer>")[1].split("</answer>")[0].strip()
         print("Extracted Answer:", answer)
 
-    # 把 answer 解析成 list
+    #  answer  list
     custom_sink_funcname_list = set()
     if answer.startswith("[") and answer.endswith("]"):
         items = answer[1:-1].split(",")
@@ -257,22 +219,19 @@ def _inner_llm_find_potential_sink(potential_sink_funcname: set, api_key: str, m
 
 
 def repo_to_neo4j_cpg(repo_dir, repo_name, cpg_project_dir, neo4j_home=None):
-    """为指定repo生成CPG并导入Neo4j"""
     os.environ["HEAP"] = "3G"
     
     neo4j_home = neo4j_home if neo4j_home is not None else NEO4J_HOME
     
-    # 检查Neo4j数据库是否已存在
+    # Neo4j
     if os.path.exists(os.path.join(neo4j_home, repo_name)):
         print(f"[+] cpg & neo4j for {repo_name} already exists. skip cpg generation.")
         return True, None
     
-    # 为该项目创建专用的CPG目录
     nodes_path = os.path.join(cpg_project_dir, "nodes.csv")
     rels_path = os.path.join(cpg_project_dir, "rels.csv")
     
     def run_php2ast(file_path, output_nodes, output_rels):
-        """运行php2ast，输出到指定路径"""
         print(f'[{repo_name}] php2ast is running...')
         result = subprocess.run(
             ["php", "./php2ast/src/Parser.php", 
@@ -292,7 +251,6 @@ def repo_to_neo4j_cpg(repo_dir, repo_name, cpg_project_dir, neo4j_home=None):
         return True
     
     def run_phpast2cpg(nodes_file, rels_file, output_dir):
-        """运行phpast2cpg"""
         print(f'[{repo_name}] phpast2cpg is running...')
         result = subprocess.run(
             ["java", "-jar", os.path.join(PHPJOERN_HOME, "phpast2cpg.jar"), 
@@ -355,7 +313,7 @@ def repo_to_neo4j_cpg(repo_dir, repo_name, cpg_project_dir, neo4j_home=None):
             cleanup_cpg_dir()
             return False, "batch_import_pre"
         
-        print(f"[{repo_name}] ✅ 处理完成！")
+        print(f"[{repo_name}] ✅")
         return True, None
         
     except Exception as e:
@@ -419,14 +377,14 @@ def process_single_project(args):
     
     print(f"\n[Thread-{idx}] Processing {target} with API key {api_key[:8]}...")
     
-    # 为该项目创建独立的CPG目录
+    # CPG
     cpg_project_dir = os.path.join(CPG_BASE_DIR, target_repo)
     os.makedirs(cpg_project_dir, exist_ok=True)
     
     try:
-        # 准备项目路径
+        # 
         if target_repo in buchuli_process_repo:
-            print(f"[Thread-{idx}] {target_repo} 不处理. skip ...")
+            print(f"[Thread-{idx}] {target_repo} . skip ...")
             return None
         
         success, target_repo_path = prepare_detection_proj(
@@ -454,7 +412,6 @@ def process_single_project(args):
             print(f"[Thread-{idx}] {target_repo}_prepatch neo4j already exists. skip ...")
             return target_repo
         
-        # 先对 repo 进行预处理。
         from code_preprocess import preprocess_API
         preprocess_API(
             target_repo_path,
@@ -516,7 +473,7 @@ def process_single_project(args):
                 print(f"[Thread-{idx}] {target_repo}_prepatch neo4j already exists. skip ...")
                 return target_repo
             
-            print(f"[Thread-{idx}] 生成 cpg 并导入 neo4j ...")
+            print(f"[Thread-{idx}] cpg and neo4j ...")
             
             success, error = repo_to_neo4j_cpg(
                 target_repo_path, 
@@ -537,7 +494,6 @@ def process_single_project(args):
 
 
 def main(num_workers):
-    """主函数"""
     model = "gpt-5"
     
     # Load configurations
@@ -549,33 +505,29 @@ def main(num_workers):
     # with open(PHP_REPOS_JSON, "r") as f:
     #     php_projects_dict = json.load(f)
     
-    # 准备任务列表（限制前100个项目）
     # projects = list(php_projects_dict.keys())[100:200]
     projects = os.listdir(DETECTION_PROJECTS_DIR)
 
     pass_projects = ["civicrm-core", "tuleap", "opensource-casino-v10", "attack-defense-challenges"]
     
-    # 为每个项目分配API key（轮询分配）
     tasks = [
         (idx, project, API_KEYS[idx % len(API_KEYS)], repo_sink_dict_path)
         for idx, project in enumerate(projects) if project not in pass_projects
     ]
     
-    # 使用线程池处理，可以根据机器性能调整worker数量
-    max_workers = min(len(API_KEYS), num_workers)  # 最多16个并发线程
+    max_workers = min(len(API_KEYS), num_workers)
     
     print(f"Starting processing with {max_workers} worker threads...")
     
     completed_projects = []
     
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        # 提交所有任务
         future_to_project = {
             executor.submit(process_single_project, task): task[1] 
             for task in tasks
         }
         
-        # 使用tqdm显示进度
+        # tqdm
         with tqdm(total=len(tasks)) as pbar:
             for future in as_completed(future_to_project):
                 project = future_to_project[future]
@@ -596,12 +548,7 @@ def main(num_workers):
 
 
 if __name__ == "__main__":
-    proxy = "http://192.168.115.81:10811"
-    os.environ["http_proxy"] = proxy
-    os.environ["https_proxy"] = proxy
-    os.environ["all_proxy"] = proxy
     import argparse
-    # 写一个 解析 numworks
     parser = argparse.ArgumentParser(description="Prepare detection targets.")
     parser.add_argument("--numworks", type=int, default=1, help="Number of worker threads.")
     args = parser.parse_args()

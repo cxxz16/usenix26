@@ -2,23 +2,23 @@ from core.chat import openai_chat
 
 
 prompt = """
-你是资深的程序分析与软件开发专家，精通代码审计与 Web 应用开发，尤其擅长 PHP 相关任务。现在给出若干跨越多个函数调用的代码切片 —— 这些切片描述了跨过程（inter-procedural）的污点传播路径：外部输入（source）未经充分清理，直接或通过参数/返回值传播到敏感调用（sink）。
+ Web  PHP  —— inter-proceduralsource/sink
 
-你的任务是：**将这些跨过程的代码切片整合为一个过程内（intra-procedural）的、语义等价的完整 PHP 函数/文件**，保证污点数据流清晰可见且保持原有语义，不修复漏洞，只做最小化补全以保证语法正确并能独立阅读。
+**intra-procedural PHP /**
 
-注意要求（严格遵守）：
-1. **不得修复或消除漏洞。** 必须保留完整的污点数据流（即 source 到 sink 的路径及其传播方式），不要改变数据的敏感性或引入过滤/转义逻辑。
-2. **保持原语义。** 对被整合的代码行为、参数传递与返回值语义不得改变；只能做必要的重构以把跨函数调用“内联”成单一过程内的代码流。
-3. **仅在与函数调用、参数或返回值相关的地方进行必要改动。** 其他不涉调用逻辑的代码段不要修改。
-4. **最小化补全缺失代码。** 如果输入切片缺少变量声明、简单的辅助语句或上下文片段，仅补全最小必要部分以使输出成为可解析、独立的 PHP 文件；补全应尽量保守且与上下文一致。
-5. **输出必须是完整且无语法错误的 PHP 文件**：包含 `<?php` 起始标记、函数定义与结束符号（若需要函数的话），可被 PHP 解析器语法检查通过。
-6. **命名与注释保留/清晰化**：尽可能保留原有变量名与注释；如有必要可以新增辅助变量或占位符。
-7. **输出格式** 固定为下列形式（严格遵守）：
+
+1. ****  source  sink /
+2. **** “”
+3. **** 
+4. ****  PHP 
+5. ** PHP ** `<?php`  PHP 
+6. **/**
+7. **** 
 
 # Input
-source函数：
+source
 {source_api}
-sink 函数：
+sink 
 {sink_api}
 code slices:
 {code_slices}
@@ -106,17 +106,17 @@ For functions listed in the source and sink lists, do not expand their implement
 
 
 def source_sink_slice_fix_and_merge(source_api, sink_api, code_slices, save_dir, ss_idx, model="gpt-5"):
-    # 你是一个富有经验的软件开发工程师，擅长php语言。我将给你几段代码，这些代码段可能在语法层面存在缺失，现在需要你在不改变代码原意的要求下进行最小化的修复。
+    # php
 
-    # 这些代码片段可能来自于不同的函数，这些代码段之间存在函数调用关系。请你阅读并理解这些代码片段，同时参考在`Code slices` 开头提供的 `Call Relations` ，识别并确定这些代码段之间的调用关系。
+    # `Code slices`  `Call Relations` 
 
-    # 根据调用关系，现在需要你做：
-    # 如果在函数调用点处涉及的函数实现在给定代码段中不存在，则保持他在调用点处的代码。不需要改变。
-    # 如果在函数调用点处涉及的函数在`source function `列表 和 `sink function `列表中，则保持他在调用点处的代码。不需要改变。
-    # 否则，根据调用关系将不同函数中的代码段整合到一个函数中。同时保持语义不变。基本的思想就是将被调用函数内联到主调用函数中。同时修正参数和返回值的关系。
+    # 
+    # 
+    # `source function `  `sink function `
+    # 
 
-    # 最后对合并后的新代码做语法层面的最小化修复，不要修改任何函数语义。
-    # 对于函数注释为 // Scope: Global Scope 的代码段，他是属于上方file的全局代码。
+    # 
+    #  // Scope: Global Scope file
 
 
     # You are an experienced PHP developer.

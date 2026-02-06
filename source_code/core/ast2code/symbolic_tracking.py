@@ -79,7 +79,7 @@ class SymbolicTracking(object):
         level_backup = self.__global_normalize_level
         self.__global_normalize_level = normalize_level
         a, b = self.manage_generic_node(node)
-        c, d = self.tac_path.to_raw_code(self.var_in_tac_mem(a))     # 得到一个 node 最终的表达式
+        c, d = self.tac_path.to_raw_code(self.var_in_tac_mem(a))     #  node 
         if d == '':
             result = a
         else:

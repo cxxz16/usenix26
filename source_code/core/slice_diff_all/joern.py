@@ -103,7 +103,7 @@ def export(code_path: str, output_path: str, language: Language, overwrite: bool
     subprocess.run(['joern-export', '--repr', 'all', '--out', os.path.abspath(cpg_dir)],
                    cwd=output_path, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-    print(f"[+] 生成 PDG、CFG 和 CPG 完成. [{code_path}]")
+    print(f"[+]  PDGCFG  CPG . [{code_path}]")
 
     if error_code_cache is not None and error_file_path is not None:
         with open(error_file_path, "w") as f:
@@ -172,13 +172,13 @@ def preprocess(pdg_dir: str, cfg_dir: str, cpg_dir: str, need_cdg: bool):
 
         nx.nx_agraph.write_dot(pdg, os.path.join(pdg_dir, pdg_file))
 
-# 合并一行中的多个节点
+# 
 def merge(output_path: str, pdg_dir: str, code_dir: str, overwrite: bool = False):
     pdg_old_merge_dir = os.path.join(output_path, 'pdg_old_merge')
     if overwrite or not os.path.exists(pdg_old_merge_dir):
         if os.path.exists(pdg_old_merge_dir):
             subprocess.run(['rm', '-rf', pdg_old_merge_dir])
-        subprocess.run(['cp', '-r', pdg_dir, pdg_old_merge_dir])    # pdg 是 merge 之前的备份
+        subprocess.run(['cp', '-r', pdg_dir, pdg_old_merge_dir])    # pdg  merge 
         for pdg_file in os.listdir(pdg_dir):
             try:
                 pdg: nx.MultiDiGraph = nx.nx_agraph.read_dot(os.path.join(pdg_dir, pdg_file))
@@ -248,7 +248,7 @@ def merge(output_path: str, pdg_dir: str, code_dir: str, overwrite: bool = False
                 new_node['COLUMN_NUMBER_END'] = max_col
                 for key, value in new_node.items():
                     pdg.nodes[node_line_map[line][0]][key] = value
-                # 上面这个部分应该是为了 edges 的统一，把所有指向一行中的边都指向第一个，这就和 CFG 关联上了，因为CFG的节点都指向第一个
+                #  edges  CFG CFG
                 for i, node in enumerate(node_line_map[line]):
                     if i == 0:
                         continue
@@ -351,14 +351,14 @@ def export_with_preprocess(code_path: str, output_path: str, language: Language,
     cpg_dir = os.path.join(output_path, 'cpg')
     pdg_old_dir = os.path.join(output_path, 'pdg-old')
 
-    # 预处理 cpg.dot
+    #  cpg.dot
     dot_preprocess(cpg_dir)
 
     if overwrite or not os.path.exists(pdg_old_dir):
         if os.path.exists(pdg_old_dir):
             subprocess.run(['rm', '-rf', pdg_old_dir])
-        subprocess.run(['cp', '-r', pdg_dir, pdg_old_dir])      # pdg old 是最原始 pdg 的备份
-        preprocess(pdg_dir, cfg_dir, cpg_dir, need_cdg)         # 对 PDG 进行预处理，去除无用的边和节点，添加了参数和 method node 的 边，并将 CFG 和 PDG 合并
+        subprocess.run(['cp', '-r', pdg_dir, pdg_old_dir])      # pdg old  pdg 
+        preprocess(pdg_dir, cfg_dir, cpg_dir, need_cdg)         #  PDG  method node   CFG  PDG 
 
 
 def export_with_preprocess_and_merge(code_path: str, output_path: str, language: Language, need_cdg: bool = True, overwrite: bool = False, variable_slice: bool = False):

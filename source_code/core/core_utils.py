@@ -6,7 +6,7 @@ from core.neo4j_engine import Neo4jEngine
 def get_method_call_name(analyzer: Neo4jEngine, node: py2neo.Node) -> str:
 
     def get_method_var_call_name(node: py2neo.Node) -> str:
-        # 处理 $this->method() 这种形式 
+        #  $this->method()  
         method_var_node = analyzer.find_ast_child_nodes(node, include_type={TYPE_VAR})
         if method_var_node:
             method_var_node = method_var_node[0]
@@ -42,7 +42,7 @@ def get_method_call_name(analyzer: Neo4jEngine, node: py2neo.Node) -> str:
                     prop_name += "->" + method_name_node['code']
                 method_call_name = prop_name
             else:
-                # 处理 var call
+                #  var call
                 method_call_name = get_method_var_call_name(node)
                 if method_call_name is None:
                     method_submethod_node = analyzer.find_ast_child_nodes(node, include_type={TYPE_METHOD_CALL})
@@ -59,8 +59,8 @@ def get_method_call_name(analyzer: Neo4jEngine, node: py2neo.Node) -> str:
 
 
             if method_call_name is None:
-                # 还有一种形式：
-                # $this->di['db']->getCell($sql , $values);   还有这种：$di['request']->getClientAddress(), 先不处理了吧。。
+                # 
+                # $this->di['db']->getCell($sql , $values);   $di['request']->getClientAddress(), 
                 dim_node = analyzer.find_ast_child_nodes(node, include_type={TYPE_DIM})
                 dim_node_method_call_name = analyzer.find_ast_child_nodes(node, include_type={TYPE_STRING})
                 try:
@@ -88,7 +88,7 @@ def get_method_call_name(analyzer: Neo4jEngine, node: py2neo.Node) -> str:
                     pass
 
             if method_call_name is None:
-                # 兜底，直接用 code
+                #  code
                 method_call_name = analyzer.code_step.get_node_code(node)
 
         case 'AST_STATIC_CALL':
@@ -107,7 +107,7 @@ def get_method_call_name(analyzer: Neo4jEngine, node: py2neo.Node) -> str:
                 method_call_name = static_name
 
     if method_call_name is None:
-        # 兜底，直接用 code
+        #  code
         method_call_name = analyzer.code_step.get_node_code(node)
     return method_call_name
 

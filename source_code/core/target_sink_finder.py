@@ -120,7 +120,7 @@ class TargetSinkFinder(object):
     def get_method_call_name(self, node: py2neo.Node) -> str:
 
         def get_method_var_call_name(node: py2neo.Node) -> str:
-            # 处理 $this->method() 这种形式 
+            #  $this->method()  
             method_var_node = self.analyzer.find_ast_child_nodes(node, include_type={TYPE_VAR})
             if method_var_node:
                 method_var_node = method_var_node[0]
@@ -156,7 +156,7 @@ class TargetSinkFinder(object):
                         prop_name += "->" + method_name_node['code']
                     method_call_name = prop_name
                 else:
-                    # 处理 var call
+                    #  var call
                     method_call_name = get_method_var_call_name(node)
                     if method_call_name is None:
                         method_submethod_node = self.analyzer.find_ast_child_nodes(node, include_type={TYPE_METHOD_CALL})
@@ -173,8 +173,8 @@ class TargetSinkFinder(object):
 
 
                 if method_call_name is None:
-                    # 还有一种形式：
-                    # $this->di['db']->getCell($sql , $values);   还有这种：$di['request']->getClientAddress(), 先不处理了吧。。
+                    # 
+                    # $this->di['db']->getCell($sql , $values);   $di['request']->getClientAddress(), 
                     dim_node = self.analyzer.find_ast_child_nodes(node, include_type={TYPE_DIM})
                     dim_node_method_call_name = self.analyzer.find_ast_child_nodes(node, include_type={TYPE_STRING})
                     try:
@@ -202,7 +202,7 @@ class TargetSinkFinder(object):
                         pass
 
                 if method_call_name is None:
-                    # 兜底，直接用 code
+                    #  code
                     method_call_name = self.analyzer.code_step.get_node_code(node)
 
             case 'AST_STATIC_CALL':
@@ -238,13 +238,13 @@ class TargetSinkFinder(object):
             return 0b10, 4
         code = None
         if node[NODE_TYPE] in {TYPE_METHOD_CALL}:
-            # 这里处理几种常见的 method_call 情况，太多的就不管了
+            #  method_call 
             # a->b->func()  |  a->func()
             code = self.get_method_call_name(node)
             if not code:
                 code = self.analyzer.code_step.get_node_code(node)   
         else:
-            code = self.analyzer.code_step.get_node_code(node)      # AST_STATIC_CALL 的 node code 可以直接获取 AST_METHOD_CALL 只能获取最后一个method名，前面的嵌套的property和method获取不到
+            code = self.analyzer.code_step.get_node_code(node)      # AST_STATIC_CALL  node code  AST_METHOD_CALL methodpropertymethod
         for vuln_type, anchor_functions in FUNCTION_MODEL.items():
             if code in anchor_functions or f"{code}()" in anchor_functions:
                 if code == "fopen" and vuln_type == 2:
@@ -307,11 +307,11 @@ class TargetSinkFinder(object):
 
     def cc_run(self, extend_vuln_model, sink_file=None) -> bool:
 
-        # 这一步太慢了，在testdata 验证的时候太慢了，我决定加个东西，指定在 cve 发生的那个文件中分析。
-        # 设定一个开关，在测试集时打开
+        # testdata  cve 
+        # 
 
 
-        # 扩展漏洞模型
+        # 
         for vuln_type in extend_vuln_model:
             if vuln_type in FUNCTION_MODEL:
                 FUNCTION_MODEL[vuln_type].extend(extend_vuln_model[vuln_type])
@@ -340,7 +340,7 @@ class TargetSinkFinder(object):
 
 
         if sink_file is not None:
-            # 只分析给定文件，先遍历 fileid_name_dict，然后判断文件名，取出对应的 fileid
+            #  fileid_name_dict fileid
             target_fileids = []
             for fileid, name in fileid_name_dict.items():
                 if type(sink_file) == list:
@@ -358,11 +358,11 @@ class TargetSinkFinder(object):
         print(f"Total nodes to analyze: {len(nodes_todo_analysis)}")
 
         if nodes_todo_analysis.__len__() > 50000:
-            print("node to analyze 太多了，暂时先不处理。")
+            print("node to analyze ")
             return
 
         print("============================")
-        print("开始分析 sink 节点 ...")
+        print(" sink  ...")
         print("============================")
         with ThreadPoolExecutor(max_workers=18) as executor:
             futures_to_node = {executor.submit(self._anchor_function_analysis, node): node for node in nodes_todo_analysis}

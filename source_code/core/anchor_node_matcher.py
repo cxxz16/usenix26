@@ -36,7 +36,7 @@ class AnchorNodeMatcher(object):
             rt_value = analyzer.code_step.get_node_code(top_node)
         elif top_node[NODE_TYPE] in {TYPE_CLOSURE}:
             rt_value = "anonymous_function"
-        # 对 file 的处理
+        #  file 
         elif top_node[NODE_TYPE] in {TYPE_TOPLEVEL}:
             if "_prepatch" in top_node[NODE_NAME]:
                 rt_value = os.path.basename(top_node[NODE_NAME]).split("_prepatch")[0]
@@ -50,9 +50,9 @@ class AnchorNodeMatcher(object):
     def run(self, node_type=None) -> List[py2neo.Node] | str:
         start_time = time.time()
         self.node_type = node_type
-        potential_anchors, reason = self.match_node()   # 这个 anchor 就是 postpatch 里的 node 了
+        potential_anchors, reason = self.match_node()   #  anchor  postpatch  node 
         if potential_anchors is not None:
-            potential_anchors = self.node_filter(potential_anchors)     # 这步很耗时，需要优化
+            potential_anchors = self.node_filter(potential_anchors)     # 
             if potential_anchors.__len__() == 0:
                 reason = f"NO FUNC {self.high_version_node.func_name}"
         end_time = time.time()
@@ -70,7 +70,7 @@ class AnchorNodeMatcher(object):
 
     def _match_low_version_potential_anchor(self) -> List[py2neo.Node] | str:
         if self.low_version_file_name.endswith(".php"):
-            query_file_name = os.path.basename(self.low_version_file_name)[:-4]  # 去掉 .php 后缀
+            query_file_name = os.path.basename(self.low_version_file_name)[:-4]  #  .php 
         elif self.low_version_file_name.endswith("prepatch"):
             query_file_name = os.path.basename(self.low_version_file_name).split("_prepatch")[0]
         top_file_node = self.low_version_analyzer.fig_step.get_file_name_node(query_file_name)
@@ -98,7 +98,7 @@ class AnchorNodeMatcher(object):
                 func_name = anchor_node.func_name
             # _nodes = self.low_version_analyzer.match(fileid=fileid, code=func_name)
             _nodes = [i for i in self.low_version_analyzer.match("AST", ).where(code=func_name)]
-            for _n in _nodes:      # 当patch 过后把这个删除了  这里 anchor 就失效了
+            for _n in _nodes:      # patch    anchor 
                 __n = get_specify_parent_node(self.low_version_analyzer, _n, FUNCTION_CALL_TYPES)
                 if __n is not None:
                     nodes.append(__n)

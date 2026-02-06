@@ -10,13 +10,13 @@ def vuln_code_extract(code_path, func_name, outfile):
     root_node = ast.root
     
     def find_function_with_path(node, path=[]):
-        # 查找函数定义或方法定义
+        # 
         if node.type in ['function_definition', 'method_declaration']:
             for child in node.children:
                 if child.type == 'name' and child.text.decode('utf-8') == func_name:
                     return node, path
         
-        # 递归搜索子节点，传递路径
+        # 
         for child in node.children:
             result = find_function_with_path(child, path + [node])
             if result[0]:
@@ -26,7 +26,7 @@ def vuln_code_extract(code_path, func_name, outfile):
     func_node, node_path = find_function_with_path(root_node)
     
     if func_node:
-        # 在路径中查找class_declaration
+        # class_declaration
         class_node = None
         for node in reversed(node_path):
             if node.type == 'class_declaration':
@@ -34,7 +34,7 @@ def vuln_code_extract(code_path, func_name, outfile):
                 break
         
         if class_node:
-            # 获取class声明部分
+            # class
             class_start = class_node.start_byte
             class_body_start = None
             for child in class_node.children:

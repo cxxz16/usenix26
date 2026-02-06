@@ -12,21 +12,21 @@ parser.set_language(LANGUAGE)
 pre_file_path = "./multi_agent/VVG/test_ph.php"
 # code = open(pre_file_path, "r", encoding="utf-8").read()
 code = """<?php
-// 这是一个注释
+// 
 class UserManager {
     private $username;
     private $password;
     
     /* 
-     * 多行注释
-     * 构造函数
+     * 
+     * 
      */
     public function __construct($user, $pass) {
         $this->username = $user;
         $this->password = $pass;
     }
     
-    // 获取用户名
+    // 
     public function getUsername() {
         return $this->username;
     }
@@ -80,7 +80,7 @@ ipdb.set_trace(context=5)
 #     return results
 
 # vars_assigned = extract_assignment_vars(root_node)
-# print("被赋值的变量：", vars_assigned)
+# print("", vars_assigned)
 
 # query_method = TS_PHP_METHOD
 # for method_node in query(query_method):

@@ -50,10 +50,10 @@ class AnchorFinderConfigure(object):
         if level is None:
             level = default_level
         self.__level = level
-        # 这个的意思是：
-        # 第一次尝试sink查找，向callee方向找1层，向caller方向找0层
-        # 第二次尝试sink查找，向callee方向找2层，向caller方向找1层
-        # 第三次尝试sink查找，向callee方向找3层，向caller方向找2层
+        # 
+        # sinkcallee1caller0
+        # sinkcallee2caller1
+        # sinkcallee3caller2
         self.__default_config = {
                 0: {'__callee_depth': 0b0010},
                 1: {'__callee_depth': 0b0011},
@@ -154,7 +154,7 @@ class CVESinkFinder(object):
         self.potential_anchor_nodes: AcnhorNodeList[AnchorNode] = AcnhorNodeList()
         self.anchor_functions = []
         self.vuln_type = vuln_type
-        self.__compile_anchor_functions(vuln_type, custom_sinks)  # 枚举 sink
+        self.__compile_anchor_functions(vuln_type, custom_sinks)  #  sink
         self.__complie_storage_path()
         self.__cache_center = CacheCenter()
         self.__delay_nodes = set()
@@ -164,7 +164,7 @@ class CVESinkFinder(object):
         self.source_info = source_info
         self.sink_info = sink_info
         self.vuln_anchor_function = set()
-        # 添加必须经过的路径
+        # 
         self.patch_sink_path = list()
         self.source_patch_path = list()
         self.current_forward_path = list()
@@ -176,20 +176,20 @@ class CVESinkFinder(object):
         self.max_caller_depth = max_caller_depth
         self.max_callee_depth = max_callee_depth
 
-        # 全部路径
+        # 
         self.all_paths = []
         self.callee_forward_depth = dict()
         self.call_stack = []
 
-        # 当从 patch 所在函数向 caller 的栈
+        #  patch  caller 
         self.caller_stack = []
 
-        # 记录所有到达最大深度的完整调用路径
+        # 
         self.call_paths = []
 
         self.caller_paths = []
         
-        # 记录所有收集到的call节点（用于其他目的）
+        # call
         self.collected_call_nodes = []
 
         self.already_processed_callsite = set()
@@ -366,7 +366,7 @@ class CVESinkFinder(object):
 
     def _anchor_function_analysis(self, node: py2neo.Node, TAINT_DYNAMIC_CALL_FLAG: bool = None) -> int:
         """
-        只分析单层函数，判断当前 node 是否可能为 sink
+         node  sink
         """
         if node[NODE_TYPE] in {TYPE_ECHO, TYPE_PRINT}:
             if self.anchor_functions == FUNCTION_MODEL[10]:
@@ -396,19 +396,19 @@ class CVESinkFinder(object):
         if code in PHP_BUILT_IN_FUNCTIONS and node[NODE_TYPE] == TYPE_CALL:
             return 0b00
         if node[NODE_TYPE] in {TYPE_NEW, TYPE_STATIC_CALL, TYPE_CALL, TYPE_METHOD_CALL}:
-            if self.analyzer.cg_step.find_decl_nodes(node): # 能在调用图中找到 call target
+            if self.analyzer.cg_step.find_decl_nodes(node): #  call target
                 return 0b01
             else:
-                return 0b11     # 保留非 echo/include 的自定义 or 第三方库的函数调用
+                return 0b11     #  echo/include  or 
         return 0b00
 
     def anchor_function_analysis(self, node, current_level=1, TAINT_DYNAMIC_CALL_FLAG: bool = True):
         """
-        沿着 call graph 递归分析函数，判断当前 node 是否可能为 sink
-        从 func_decl 开始分析的，就是从新的callee 函数开头，
+         call graph  node  sink
+         func_decl callee 
         """
-        # 如果需要记录 callee 的 funcname 的话应该在这个函数内进行
-        # 控制 callee 的分析深度
+        #  callee  funcname 
+        #  callee 
         if current_level >= self.configure.rule_callee_depth:
             if self.current_forward_path:
                 path_has_sink = False
@@ -431,7 +431,7 @@ class CVESinkFinder(object):
         if node_hash in self.__cache_center.already_detect_functions.keys() and funcname not in self.anchor_functions:
             return self.__cache_center.already_detect_functions[node_hash]
         nodes_todo_analysis = self.analyzer.ast_step.filter_child_nodes(node, max_depth=100,
-                                                                        node_type_filter=COMMON_NODE_TYPES) # 找到当前函数中所有函数调用节点
+                                                                        node_type_filter=COMMON_NODE_TYPES) # 
         if nodes_todo_analysis.__len__() == 0:
             self.__cache_center.update_already_detect_functions(node_hash, 0b00)
             
@@ -440,7 +440,7 @@ class CVESinkFinder(object):
             result = self._anchor_function_analysis(node_todo_analysis, TAINT_DYNAMIC_CALL_FLAG=TAINT_DYNAMIC_CALL_FLAG)
             if result == 0b00:
                 self.__cache_center.update_already_detect_functions(node_hash, 0b00)
-            elif result == 0b01 and self.analyzer.cg_step.find_decl_nodes(node_todo_analysis):  # 递归的向下分析callee
+            elif result == 0b01 and self.analyzer.cg_step.find_decl_nodes(node_todo_analysis):  # callee
                 _f = self.anchor_function_analysis(self.analyzer.cg_step.find_decl_nodes(node_todo_analysis)[-1],
                                                    current_level + 1, )
                 self.__cache_center.update_already_detect_functions(node_hash, _f)
@@ -458,11 +458,11 @@ class CVESinkFinder(object):
 
     def slice_func_in_line(self, node: py2neo.Node, taint_var=None) -> bool:
         """
-        对于一个 AST call 大类节点，判断其是否为潜在的 sink 节点
-        如果可以找到定义，则沿着call edge递归下去继续找
-        只判断 sink 点，不判断 其他的
+         AST call  sink 
+        call edge
+         sink  
         """
-        # 如果一个 node 包含函数调用节点，则他的参数和 taint data 有关，如果继续探索其 callee 的 callsite 就要继续保证和 taint data 有关
+        #  node  taint data  callee  callsite  taint data 
         nodes_todo_analysis = self.analyzer.ast_step.filter_child_nodes(node, node_type_filter=COMMON_NODE_TYPES)
         for node_todo_analysis in nodes_todo_analysis:
             func_decls = self.analyzer.cg_step.find_decl_nodes(node_todo_analysis)
@@ -473,14 +473,14 @@ class CVESinkFinder(object):
             flag = self._anchor_function_analysis(node_todo_analysis, )
             if flag == 0b00:
                 continue
-                # 这里把不是的也加进来，扩大范围，交由llm筛选
+                # llm
             elif flag == 0b10:
-                # 直接是 sink
+                #  sink
                 self._f_insert(node_todo_analysis, )
                 if func_decls:
                     self.current_forward_path.append(func_decls[-1])
-            elif flag == 0b01:  # 在预定义列表中不存在，但是能找到 call 的 decl
-                res = self.anchor_function_analysis(func_decls[-1])  # 只需要一个 call target decl 去做 anchor 分析
+            elif flag == 0b01:  #  call  decl
+                res = self.anchor_function_analysis(func_decls[-1])  #  call target decl  anchor 
                 if res == 0b10:
                     self._f_insert(node_todo_analysis, )
                     self.current_forward_path.append(func_decls[-1])
@@ -569,11 +569,11 @@ class CVESinkFinder(object):
                 self._f_insert(call_node, 0b0010, param_index if param_index is not None else -1)
 
     def print_call_paths(self):
-        """打印所有调用路径（Caller 段逆向递减缩进，Callee 段正向递增缩进）"""
-        print(f"\n=== 发现 {len(self.all_paths)} 条调用路径 ===\n")
+        """Caller Callee """
+        print(f"\n===  {len(self.all_paths)}  ===\n")
         for idx, path in enumerate(self.all_paths, 1):
-            print(f"路径 {idx}:")
-            # 预计算各段长度，用于 caller 段逆向缩进
+            print(f" {idx}:")
+            #  caller 
             caller_len = sum(1 for c in path if 'level' in c)
             callee_len = sum(1 for c in path if 'depth' in c)
 
@@ -585,10 +585,10 @@ class CVESinkFinder(object):
                 curr = 'caller' if 'level' in call else 'callee'
                 if curr != segment:
                     segment = curr
-                    header = "↑ Caller 段（向上溯源）" if segment == 'caller' else "↓ Callee 段（向下深入）"
+                    header = "↑ Caller " if segment == 'caller' else "↓ Callee "
                     print(f"  {header}")
 
-                # 计算缩进层级
+                # 
                 if segment == 'caller':
                     indent_level = max(0, (caller_len - 1 - caller_idx))
                 else:
@@ -600,14 +600,14 @@ class CVESinkFinder(object):
 
                 print(f"{indent}[{tag}] {call['call_site_code']}")
                 print(
-                    f"{indent}  └─> {('进入上层函数' if segment=='caller' else '进入被调函数')} "
-                    f"{name}({call['param_name']}) [污点: {call['taint_var']}]"
+                    f"{indent}  └─> {('' if segment=='caller' else '')} "
+                    f"{name}({call['param_name']}) [: {call['taint_var']}]"
                 )
                 if 'location' in call and call['location']:
                     loc = call['location']
                     print(f"{indent}      @ {loc.get('file', '?')}:{loc.get('line', '?')}")
 
-                # 递增对应段的计数器
+                # 
                 if segment == 'caller':
                     caller_idx += 1
                 else:
@@ -615,24 +615,24 @@ class CVESinkFinder(object):
             print()
 
     def print_callee_paths(self):
-        """打印所有调用路径（便于调试）"""
-        print(f"\n=== 发现 {len(self.call_paths)} 条调用路径 ===\n")
+        """"""
+        print(f"\n===  {len(self.call_paths)}  ===\n")
         
         for idx, path in enumerate(self.call_paths, 1):
-            print(f"路径 {idx}:")
+            print(f" {idx}:")
             for i, call in enumerate(path):
                 indent = "  " * i
                 print(f"{indent}[Depth {call['depth']}] {call['call_site_code']}")
-                print(f"{indent}  └─> 进入 {call['callee_name']}({call['param_name']}) "
-                      f"[污点: {call['taint_var']}]")
+                print(f"{indent}  └─>  {call['callee_name']}({call['param_name']}) "
+                      f"[: {call['taint_var']}]")
                 if 'location' in call and call['location']:
                     loc = call['location']
                     print(f"{indent}      @ Line {loc.get('line', '?')}")
             print()
 
     def print_potential_sink_funcname(self):
-        """打印所有潜在的 sink 函数名"""
-        print(f"\n=== 发现 {len(self.potential_sink_funcname)} 个潜在 sink 函数名 ===\n")
+        """ sink """
+        print(f"\n===  {len(self.potential_sink_funcname)}  sink  ===\n")
         for funcname in self.potential_sink_funcname:
             print(f"- {funcname}")
         print()
@@ -640,14 +640,14 @@ class CVESinkFinder(object):
 
     def _push_call_stack(self, call_site, callee_func, param_node, param_pos, taint_var, depth, callee_name=None):
         """
-        将调用信息压入栈
+        
         
         Args:
-            call_site: 调用点节点
-            callee_func: 被调用函数节点
-            param_node: 污点形参节点
-            taint_var: 污点变量
-            depth: 当前深度
+            call_site: 
+            callee_func: 
+            param_node: 
+            taint_var: 
+            depth: 
         """
         call_info = {
             'call_site': call_site,
@@ -665,14 +665,14 @@ class CVESinkFinder(object):
 
     def _push_caller_stack(self, call_site, callee_func, param_node, param_pos, taint_var, level):
         """
-        将调用信息压入栈
+        
         
         Args:
-            call_site: 调用点节点
-            callee_func: 被调用函数节点
-            param_node: 污点形参节点
-            taint_var: 污点变量
-            depth: 当前深度
+            call_site: 
+            callee_func: 
+            param_node: 
+            taint_var: 
+            depth: 
         """
         call_info = {
             'call_site': call_site,
@@ -689,24 +689,24 @@ class CVESinkFinder(object):
         self.caller_stack.append(call_info)
     
     def _pop_call_stack(self):
-        """弹出调用栈"""
+        """"""
         if self.call_stack:
             self.call_stack.pop()
 
     def _pop_caller_stack(self):
-        """弹出调用栈"""
+        """"""
         if self.caller_stack:
             self.caller_stack.pop()
     
     def _record_current_path(self):
         """
-        记录当前的完整调用路径
-        当达到最大深度时调用
+        
+        
         """
         if not self.call_stack:
             return
         
-        # 深拷贝当前调用栈作为一条完整路径
+        # 
         path = []
         for call_info in self.call_stack:
             path.append({
@@ -720,19 +720,19 @@ class CVESinkFinder(object):
                 'location': call_info['call_site_location']
             })
         
-        # 添加到路径集合（避免重复）
+        # 
         if not self._is_duplicate_path(path):
             self.call_paths.append(path)
 
     def _record_current_caller_path(self):
         """
-        记录当前的完整调用路径
-        当达到最大深度时调用
+        
+        
         """
         if not self.caller_stack:
             return
         
-        # 深拷贝当前调用栈作为一条完整路径
+        # 
         caller_path = []
         for call_info in self.caller_stack:
             caller_path.append({
@@ -756,11 +756,11 @@ class CVESinkFinder(object):
 
     def _record_current_caller_path_one(self):
         """
-        记录当前的完整调用路径
-        当达到最大深度时调用
+        
+        
         """
         
-        # 深拷贝当前调用栈作为一条完整路径
+        # 
         caller_path = []
         for call_info in self.caller_stack:
             caller_path.append({
@@ -784,21 +784,21 @@ class CVESinkFinder(object):
 
     
     def _is_duplicate_path(self, new_path):
-        """检查路径是否已存在，这部分效率低，后续可以优化"""  
+        """"""  
         for existing_path in self.call_paths:
             if self._paths_equal(existing_path, new_path):
                 return True
         return False
     
     def _is_duplicate_caller_path(self, new_path):
-        """检查路径是否已存在，这部分效率低，后续可以优化"""  
+        """"""  
         for existing_path in self.caller_paths:
             if self._caller_paths_equal(existing_path, new_path):
                 return True
         return False
     
     def _paths_equal(self, path1, path2):
-        """比较两条路径是否相同"""
+        """"""
         if len(path1) != len(path2):
             return False
         
@@ -810,7 +810,7 @@ class CVESinkFinder(object):
         return True
     
     def _caller_paths_equal(self, path1, path2):
-        """比较两条路径是否相同"""
+        """"""
         if len(path1) != len(path2):
             return False
         
@@ -822,7 +822,7 @@ class CVESinkFinder(object):
         return True
     
     def _get_node_location(self, node):
-        """获取节点位置信息"""
+        """"""
         location = {}
         if NODE_LINENO in node:
             location['line'] = node[NODE_LINENO]
@@ -837,33 +837,33 @@ class CVESinkFinder(object):
             self._record_current_path()
             return
         
-        param_name = self.analyzer.code_step.get_node_code(taint_param_node)[1:]  # 去掉 $
+        param_name = self.analyzer.code_step.get_node_code(taint_param_node)[1:]  #  $
         use_nodes = self.analyzer.pdg_step.find_use_nodes(taint_param_node)
 
-        # 对每个使用点进行前向遍历
+        # 
         for use_node in use_nodes:
-            # 标记污点变量
+            # 
             use_node['taint_var'] = param_name
             self.forward_pdg_traversal(use_node, param_name, depth)
 
 
     def _handle_call_node(self, node, taint_var, depth=0):
         # assert taint_var is not None
-        # node 就是 callsite node           这里还没有处理 method node 和 static call node
-        # TODO 再加个缓存，对于同一个 taint 同一个 node 的 handle 进行缓存
+        # node  callsite node            method node  static call node
+        # TODO  taint  node  handle 
         if taint_var is None:
             return
         
         call_decl = None
         callee_name = None
 
-        # 这里如果是 method call 很有可能找不到 decl node，这时候就记录一下 method call 的签名
+        #  method call  decl node method call 
         if node[NODE_TYPE] in {TYPE_METHOD_CALL, TYPE_STATIC_CALL}:
-            # 这里有两种，一种是 $this->method()，一种是 $this->db->method()
-            # 前一种是直接的 var call，后一种是 prop call
-            # 还有一种  $this->db->get()->result_array();  这是method_call 嵌套method_call 这里先不处理了没必要 
+            #  $this->method() $this->db->method()
+            #  var call prop call
+            #   $this->db->get()->result_array();  method_call method_call  
 
-            # 处理 prop call
+            #  prop call
             method_call_name = None
             prop_node = self.analyzer.find_ast_child_nodes(node, include_type={TYPE_PROP})
             if prop_node:
@@ -879,7 +879,7 @@ class CVESinkFinder(object):
                     prop_name += "->" + method_name_node['code']
                 method_call_name = prop_name
             else:
-                # 处理 var call
+                #  var call
                 method_var_node = self.analyzer.find_ast_child_nodes(node, include_type={TYPE_VAR})
                 if method_var_node:
                     method_var_node = method_var_node[0]
@@ -939,20 +939,20 @@ class CVESinkFinder(object):
                 return
             
         taint_arg_num = -1
-        # 存在 decl，确定关心的参数位置，然后准备跨过程分析
+        #  decl
         args_list = self.analyzer.ast_step.find_function_arg_node_list(node)
         for arg_node_key in args_list.keys():
             if arg_node_key == f"${taint_var}":
                 taint_arg_num = args_list[arg_node_key]
                 break
-        # 处理 call node，找得到 decls 在if，否则在 else，例如 built-in 函数
+        #  call node decls if else built-in 
         depth = depth + 1
         params_list = self.analyzer.ast_step.find_function_param_node_list(call_decl)
         if params_list.__len__() != 0 and taint_arg_num > -1:
             for param_node in params_list:
                 if param_node[NODE_CHILDNUM] == taint_arg_num:
                     self._push_call_stack(node, call_decl, param_node, taint_arg_num, taint_var, depth, callee_name)
-                    # 去分析 callee 的里面，如果是预定义的函数
+                    #  callee 
                     self._analyze_callee_function(
                         call_decl, 
                         param_node,
@@ -960,19 +960,19 @@ class CVESinkFinder(object):
                         taint_var,
                         depth
                     )
-                    # 返回后弹出调用栈
+                    # 
                     # self._record_current_path()
                     self._pop_call_stack()
                     break
         else:
-            if taint_arg_num != -1:     # taint reach 到了某个语句，但是并没有reach到这个语句的参数部分
+            if taint_arg_num != -1:     # taint reach reach
                 self._push_call_stack(node, call_decl, f"${taint_var}", taint_arg_num, taint_var, depth, callee_name)
                 self._record_current_path()
                 self._pop_call_stack()
         return
 
     def forward_pdg_traversal(self, node, taint_var=None, depth=0, level=0):
-        # forward 递归和 call graph 是两回事
+        # forward  call graph 
         if depth > self.max_callee_depth:
             self._record_current_path()
             return 
@@ -984,15 +984,15 @@ class CVESinkFinder(object):
         else:
             self.__cache_center.already_visit_pdg_node.add(_node.identity)
 
-        # 碰到 call 相关节点
+        #  call 
         calleesite_nodes = self.analyzer.ast_step.filter_child_nodes(_node, node_type_filter=COMMON_NODE_TYPES)
         if calleesite_nodes:
             for calleesite_node in calleesite_nodes:
                 self._handle_call_node(calleesite_node, taint_var=taint_var, depth=depth)
                 
-        # 对 return node 的处理
+        #  return node 
         if node[NODE_TYPE] == TYPE_RETURN:
-            # 记录一下如果需要分析上级 caller  只有分析 patch 和其 caller 所在函数才需要
+            #  caller   patch  caller 
             if depth <= 0:
                 arg_node = self.analyzer.ast_step.find_function_arg_node_list_old(node)[-1]
 
@@ -1000,7 +1000,7 @@ class CVESinkFinder(object):
                     # self.__delay_nodes.add(node[NODE_INDEX])
                     self.__level_delay_node[str(level)].add(node[NODE_INDEX])
 
-        # 沿着 use 边继续寻找 use node
+        #  use  use node
         _reach_to_nodes = self.analyzer.pdg_step.find_use_nodes(_node)
         if _reach_to_nodes.__len__() == 0:
             return 
@@ -1008,7 +1008,7 @@ class CVESinkFinder(object):
         taint_var = _node['taint_var']
         if taint_var is not None:
             self.taint_var_list.add(taint_var)
-        # 这部分是单层内的forward    这里的 forward 并不跨call graph，只是跨 data flow
+        # forward     forward call graph data flow
         for _reach_to_node in _reach_to_nodes:
             taint_var = _reach_to_node['taint_var']
             self.forward_pdg_traversal(_reach_to_node, taint_var=taint_var, depth=depth, level=level)
@@ -1034,7 +1034,7 @@ class CVESinkFinder(object):
             return False
         
     def load_all_paths(self):
-        # 使用 pickle 加载 self.all_paths
+        #  pickle  self.all_paths
         try:
             with open(os.path.join(STORAGE_PATH, 'cve_sink_finder', str(self.vuln_type), f'all_paths_{self.cve_id}_{self.patch_commit_id}.pkl'), 'rb') as f:
                 self.all_paths = pickle.load(f)
@@ -1060,13 +1060,13 @@ class CVESinkFinder(object):
         if node[NODE_TYPE] in {TYPE_THROW}:
             node = self.analyzer.ast_step.get_child_node(node)
         parent_node = self.analyzer.ast_step.get_parent_node(node)
-        if node[NODE_TYPE] in {TYPE_ASSIGN, TYPE_ASSIGN_OP, TYPE_ASSIGN_REF}: # 只有当 node 是赋值的时候才会管 pdg
-            rr = self.analyzer.pdg_step.find_use_nodes(node)  # 找到当前 node 的 use 节点，看有哪些节点 use 了当前 node
+        if node[NODE_TYPE] in {TYPE_ASSIGN, TYPE_ASSIGN_OP, TYPE_ASSIGN_REF}: #  node  pdg
+            rr = self.analyzer.pdg_step.find_use_nodes(node)  #  node  use  use  node
             if not rr:
                 l_var = self.analyzer.ast_step.get_child_node(node)
-                if l_var[NODE_TYPE] == TYPE_DIM and self.analyzer.code_step.get_ast_dim_code(l_var).endswith("[]"):  # 这里好像处理的就是  a[] = xxx 这种形式，php 数组中的元素赋值
+                if l_var[NODE_TYPE] == TYPE_DIM and self.analyzer.code_step.get_ast_dim_code(l_var).endswith("[]"):  #   a[] = xxx php 
                     start, end = self.analyzer.range_step.get_general_node_range(
-                            self.analyzer.get_node_itself(node[NODE_FUNCID]))   # 获取当前 node 所在函数的范围
+                            self.analyzer.get_node_itself(node[NODE_FUNCID]))   #  node 
                     for _node, in self.analyzer.basic_step.run(
                             "MATCH (B:AST)-[:PARENT_OF]->(C:AST) "
                             f"WHERE B.type = '{TYPE_VAR}'"
@@ -1107,7 +1107,7 @@ class CVESinkFinder(object):
         else:
             rr = []
         result_cfg_pdg_begin_lines.extend(rr)
-        global_vars = self.analyzer.ast_step.filter_child_nodes(node, node_type_filter=[TYPE_DIM], )    # 这里的 global var 只想看经过post get 等处理的元素访问
+        global_vars = self.analyzer.ast_step.filter_child_nodes(node, node_type_filter=[TYPE_DIM], )    #  global var post get 
         rr = [i for i in global_vars if
               self.analyzer.code_step.get_ast_dim_body_code(i) in {"_POST", "_GET", "_REQUEST", "_FILE", "_COOKIE"}]
         result_cfg_pdg_begin_lines.extend(rr)
@@ -1121,7 +1121,7 @@ class CVESinkFinder(object):
             for x in self.analyzer.ast_step.find_function_return_expr(
                     self.analyzer.basic_step.get_node_itself(node[NODE_FUNCID])):
                 if x[NODE_INDEX] >= node[NODE_INDEX]:
-                    self.__delay_nodes.add(x[NODE_INDEX])   # 添加了node之后的能到exit的节点
+                    self.__delay_nodes.add(x[NODE_INDEX])   # nodeexit
         return result_pdg_begin_lines, result_cfg_pdg_begin_lines
 
 
@@ -1145,7 +1145,7 @@ class CVESinkFinder(object):
                         prop_name += "->" + method_name_node['code']
                     method_call_name = prop_name
                 else:
-                    # 处理 var call   多级的 不管了   a->b()->c()
+                    #  var call       a->b()->c()
                     method_var_node = self.analyzer.find_ast_child_nodes(node, include_type={TYPE_VAR})
                     if method_var_node:
                         method_var_node = method_var_node[0]
@@ -1161,7 +1161,7 @@ class CVESinkFinder(object):
                         method_call_name = method_name
 
                 if method_call_name is None:
-                    # 兜底，直接用 code
+                    #  code
                     method_call_name = self.analyzer.code_step.get_node_code(node)
 
             case 'AST_STATIC_CALL':
@@ -1187,7 +1187,7 @@ class CVESinkFinder(object):
             # if self.load_sinks():
             #     return
 
-            # 直接根据 sink 点来确定哪个是。
+            #  sink 
             #             "source": {
             #                 "file_path": "src/www/project/admin/permissions.php",
             #                 "function_name": "getgrouplist",
@@ -1214,7 +1214,7 @@ class CVESinkFinder(object):
                 self._f_insert(sink_nodes[0], func_name=sink_function_name)
                 return
 
-            # 然后判断这些 node 的函数名是否和 sink['function_name'] 一致
+            #  node  sink['function_name'] 
             for node in sink_nodes:
                 call_node_name = None
                 if node[NODE_TYPE] in {TYPE_METHOD_CALL, TYPE_STATIC_CALL}:

@@ -2,22 +2,22 @@ import re
 import os
 import networkx as nx
 import subprocess
-cpg_dir = "/home/xinchu/research/RecurScan/SanCheck/php-cve-dataset/CVE-2023-2338/prepatch/cpg"
+cpg_dir = "./php-cve-dataset/CVE-2023-2338/prepatch/cpg"
 
 
 def parse_key_value_pairs(text):
-    # 提取方括号内容
+    # 
     match = re.search(r'\[(.*)\]', text)
     if not match:
         return {}
     
     content = match.group(1)
-    bracket_start = match.start(1)  # 方括号内容在原文中的起始位置
+    bracket_start = match.start(1)  # 
     pairs = {}
     
-    # 找到所有可能的键值对分隔符（空格+键名+等号）
-    # 键名通常是：空格后面跟着字母开头的单词，然后是等号
-    # 也包括开头的 label
+    # ++
+    # 
+    #  label
     key_pattern = r'(?:^|\s)([A-Z_][A-Z0-9_]*)\s*='
     key_matches = list(re.finditer(key_pattern, content))
     
@@ -26,28 +26,28 @@ def parse_key_value_pairs(text):
     
     for i, key_match in enumerate(key_matches):
         key = key_match.group(1)
-        eq_pos = key_match.end()  # 等号后的位置
+        eq_pos = key_match.end()  # 
         
-        # 找值的开始位置（跳过等号后的空格）
+        # 
         val_start = eq_pos
         while val_start < len(content) and content[val_start] == ' ':
             val_start += 1
         
-        # 找值的结束位置
-        if i < len(key_matches) - 1:  # 不是最后一个键值对
-            # 下一个键值对的开始位置（包括前导空格）
+        # 
+        if i < len(key_matches) - 1:  # 
+            # 
             next_match_start = key_matches[i + 1].start()
             val_end = next_match_start
-        else:  # 最后一个键值对
+        else:  # 
             val_end = len(content)
         
-        # 记录在整个原始字符串中的位置
+        # 
         global_val_start = bracket_start + val_start
         global_val_end = bracket_start + val_end
         
-        value = content[val_start:val_end].rstrip()  # 去掉末尾空格
+        value = content[val_start:val_end].rstrip()  # 
         
-        # 去掉值两端的引号（如果有的话）
+        # 
         if value.startswith('"') and value.endswith('"'):
             value = value[1:-1]
         
@@ -57,12 +57,12 @@ def parse_key_value_pairs(text):
 
 
 def process(cpg_dir, key, index):
-    # 定义文件路径
+    # 
     dot_file_path = os.path.join(cpg_dir, 'fixed_export.dot')
     output_file_path = os.path.join(cpg_dir, 'fixed_export.dot')
     assert os.path.exists(dot_file_path), f"File {dot_file_path} does not exist."
 
-    # 读取文件并逐行处理
+    # 
     with open(dot_file_path, 'r') as file:
         lines = file.readlines()
 
@@ -98,7 +98,7 @@ def process(cpg_dir, key, index):
         #         fixed_lines.append(line)
 
 
-    # 将修改后的内容写回到新的 .dot 文件
+    #  .dot 
     with open(output_file_path, 'w') as file:
         file.writelines(fixed_lines)
 
@@ -132,8 +132,8 @@ def dot_preprocess(cpg_dir):
     export_cpg = os.path.join(cpg_dir, 'export.dot')
     back_cpg = os.path.join(cpg_dir, 'export_back.dot')
     fixed_cpg = os.path.join(cpg_dir, 'fixed_export.dot')
-    subprocess.run(['cp', '-r', export_cpg, back_cpg])    # 备份原始 .dot 文件
-    subprocess.run(['cp', '-r', export_cpg, fixed_cpg])  # 创建一个新的 .dot 文件用于修改
+    subprocess.run(['cp', '-r', export_cpg, back_cpg])    #  .dot 
+    subprocess.run(['cp', '-r', export_cpg, fixed_cpg])  #  .dot 
     
     process_key = ['CODE', 'DYNAMIC_TYPE_HINT_FULL_NAME', 'METHOD_FULL_NAME', 'NAME', 'CONTROL_STRUCTURE_TYPE', 'FULL_NAME']
     for i, key in enumerate(process_key):

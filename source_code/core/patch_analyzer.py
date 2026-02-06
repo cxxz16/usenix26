@@ -146,16 +146,16 @@ class PatchAnalyzer(object):
         try:
             with open(diff_file, 'w') as out:
                 subprocess.run(['diff', '-u', file1, file2], stdout=out, stderr=subprocess.PIPE, check=True)
-            print(f"[✓] Diff 已写入：{diff_file}")
+            print(f"[✓] Diff {diff_file}")
         except subprocess.CalledProcessError as e:
             if e.returncode == 1:
                 with open(diff_file, 'w') as out:
                     out.write(e.stdout.decode())
                 print(f"[✓] Diff write: {diff_file}")
             else:
-                print(f"[x] diff 执行出错: {e}")
+                print(f"[x] diff : {e}")
         except Exception as ex:
-            print(f"[x] 发生异常: {ex}")
+            print(f"[x] : {ex}")
 
 
     def find_modify_lines_from_diff(self):
@@ -204,7 +204,7 @@ class PatchAnalyzer(object):
                 result = self._affected_line_transformer(result, file_name, file_path)
                 start_line.extend(result)
 
-            if start_line.__len__() == 0:   # 只存在 add 不存在 delete
+            if start_line.__len__() == 0:   #  add  delete
                 for _v in v:
                     result_post = diff_hunk_analysis(content, _v, aiming="post")
                     if result_post.__len__() != 0:
@@ -260,11 +260,11 @@ class PatchAnalyzer(object):
                                     self.analyzer_post.ast_step.get_function_arg_ith_node(root_node, 0)))
                     rt_result |= self.__search_affected_param(_affect_param, file_name, min(lines), l_max, file_id_pre)
                 if func_name == "preg_match":
-                    # 第 1 个参数是 subject，被匹配的数据
+                    #  1  subject
                     subject_node = self.analyzer_post.ast_step.get_function_arg_ith_node(root_node, 1)
                     subject_expr = self.analyzer_post.code_step.get_node_code(subject_node)
 
-                    _affect_param = subject_expr  # 直接作为受影响的变量
+                    _affect_param = subject_expr  # 
 
                     rt_result |= self.__search_affected_param(
                         _affect_param,
@@ -359,9 +359,9 @@ class PatchAnalyzer(object):
                         NODE_LINENO: line,
                 }):
                     """
-                        找到和修改的节点相关的控制流节点, 找到其根节点添加
+                        , 
 
-                        没找到数据流的
+                        
                     """
                     line_first.add(self.analyzer_pre.ast_step.get_root_node(_node))
                 line_first = sorted(list(i for i in line_first if i is not None), key=lambda x: x.identity)

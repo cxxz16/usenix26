@@ -10,6 +10,6 @@ class PrePatchFinder(object):
             f"[-] REPOSITORY_CODE_PATH of {git_repository} not exists"
         cwd = os.getcwd()
         os.chdir(os.path.join(REPOSITORY_CODE_PATH, git_repository))
-        pre_patch_commit_id = os.popen(f"git rev-parse {commit_id}~").read().strip() # 返回父提交的 hash
+        pre_patch_commit_id = os.popen(f"git rev-parse {commit_id}~").read().strip() #  hash
         os.chdir(cwd)
         return pre_patch_commit_id

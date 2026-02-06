@@ -41,14 +41,12 @@ FUNCTION_MODEL = {
 
 DATABASE_PATH = "../"
 def start_database_with_port(db_name, database_path=DATABASE_PATH):
-    """启动指定的数据库"""
     db_path = os.path.join(database_path, db_name)
     
     if not os.path.exists(db_path):
         print(f"[!] Database path {db_path} does not exist.")
         return False
     
-    # 检查是否已运行
     result = subprocess.run(
         [f"{db_path}/bin/neo4j", "status"],
         capture_output=True,
@@ -62,7 +60,6 @@ def start_database_with_port(db_name, database_path=DATABASE_PATH):
             print(f"[*] {db_name} is already running.")
             return True
     
-    # 启动数据库
     print(f"[*] Starting database {db_name}...")
     subprocess.run(
         [f"{db_path}/bin/neo4j", "start"],
@@ -71,10 +68,8 @@ def start_database_with_port(db_name, database_path=DATABASE_PATH):
         check=False
     )
     
-    # 等待启动完成
     time.sleep(10)
     
-    # 验证启动成功
     for attempt in range(5):
         result = subprocess.run(
             [f"{db_path}/bin/neo4j", "status"],
@@ -92,7 +87,6 @@ def start_database_with_port(db_name, database_path=DATABASE_PATH):
 
 
 def stop_database_with_port(db_name, database_path=DATABASE_PATH):
-    """停止指定的数据库"""
     db_path = os.path.join(database_path, db_name)
     
     if not os.path.exists(db_path):
@@ -109,19 +103,10 @@ def stop_database_with_port(db_name, database_path=DATABASE_PATH):
 
 
 def kill_listen_pid_by_port(port: int, sig=signal.SIGKILL) -> bool:
-    """
-    找到监听指定端口的进程 PID，然后 kill。
-    等价于：lsof -t -i :<port> -sTCP:LISTEN  | xargs kill -9
-    返回 True 表示至少杀掉了一个 PID。
-    """
-    # -nP：不解析域名/端口名，输出更快更干净
-    # -t：只输出 PID（一行一个）
-    # -sTCP:LISTEN：只匹配 LISTEN 状态（避免杀掉只是“连接到该端口”的客户端进程）
     cmd = ["lsof", "-nP", "-t", "-i", f":{port}", "-sTCP:LISTEN"]
     r = subprocess.run(cmd, capture_output=True, text=True)
 
     if r.returncode != 0:
-        # lsof 找不到通常也会返回非 0，这里顺便打印一下 stderr 便于排查
         err = (r.stderr or "").strip()
         if err:
             print(f"[!] lsof error on port {port}: {err}")
@@ -142,7 +127,7 @@ def kill_listen_pid_by_port(port: int, sig=signal.SIGKILL) -> bool:
     killed_any = False
     for pid in sorted(set(pids)):
         try:
-            os.kill(pid, sig)   # sig=SIGKILL 等价 kill -9
+            os.kill(pid, sig) 
             print(f"[+] Killed pid {pid} listening on :{port}")
             killed_any = True
         except ProcessLookupError:
@@ -202,7 +187,6 @@ class TargetSinkFinder(object):
     def get_method_call_name(self, node: py2neo.Node) -> str:
 
         def get_method_var_call_name(node: py2neo.Node) -> str:
-            # 处理 $this->method() 这种形式 
             method_var_node = self.analyzer.find_ast_child_nodes(node, include_type={TYPE_VAR})
             if method_var_node:
                 method_var_node = method_var_node[0]
@@ -237,7 +221,6 @@ class TargetSinkFinder(object):
                     prop_name += "->" + method_name_node['code']
                 method_call_name = prop_name
             else:
-                # 处理 var call
                 method_call_name = get_method_var_call_name(node)
                 if method_call_name is None:
                     method_submethod_node = self.analyzer.find_ast_child_nodes(node, include_type={TYPE_METHOD_CALL})
@@ -254,8 +237,6 @@ class TargetSinkFinder(object):
 
 
             if method_call_name is None:
-                # 还有一种形式：
-                # $this->di['db']->getCell($sql , $values);   还有这种：$di['request']->getClientAddress(), 先不处理了吧。。
                 dim_node = self.analyzer.find_ast_child_nodes(node, include_type={TYPE_DIM})
                 dim_node_method_call_name = self.analyzer.find_ast_child_nodes(node, include_type={TYPE_STRING})
                 try:
@@ -283,7 +264,6 @@ class TargetSinkFinder(object):
                     pass
 
             if method_call_name is None:
-                # 兜底，直接用 code
                     method_call_name = self.analyzer.code_step.get_node_code(node)
 
         elif node_type == 'AST_STATIC_CALL':
@@ -319,20 +299,17 @@ class TargetSinkFinder(object):
             return 0b10, 4
         code = None
         if node[NODE_TYPE] in {TYPE_METHOD_CALL, TYPE_STATIC_CALL, TYPE_CALL}:
-            # 这里处理几种常见的 method_call 情况，太多的就不管了
-            # a->b->func()  |  a->func()
             code = self.get_method_call_name(node)
             if not code:
                 code = self.analyzer.code_step.get_node_code(node)   
             # print(f"Method/Static/Func Call analyzed code: {code}")
         else:
-            code = self.analyzer.code_step.get_node_code(node)      # AST_STATIC_CALL 的 node code 可以直接获取 AST_METHOD_CALL 只能获取最后一个method名，前面的嵌套的property和method获取不到
+            code = self.analyzer.code_step.get_node_code(node)
         for vuln_type, anchor_functions in FUNCTION_MODEL.items():
             if code in anchor_functions or f"{code}()" in anchor_functions:
                 if code == "fopen" and vuln_type == 2:
                     self.f_insert(node, 12)
                     self.f_insert(node, 6)
-                # print(f"Found sink node: {code} of type {vuln_type}")
                 return 0b10, vuln_type
         if code in PHP_BUILT_IN_FUNCTIONS and node[NODE_TYPE] == TYPE_CALL:
             return 0b00, -1
@@ -387,10 +364,6 @@ class TargetSinkFinder(object):
                 pass
 
     def cc_run(self, extend_vuln_model, sink_file=None) -> bool:
-        """
-        使用单个数据库的原始版本 (用于初始加载)
-        """
-        # 扩展漏洞模型
         for vuln_type in extend_vuln_model:
             if vuln_type in FUNCTION_MODEL:
                 FUNCTION_MODEL[vuln_type].extend(extend_vuln_model[vuln_type])
@@ -414,7 +387,6 @@ class TargetSinkFinder(object):
         print(f"Total files to analyze: {len(fileid_list)}")
 
         if sink_file is not None:
-            # 只分析给定文件，先遍历 fileid_name_dict，然后判断文件名，取出对应的 fileid
             target_fileids = []
             for fileid, name in fileid_name_dict.items():
                 if type(sink_file) == list:
@@ -432,12 +404,7 @@ class TargetSinkFinder(object):
         print(f"Total nodes to analyze: {len(nodes_todo_analysis)}")
 
         if nodes_todo_analysis.__len__() > 30000:
-            print("node to analyze 太多了，暂时先不处理。")
             return
-
-        print("============================")
-        print("开始分析 sink 节点 ...")
-        print("============================")
         with ThreadPoolExecutor(max_workers=24) as executor:
             futures_to_node = {executor.submit(self._anchor_function_analysis, node): node for node in nodes_todo_analysis}
             for future in tqdm(as_completed(futures_to_node), total=len(nodes_todo_analysis)):
@@ -457,23 +424,6 @@ class TargetSinkFinder(object):
 def process_node_batch_with_db(node_ids, bolt_port, http_port, original_db_name, 
                                 target, extend_vuln_model, sink_file,
                                 DATABASE_PATH, base_bolt_port):
-    """
-    使用独立数据库处理一批节点
-    
-    Args:
-        node_ids: 节点ID列表
-        bolt_port: Bolt端口
-        http_port: HTTP端口
-        original_db_name: 原始数据库名称
-        target: 目标项目名称
-        extend_vuln_model: 扩展的漏洞模型
-        sink_file: sink文件过滤
-        DATABASE_PATH: 数据库路径
-        base_bolt_port: 基础bolt端口
-    
-    Returns:
-        找到的sink节点字典
-    """
     import subprocess
     import time
     from collections import defaultdict
@@ -513,7 +463,6 @@ def process_node_batch_with_db(node_ids, bolt_port, http_port, original_db_name,
         #     pass
 
         
-        # 创建analyzer连接
         config_dict = {
             "all_prepatch": {
                 "NEO4J_HOST": "localhost",
@@ -530,30 +479,22 @@ def process_node_batch_with_db(node_ids, bolt_port, http_port, original_db_name,
                 analyzer = Neo4jEngine.from_dict(config_dict["all_prepatch"])
                 break
             except Exception as e:
-                print(f"连接 {bolt_port} 数据库失败，重试中... 错误信息: {e}")
                 time.sleep(3)
 
         print(f"[Worker-{bolt_port}] Connected to expected database instance.")
 
-        # 创建TargetSinkFinder实例
         sink_finder = TargetSinkFinder(
             analysis_framework=analyzer,
             git_repository=target
         )
-        
-        # print(FUNCTION_MODEL)
-        # 批量查询节点
+
         query = f"MATCH (n:AST) WHERE id(n) in {node_ids} RETURN n"
         nodes = [node for node, in analyzer.basic_step.run(query)]
         
-        # print(f"[Worker-{bolt_port}] Processing {len(nodes)} nodes...")
-        
-        # 分析每个节点
         for node in tqdm(nodes):
             try:
                 flag, vuln_type = sink_finder._anchor_function_analysis(node)
                 if flag == 0b10:
-                    # 找到sink节点
                     anchor_node = AnchorNode.from_node_instance(
                         node,
                         judge_type=0b0001,
@@ -567,7 +508,6 @@ def process_node_batch_with_db(node_ids, bolt_port, http_port, original_db_name,
                         'anchor_node': anchor_node
                     })
                     
-                    # 特殊处理fopen
                     code = analyzer.code_step.get_node_code(node)
                     if code == "fopen" and vuln_type == 2:
                         for extra_type in [12, 6]:
@@ -593,7 +533,6 @@ def process_node_batch_with_db(node_ids, bolt_port, http_port, original_db_name,
         import traceback
         traceback.print_exc()
     finally:
-        # 停止数据库
         # print(f"[Worker-{bolt_port}] Stopping database {db_name}...")
         # subprocess.run(
         #     [f"{db_path}/bin/neo4j", "stop"],
@@ -609,41 +548,16 @@ def process_node_batch_with_db(node_ids, bolt_port, http_port, original_db_name,
 
 def cc_run_parallel(original_db_name, target, extend_vuln_model, sink_file, 
                    num_workers, num_neo4j_instances, DATABASE_PATH, base_bolt_port=17687, base_http_port=17474):
-    """
-    并行版本的cc_run，使用多个数据库副本
-    
-    Args:
-        original_db_name: 原始数据库名称 (例如: "project-latest")
-        target: 项目目标名称
-        extend_vuln_model: 扩展的漏洞模型
-        sink_file: sink文件过滤
-        num_workers: 工作线程数
-        DATABASE_PATH: 数据库路径
-        base_bolt_port: 基础bolt端口
-        base_http_port: 基础http端口
-    
-    Returns:
-        合并后的potential_sinks字典
-    """
-    # 首先使用一个数据库获取所有需要分析的节点ID
 
     analysis_file_scope_dict = {}                                                       
 
-
-
-    print("============================")
-    print("Step 1: 获取待分析节点列表...")
-    print("============================")
-    
     first_bolt_port = base_bolt_port
     first_http_port = base_http_port
     first_db_name = f"{original_db_name}"
     pure_db_name = original_db_name.replace("_prepatch", "")
     if pure_db_name in analysis_file_scope_dict:
         sink_file = analysis_file_scope_dict[pure_db_name]
-        print(f"使用预定义的文件过滤列表，共 {len(sink_file)} 个文件。")
     
-    # 启动第一个数据库
     import subprocess
     import time
     db_path = os.path.join(DATABASE_PATH, first_db_name)
@@ -671,11 +585,9 @@ def cc_run_parallel(original_db_name, target, extend_vuln_model, sink_file,
             analyzer = Neo4jEngine.from_dict(config_dict["all_prepatch"])
             break
         except Exception as e:
-            print(f"连接第一个数据库失败，重试中... 错误信息: {e}")
             time.sleep(3)
     # analyzer = Neo4jEngine.from_dict(config_dict["all_prepatch"])
     
-    # 获取文件列表
     query = f"MATCH (tp: AST) WHERE tp.type = '{TYPE_TOPLEVEL.__str__()}' RETURN tp.fileid, tp.name"
     fileid_name_list = [(fileid, name) for fileid, name in analyzer.basic_step.run(query)]
 
@@ -692,7 +604,6 @@ def cc_run_parallel(original_db_name, target, extend_vuln_model, sink_file,
     fileid_list = list(fileid_name_dict.keys())
     print(f"Total files to analyze: {len(fileid_list)}")
     
-    # 文件过滤
     if sink_file is not None:
         target_fileids = []
         for fileid, name in fileid_name_dict.items():
@@ -706,45 +617,31 @@ def cc_run_parallel(original_db_name, target, extend_vuln_model, sink_file,
         fileid_list = target_fileids
         print(f"After filtering by sink file, total files to analyze: {len(fileid_list)}")
     
-    # 获取所有待分析节点的ID
     query = f"MATCH (n:AST) WHERE n.type in {COMMON_NODE_TYPES.__str__()} and n.fileid in {fileid_list} RETURN id(n)"
     node_ids = [node_id for node_id, in analyzer.basic_step.run(query)]
     print(f"Total nodes to analyze: {len(node_ids)}")
     
     if len(node_ids) > 110000:
-        print("node to analyze 太多了，暂时先不处理。")
-        # 停止第一个数据库
         # subprocess.run([f"{db_path}/bin/neo4j", "stop"], capture_output=True, text=True, check=False)
         stop_database_with_port(first_db_name, DATABASE_PATH)
         return defaultdict(AnchorNodeList)
     
 
-    # 扩展漏洞模型
     for vuln_type in extend_vuln_model:
         if vuln_type in FUNCTION_MODEL:
-            # 创建副本避免修改全局
             FUNCTION_MODEL[vuln_type] = list(set(FUNCTION_MODEL[vuln_type] + extend_vuln_model[vuln_type]))
 
         else:
             FUNCTION_MODEL[vuln_type] = extend_vuln_model[vuln_type]
-
-    # 停止第一个数据库
-    # subprocess.run([f"{db_path}/bin/neo4j", "stop"], capture_output=True, text=True, check=False)
-    # time.sleep(3)
-    
-    # 将节点ID分批
     batch_size = len(node_ids) // num_workers + 1
     node_id_batches = [node_ids[i:i + batch_size] for i in range(0, len(node_ids), batch_size)]
 
 
     print("============================")
-    print(f"Step 2: 使用 {num_neo4j_instances} 个数据库 {num_workers} 个 worker 并行分析节点...")
+    print(f"Step 2: use {num_neo4j_instances} 个数据库 {num_workers} 个 worker 并行分析节点...")
     print(f"每个worker处理约 {batch_size} 个节点")
     print("============================")
-    
-    # 并行处理
-    # 每 numwork / num_neo4j_instances 个worker使用同一个数据库实例
-    # 将不同 worker 分配到不同的数据库实例
+
     steps = num_workers // num_neo4j_instances + 1
     all_results = []
     with ThreadPoolExecutor(max_workers=num_workers) as executor:
@@ -767,7 +664,6 @@ def cc_run_parallel(original_db_name, target, extend_vuln_model, sink_file,
             )
             futures.append(future)
         
-        # 收集结果
         for future in tqdm(as_completed(futures), total=len(futures), desc="Processing batches"):
             try:
                 result = future.result()
@@ -777,13 +673,6 @@ def cc_run_parallel(original_db_name, target, extend_vuln_model, sink_file,
                 import traceback
                 traceback.print_exc()
     
-
-    # subprocess.run([f"{db_path}/bin/neo4j", "stop"], capture_output=True, text=True, check=False)
-    # time.sleep(3)
-    # 合并结果
-    print("============================")
-    print("Step 3: 合并所有结果...")
-    print("============================")
     
     merged_sinks = defaultdict(AnchorNodeList)
     for result in all_results:
@@ -791,9 +680,8 @@ def cc_run_parallel(original_db_name, target, extend_vuln_model, sink_file,
             for sink_info in sink_list:
                 merged_sinks[vuln_type].add_without_check(sink_info['anchor_node'])
     
-    # 打印统计信息
     total_sinks = sum(len(sinks) for sinks in merged_sinks.values())
-    print(f"\n找到的Sink节点统计:")
+    print(f"\nFound Sink nodes statistics:")
     for vuln_type, sinks in merged_sinks.items():
         if sinks:
             vuln_name = {
@@ -801,7 +689,7 @@ def cc_run_parallel(original_db_name, target, extend_vuln_model, sink_file,
                 4: 'Command_Injection', 6: 'File_Upload', 7: 'File_Include',
                 9: 'SQL_Injection', 10: 'XSS', 12: 'File_Write'
             }.get(vuln_type, f'Type_{vuln_type}')
-            print(f"  {vuln_name}: {len(sinks)} 个节点")
-    print(f"总计: {total_sinks} 个sink节点\n")
+            print(f"  {vuln_name}: {len(sinks)} nodes")
+    print(f"Total: {total_sinks} sink nodes\n")
     
     return merged_sinks

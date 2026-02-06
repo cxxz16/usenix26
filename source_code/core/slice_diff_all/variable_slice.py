@@ -11,7 +11,7 @@ from ground_truth.slice_diff_all.codefile import CodeFile, create_code_tree
 
 
 cve_8637_diff = "./storage/patch_analysis_result/diff"
-cve_8637_code = "/home/xinchu/research/RecurScan/SanCheck/php-cve-dataset/d99bd8277d384f3417e917ce20bef5d061110343_v1"
+cve_8637_code = "./php-cve-dataset/d99bd8277d384f3417e917ce20bef5d061110343_v1"
 
 
 def variable_slice(cveid, cve_code_path):

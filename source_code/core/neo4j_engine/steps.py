@@ -16,7 +16,6 @@ class AbstractStep(ABC):
     def __init__(self, parent, step_name="abstract_step"):
         self.parent = parent
         self.__step_name = step_name
-        # 查询语句相同 则 查询结果相同（对于同一个 project 来说）
         self.query_result_cache = dict()
 
     def __str__(self):
@@ -113,7 +112,7 @@ class ASTStep(AbstractStep):
         else:
             return self.filter_parent_nodes(__node, max_depth=max_depth, not_include_self=not_include_self,
                                             node_type_filter=node_type_filter)
-    # 根据输入的参数动态调整，允许用户灵活地获取和过滤图数据库中的子节点。
+    # 
     def filter_child_nodes(self, _node: py2neo.Node, max_depth=5, not_include_self: bool = False,
                            node_type_filter: Union[List[str], str, Set[str]] = None) -> List[py2neo.Node]:
         if _node[NODE_INDEX] is None:
@@ -143,7 +142,7 @@ class ASTStep(AbstractStep):
         return result[0]['count(r)'] > 0
 
     """
-        获取和节点相关的控制流节点
+        
     """
     def get_root_node(self, node: py2neo.Node) -> py2neo.Node:
         assert node is not None    
@@ -175,8 +174,8 @@ class ASTStep(AbstractStep):
             root_node = self.get_child_node(self.get_parent_node(node))
             self.node_with_rootnood_cache[node] = root_node
             return root_node
-        # parent 是其他类型的语句时也要处理。例如 ast_stmt_list
-        while node is not None and not self.__has_cfg(node):    # 这里值判断有 cfg 的情况，然后如果是多个 cfg 流入，例如前面有控制流的分叉，在上面状态机部分就已经处理好了的。
+        # parent  ast_stmt_list
+        while node is not None and not self.__has_cfg(node):    #  cfg  cfg 
             _node = self.get_parent_node(node, ignore_error_flag=True)
             if _node is None:
                 return None
@@ -202,7 +201,7 @@ class ASTStep(AbstractStep):
         func_exit = self.parent.match_first(LABEL_ARTIFICIAL,
                                             **{NODE_FUNCID: node[NODE_INDEX],
                                                NODE_FILEID: node[NODE_FILEID],
-                                               NODE_TYPE: TYPE_CFG_FUNC_EXIT})  # 获取函数退出节点
+                                               NODE_TYPE: TYPE_CFG_FUNC_EXIT})  # 
         for r in self.parent.match_relationship([None, func_exit], r_type=CFG_EDGE):
             res.append(r.start_node)
         return list(sorted(res, key=lambda x: x[NODE_INDEX]))
@@ -273,7 +272,7 @@ class ASTStep(AbstractStep):
         return func_args
 
     def find_function_arg_node_list(self, node):
-        if node in self.func_args_cache.keys():        # 这里的缓存策略要修改下
+        if node in self.func_args_cache.keys():        # 
             return self.func_args_cache[node]
         else:
             assert node[NODE_TYPE] in [TYPE_CALL, TYPE_METHOD_CALL, TYPE_STATIC_CALL, TYPE_NEW, TYPE_ECHO, TYPE_PRINT, TYPE_INCLUDE_OR_EVAL, TYPE_EXIT, TYPE_FUNC_DECL, TYPE_METHOD, TYPE_RETURN, TYPE_EMPTY]
@@ -362,7 +361,7 @@ class ASTStep(AbstractStep):
         return global_vars
     
 
-    # 自定义的 source 添加
+    #  source 
     def find_custom_sources(self, node: py2neo.Node, custom_source_list):
         if not custom_source_list:
             return []
@@ -596,7 +595,6 @@ class CodeStep(AbstractStep):
         attribute = _normalize(self.parent.get_ast_ith_child_node(node, -1)[NODE_CODE])
         clazz = self.parent.get_ast_child_node(self.parent.get_ast_ith_child_node(node, 0))[NODE_CODE]
         return f"{clazz}::${attribute}"
-    # 查看 a['b'] 这类元素访问类型节点的ast body 就是 a
     def get_ast_dim_body_code(self, node: py2neo.Node) -> str:
         assert node[NODE_TYPE] == TYPE_DIM
         dim_body = self.parent.get_ast_child_node(self.parent.get_ast_child_node(node))[NODE_CODE]
@@ -731,7 +729,7 @@ class FIGStep(AbstractStep):
                     1).first()
         
         elif match_strategy == 3:
-            # 匹配filesystem 直接返回 filesystem
+            # filesystem  filesystem
             nodes = [i for i in self.parent.match("Filesystem", ).where(f"_.name = '{_file_name}.php' ")]
             if nodes.__len__() >= 1:
                 if file_path:
@@ -888,7 +886,7 @@ class RangeStep(AbstractStep):
                 if self.parent.cfg_step.find_successors(node).__len__() == 0:
                     logger.fatal(f"no flows to another node for control node {node}")
                     node_range = (parent_node[NODE_INDEX], parent_node[NODE_INDEX] + 500)
-                else: # 只看 if 影响的范围，node_range
+                else: #  if node_range
                     node_range = (
                             parent_node[NODE_INDEX], self.parent.cfg_step.find_successors(node)[-1][NODE_INDEX] - 1)
                 self.__range_cache[node_hash] = node_range

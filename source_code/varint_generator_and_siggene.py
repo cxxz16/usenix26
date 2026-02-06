@@ -24,22 +24,14 @@ sig_generate_dir = "./hydra/sig_gene_results"
 
 os.makedirs(VARIANT_CODE_RESULTS_NEO4J_DIR, exist_ok=True)
 def _normalize_df_path_str(p: str) -> str:
-    """
-    1) 去掉 [Path N] 前缀
-    2) 去掉换行/首尾空白
-    3) 统一 '->' 两侧空格，避免因为空格差异导致无法去重
-    """
     if not p:
         return ""
     s = p.strip()
 
-    # remove "[Path 123]" prefix
     s = re.sub(r"^\[Path\s*\d+\]\s*", "", s)
 
-    # normalize arrow spacing
     s = re.sub(r"\s*->\s*", " -> ", s)
 
-    # collapse multiple spaces
     s = re.sub(r"\s+", " ", s).strip()
     return s
 
@@ -54,14 +46,11 @@ def clean_dataflow_path(cve_id):
         cve_sig_info_path, f"{cve_id}_prepatch_final_dataflow_str_list.json"
     )
     if not os.path.exists(dataflow_str_list_file):
-        print(f"[-] {cve_id} 的数据流文件不存在，跳过处理")
         return False
 
     with open(dataflow_str_list_file, "r", encoding="utf-8") as f:
         dataflow_str_list = json.load(f)
 
-    # 目标：file -> unique_paths(list)
-    # 用 OrderedDict 做去重并保持首次出现顺序
     file_dfpath_odict = {}  # file_path -> OrderedDict(clean_path -> None)
 
     file_dfpath_list = dataflow_str_list.get("inter", [])
@@ -74,7 +63,6 @@ def clean_dataflow_path(cve_id):
                 file_dfpath_odict[file_path_key] = OrderedDict()
 
             if not isinstance(df_path_list, list):
-                # 兼容极端情况：不是 list 就跳过/或转为单条
                 df_path_list = [df_path_list]
 
             for raw_path in df_path_list:
@@ -85,7 +73,7 @@ def clean_dataflow_path(cve_id):
     for fp, od in file_dfpath_odict.items():
         numbered = []
         for idx, clean_path in enumerate(od.keys(), start=1):
-            numbered.append(f"[Path {idx}] {clean_path}\n")  # 需要保留换行就加 \n；不需要就去掉
+            numbered.append(f"[Path {idx}] {clean_path}\n")
         file_dfpath_dict[fp] = numbered
 
     out_file = os.path.join(
@@ -100,10 +88,9 @@ def clean_dataflow_path(cve_id):
     return out_file
 
 
-MAX_CVE_WORKERS = 4  # 按你的 OpenAI 限速/机器情况调，别太大
-# MODEL = "claude-sonnet-4-5-20250929"
-MODEL = "variant_code_0128"
-CLAUDE_API_KEY = "sk-DSirPeRnOqYdUHOL3LiBN7oyjVeGvI5q9EHrCSHX6jRJFAhA"
+MAX_CVE_WORKERS = 4  
+MODEL = ""
+CLAUDE_API_KEY = ""
 
 def process_one_cve(cve_sig_info):
     if not cve_sig_info.endswith("_sig_info"):
@@ -123,19 +110,16 @@ def process_one_cve(cve_sig_info):
     print("[+] Cleaning dataflow paths ...")
     out_file = clean_dataflow_path(cve_id)
 
-    print("[+] 调用变体生成模块 ...")
     with open(out_file, "r", encoding="utf-8") as f:
         file2paths = json.load(f)
 
-    # 漏洞存在性验证 + 生成（你这个线程内仍然是串行的，最稳）
     vuln_exists = []
     for src_file in file2paths.keys():
         result = vuln_check(cve_id, src_file)
         if result:
-            print(f"[+] {src_file} 存在漏洞，进行变体生成")
             vuln_exists.append(src_file)
         else:
-            print(f"[-] {src_file} 不存在漏洞，跳过变体生成")
+            print(f"[-] {src_file} does not contain the vulnerability. skip ...")
 
     for src_file, dataflow_paths in file2paths.items():
         if src_file in vuln_exists:
@@ -178,65 +162,6 @@ def main():
         potential_source_funcname_data = json.load(f)
 
 
-    # # NEW: build cve_id -> {"sink": [...], "source": [...]}
-    
-
-    # for cve_id in os.listdir(CVE_RC_CODE_DIR):
-    #     potential_sink_funcname_list = []
-    #     potential_source_funcname_list = []
-
-    #     if cve_id in cve_id_to_vuln_type:
-    #         vuln_type = str(VULN_TYPE_STR_TO_DIGIT_DICT[cve_collection[cve_id_to_vuln_type[cve_id]][cve_id]['vuln_type']])
-    #         if vuln_type not in potential_sink_funcname_data:
-    #             print(f"[-] vuln_type {vuln_type} not in potential_sink_funcname_data")
-    #             continue
-    #         existing_entry = next(
-    #             (e for e in potential_sink_funcname_data[vuln_type]
-    #             if str(e.get('cve_id')) == str(cve_id)),
-    #             None
-    #         )
-    #         if existing_entry is not None:
-    #             potential_sink_funcname_list = existing_entry.get('potential_sink_funcname_list', [])
-    #         else:
-    #             potential_sink_funcname_list = []
-
-    #         potential_source_funcname_list = potential_source_funcname_data.get(cve_id, [])
-
-    #     elif cve_id in cve_1201_collection['sql_injection']:
-    #         vuln_type = str(VULN_TYPE_STR_TO_DIGIT_DICT['sql_injection'])
-    #         if vuln_type not in potential_sink_funcname_data:
-    #             print(f"[-] vuln_type {vuln_type} not in potential_sink_funcname_data")
-    #             continue
-    #         potential_sink_funcname_list = cve_1201_collection['sql_injection'][cve_id]['sink']['function_name']
-    #         if type(potential_sink_funcname_list) is not list:
-    #             potential_sink_funcname_list = [potential_sink_funcname_list]
-
-    #         potential_source_funcname_list = cve_1201_collection['sql_injection'][cve_id]['source']['function_name']
-    #         if potential_source_funcname_list in {"_POST", "_GET", "_REQUEST", "_FILE", "_COOKIE"}:
-    #             potential_source_funcname_list = []
-    #         else:
-    #             potential_source_funcname_list = [potential_source_funcname_list]
-
-    #     # store mapping
-    #     cve_id_sink_source_dict[cve_id] = {
-    #         "sink": potential_sink_funcname_list,
-    #         "source": potential_source_funcname_list
-    #     }
-
-
-    # # 执行具体的变体生成
-    # with ThreadPoolExecutor(max_workers=MAX_CVE_WORKERS) as ex:
-    #     futures = [ex.submit(process_one_cve, cve_sig_info) for cve_sig_info in cve_list]
-
-    #     for fut in tqdm(as_completed(futures), total=len(futures), desc="CVE generation"):
-    #         try:
-    #             status, cve_id, variant_code_cve = fut.result()
-    #             if status == "ok":
-    #                 ok_jobs.append((cve_id, variant_code_cve))
-    #         except Exception as e:
-    #             print(f"[!] CVE task failed: {e}")
-
-    # 对生成的变体生成 neo4j
     for cve_id in tqdm(os.listdir(os.path.join(VARIANT_CODE_RESULTS_DIR, "variant_code", MODEL))):
         variant_code_cve = os.path.join(VARIANT_CODE_RESULTS_DIR, "variant_code", MODEL, cve_id)
         banner_print(f"[+] Generating variant neo4j for {cve_id} ...")
@@ -253,8 +178,6 @@ def main():
             continue
 
         cve_neo4j_path = os.path.join(VARIANT_CODE_RESULTS_NEO4J_DIR, MODEL, cve_id)
-        # 启动  然后提取签名
-        # 这里还要用原来的 source sink 对应 
         if cve_id in cve_id_to_vuln_type:   
             vuln_type = str(VULN_TYPE_STR_TO_DIGIT_DICT[cve_collection[cve_id_to_vuln_type[cve_id]][cve_id]['vuln_type']])
             existing_entry = next(
@@ -286,7 +209,6 @@ def main():
                 potential_source_funcname_list = [potential_source_funcname_list]
 
 
-        # 从生成的变体中提取漏洞签名 并保存
         change_conn_port(os.path.join(cve_neo4j_path, "conf/neo4j.conf"), "7690", "7476")
         # start_databases_with_database(cve_neo4j_path, f"{cve_id}_variant_sig_db")
         run_sig_source_sink(f"{cve_id}_prepatch", potential_source_funcname_list, 

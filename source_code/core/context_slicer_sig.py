@@ -68,7 +68,7 @@ class ContextSlicerSig(object):
         self.do_backward_slice()
         self.do_forward_path_exploration()
         self.anchor_node.node_id = self.__backup_anchor_node_id
-        # 绘制
+        # 
 
         save_pdg_graph(self.pdg_digraph, "pdg_graph.png")
         self.dataflow_str_list = print_pdg_paths(self.pdg_digraph)
@@ -84,7 +84,7 @@ class ContextSlicerSig(object):
             self.anchor_node_root = self.analyzer.ast_step.get_root_node(self.anchor_node_ast)
         self._do_backward_slice(self.anchor_node_ast, pdg_parent=None, id_threshold=self.anchor_node_ast[NODE_INDEX],
                                 taint_param=taint_param)
-        self.far_node = min(self.pdg_digraph.nodes.keys())  # 最远的有数据流关系的 node
+        self.far_node = min(self.pdg_digraph.nodes.keys())  #  node
         self.taint_param = taint_param
 
     def _do_backward_slice(self, node, pdg_parent=None, id_threshold=0xff, taint_param=None):
@@ -102,7 +102,7 @@ class ContextSlicerSig(object):
                 node[NODE_INDEX], add_rels="PDG", root_node_id=node[NODE_INDEX], lineno=node[NODE_LINENO],
         )
         if self.analyzer.ast_step.find_sources(node, max_depth=15) or self.analyzer.ast_step.find_custom_sources(node, self.custom_sources):
-            self.sources.add(node[NODE_INDEX])  # 这里保存的是 node，find_source 是找的其child，例如node 是 assign，那保存的就是这个 assign 语句
+            self.sources.add(node[NODE_INDEX])  #  nodefind_source childnode  assign assign 
         
         if pdg_parent is not None:
             assert taint_param is not None
@@ -113,7 +113,7 @@ class ContextSlicerSig(object):
                     node[NODE_INDEX], pdg_parent[NODE_INDEX], add_rels='PDG', taint_param=taint_param
                 )
         
-        # 所有能到达当前 node 的变量定义
+        #  node 
         def_nodes = self.analyzer.pdg_step.find_def_nodes(node)
         if node in def_nodes:
             def_nodes.pop(def_nodes.index(node))
@@ -126,18 +126,18 @@ class ContextSlicerSig(object):
             self._do_backward_slice(def_node, pdg_parent=node, id_threshold=def_node[NODE_INDEX], 
                                 taint_param=taint_param)
 
-    # add: 添加了对自定义 source 的支持
+    # add:  source 
     def do_forward_path_exploration(self):
         potential_condition_nodes = [i for i, in self.analyzer.run(
             "MATCH (A:AST) - [:PARENT_OF] -> (B:AST) WHERE A.type='AST_IF_ELEM' AND B.childnum=0 " + \
             f"AND B.type <> 'NULL' AND {self.far_node - 100} <= B.id AND B.id <= {self.far_node} RETURN B"
-        )]      # 这里限制 far 的目的是要找到最早污点之前的 check，相当于初始化一个，并不是全部的 check 都要找，因为后续的遍历不会遍历 far_node 之前，只会遍历 far_node 到 sink_node 之间的节点
+        )]      #  far  check check  far_node  far_node  sink_node 
         condition_ids = set()
         for node in potential_condition_nodes:
             parent_node = self.analyzer.get_ast_parent_node(node)
             low_bound, high_bound = self.analyzer.range_step.get_condition_range(parent_node)
             if low_bound <= self.far_node and self.far_node <= high_bound and \
-                    (self.analyzer.ast_step.find_sources(node) or self.analyzer.ast_step.find_custom_sources(node, self.custom_sources)):  # 找到 check 范围内的 global var，只有当 condition 里有 global 时才添加到 condition_ids，即这个 check 才有意义
+                    (self.analyzer.ast_step.find_sources(node) or self.analyzer.ast_step.find_custom_sources(node, self.custom_sources)):  #  check  global var condition  global  condition_ids check 
                 condition_ids.add(node[NODE_INDEX])
         
         far_node_ast = self.analyzer.get_node_itself(self.far_node)
@@ -148,12 +148,12 @@ class ContextSlicerSig(object):
 
         self._do_forward_path_exploration(node=far_node_ast, cfg_pdg_path=set(), path_conditions=condition_ids,  
                                           threshold=[far_node_ast[NODE_INDEX], self.anchor_node_ast[NODE_INDEX]],
-                                          cycle_exit_identifier=set())  # range 控制在 far_node 之后 sink_node 之前
+                                          cycle_exit_identifier=set())  # range  far_node  sink_node 
 
     def _do_forward_path_exploration(self, node: py2neo.Node, cfg_pdg_path: set = set(), path_conditions: set = set(),
                                      has_source=False, threshold=None, cycle_exit_identifier: set = None, **kwargs):
-        # 没有 source 都是白扯
-        # forward 策略需要更新？ 路径爆炸。。。
+        #  source 
+        # forward  
 
         if self.sources.__len__() == 0:
             return None
@@ -163,22 +163,22 @@ class ContextSlicerSig(object):
         if threshold is None:
             threshold = [-0xff, 0xffff]
         threshold_bottom, threshold_upper = threshold
-        # 从 farnode 开始 farward exploration
+        #  farnode  farward exploration
         if node is None or node.labels.__str__() != ":" + LABEL_AST:
             return None
         if node[NODE_INDEX] < threshold_bottom or node[NODE_INDEX] > threshold_upper:
             return None
-        # 找到循环出口点，讲 node 替换为出口点的后继节点，那这样，循环体内不就不会被遍历吗？
+        #  node 
         node = self._find_outside_exit_identifier(cycle_exit_identifier, node)
         if node[NODE_LINENO] is None:
             return None
 
-        if node[NODE_INDEX] in self.pdg_digraph.nodes.keys():   # 有数据关系直接加到 cfg_pdg_path 中来
+        if node[NODE_INDEX] in self.pdg_digraph.nodes.keys():   #  cfg_pdg_path 
             cfg_pdg_path.add(node[NODE_INDEX])
             if node[NODE_INDEX] in self.sources:
                 has_source = True
 
-        # 如果 前向遍历的 node 已经超过了 sink 点并且遍历到了sink点，那么 forward exploration 就结束了，添加数据流路径
+        #   node  sink sink forward exploration 
         if node[NODE_INDEX] >= self.anchor_node_root[NODE_INDEX]:
             if self.anchor_node_root[NODE_INDEX] in cfg_pdg_path and \
                 has_source:
@@ -213,23 +213,23 @@ class ContextSlicerSig(object):
                                                   path_conditions=path_conditions, has_source=has_source,
                                                   parent_cfg_node=cfg_rel.start_node,
                                                   cycle_exit_identifier=cycle_exit_identifier,
-                                                  threshold=[-1, threshold_upper]) # cfg_rels[0] 是 true 分支，cfg_rels[0].end_node 是循环体内的第一个节点，所以这是进入循环体内继续遍历
+                                                  threshold=[-1, threshold_upper]) # cfg_rels[0]  true cfg_rels[0].end_node 
             else:
                 pass
         elif parent_node[NODE_TYPE] in {TYPE_IF_ELEM} and node[NODE_CHILDNUM] == 0:
             cfg_rels = [i for i in self.analyzer.neo4j_graph.relationships.match([node], r_type=CFG_EDGE)]
             cfg_rels = list(sorted(cfg_rels, key=lambda x: x.end_node[NODE_INDEX]))
             if cfg_rels.__len__() == 2:
-                # 这里 reaches*1.. 会非常慢，因此先判断 source，如果为空就不要浪费时间，然后使用 
+                #  reaches*1..  source 
                 # MATCH (S:AST {id: 273}), (C:AST {id: 297})
                 # MATCH P = shortestPath((S)-[:REACHES*1..]->(C))
                 # RETURN P
-                # shortestPath 来查询
+                # shortestPath 
 
                 # source_rels = [i for i, in self.analyzer.run(
                 #     f"MATCH P = (S:AST) - [:REACHES*1..] -> (C:AST) WHERE S.id in {list(self.sources).__str__()} " + \
                 #     f"AND C.id={node[NODE_INDEX]} RETURN P"
-                # )]  # 看 source 的 def 能否到达当前 condition node  这一步很浪费时间
+                # )]  #  source  def  condition node  
                 
                 # MATCH (S:AST), (C:AST {id: 297})
                 # where S.id in [128, 191, 226, 353, 164, 264, 137, 173, 209, 146, 437, 182, 217, 155, 255]
@@ -341,23 +341,23 @@ class ContextSlicerSig(object):
 
 def save_pdg_graph(G, file_path="pdg_graph.png"):
     """
-    将 PDG 有向图保存为本地图片。
-    节点显示编号和行号，边显示 taint_param。
+     PDG 
+     taint_param
     """
     if G.number_of_nodes() == 0:
         print("⚠️ Graph is empty, nothing to draw.")
         return
 
     plt.figure(figsize=(10, 8))
-    pos = nx.spring_layout(G, seed=42)  # 自动布局，可换成 shell_layout/circular_layout
+    pos = nx.spring_layout(G, seed=42)  #  shell_layout/circular_layout
 
-    # --- 绘制节点 ---
+    # ---  ---
     nx.draw_networkx_nodes(G, pos, node_color="#90CAF9", node_size=900, edgecolors='black')
 
-    # --- 绘制边（带箭头） ---
+    # ---  ---
     nx.draw_networkx_edges(G, pos, arrowstyle="->", arrowsize=15, edge_color="#555")
 
-    # --- 节点标签：显示节点索引和行号 ---
+    # ---  ---
     node_labels = {}
     for n, attr in G.nodes(data=True):
         label = str(n)
@@ -366,7 +366,7 @@ def save_pdg_graph(G, file_path="pdg_graph.png"):
         node_labels[n] = label
     nx.draw_networkx_labels(G, pos, labels=node_labels, font_size=9)
 
-    # --- 边标签：显示 taint_param ---
+    # ---  taint_param ---
     edge_labels = {}
     for u, v, attr in G.edges(data=True):
         if 'taint_param' in attr and attr['taint_param']:
@@ -386,38 +386,38 @@ def save_pdg_graph(G, file_path="pdg_graph.png"):
 from typing import List, Tuple
 
 def _format_taint(taint_param) -> str:
-    """把 taint_param 格式化为字符串（支持 str / list / set / None）"""
+    """ taint_param  str / list / set / None"""
     if taint_param is None:
         return "?"
     if isinstance(taint_param, str):
-        # 已经是字符串，直接返回
+        # 
         return taint_param
     if isinstance(taint_param, (set, list, tuple)):
-        # 多个变量时，合并为逗号分隔
+        # 
         return ",".join(sorted(str(x) for x in taint_param))
-    # 其他类型（比如数字等）
+    # 
     return str(taint_param)
 
 
 def extract_pdg_paths(G: nx.DiGraph, start_nodes=None, max_depth=200) -> List[List[Tuple[str, int]]]:
     """
-    从 PDG 图 G 提取从 start_nodes 出发的所有简单路径，返回 list of paths，
-    每条路径是一个列表 [(var, lineno), ...]：
-      - 第一个元素的 var 为 "?"（源节点）
-      - 之后每个元素的 var 来自进入该节点的边的 taint_param（逗号分隔）
-    如果 start_nodes 为 None，则自动用 G 中入度为0的节点作为起点（sources）。
+     PDG  G  start_nodes  list of paths
+     [(var, lineno), ...]
+      -  var  "?"
+      -  var  taint_param
+     start_nodes  None G 0sources
     """
     if G.number_of_nodes() == 0:
         return []
 
-    # 选择起点
+    # 
     if start_nodes is None:
         start_nodes = [n for n in G.nodes() if G.in_degree(n) == 0]
     else:
-        # 允许传入集合或可迭代对象
+        # 
         start_nodes = list(start_nodes)
 
-    if not start_nodes:  # 如果没有显式 source，退回到所有节点作为起点（谨慎）
+    if not start_nodes:  #  source
         start_nodes = list(G.nodes())
 
     results = []
@@ -425,22 +425,22 @@ def extract_pdg_paths(G: nx.DiGraph, start_nodes=None, max_depth=200) -> List[Li
     def dfs(current, visited, path_pairs):
         """
         visited: set of visited node ids
-        path_pairs: list of tuples currently构成的路径 [(var, lineno), ...]
+        path_pairs: list of tuples currently [(var, lineno), ...]
         """
         if len(visited) > max_depth:
-            # 防止无限递归，遇到太深路径就停止
+            # 
             results.append(list(path_pairs))
             return
 
-        # 找出未被访问过的后继
+        # 
         successors = [nbr for nbr in G.successors(current) if nbr not in visited]
         if not successors:
-            # 到达终点（无未访问的后继），记录路径
+            # 
             results.append(list(path_pairs))
             return
 
         for nbr in successors:
-            # 取边属性 taint_param（可能为 set）
+            #  taint_param set
             edge_data = G.get_edge_data(current, nbr, default={})
             taint = edge_data.get('taint_param', None)
 
@@ -454,9 +454,9 @@ def extract_pdg_paths(G: nx.DiGraph, start_nodes=None, max_depth=200) -> List[Li
             path_pairs.pop()
 
     for src in start_nodes:
-        # 源节点的 lineno
+        #  lineno
         src_lineno = G.nodes[src].get('lineno', '?')
-        # 起始 path：第一项的 var 用 "?"（或你可以改为其它）
+        #  path var  "?"
         initial_path = [("?", src_lineno)]
         visited = {src}
         dfs(src, visited, initial_path)
@@ -466,7 +466,7 @@ def extract_pdg_paths(G: nx.DiGraph, start_nodes=None, max_depth=200) -> List[Li
         if len(path) >= 2:
             second_var, _ = path[1]
             if second_var and second_var != "?":
-                # 用第二节点的 var 替换第一个节点
+                #  var 
                 path[0] = (second_var, path[0][1])
         fixed_results.append(path)
 
@@ -475,7 +475,7 @@ def extract_pdg_paths(G: nx.DiGraph, start_nodes=None, max_depth=200) -> List[Li
 
 def print_pdg_paths(G: nx.DiGraph, start_nodes=None, max_depth=200):
     """
-    打印格式化后的路径（已包含修正的首节点变量）。
+    
     """
     paths = extract_pdg_paths(G, start_nodes=start_nodes, max_depth=max_depth)
 

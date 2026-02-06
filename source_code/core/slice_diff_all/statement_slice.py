@@ -38,7 +38,7 @@ def statement_slice(cve_id, method_name, cve_code_path):
     method_name = method_name
     cache_dir = f"cache_bug/{cve_id}/{file_name}#{method_name}#{file_path_md5}"
     os.makedirs(cache_dir, exist_ok=True)
-    # 切割 只保留漏洞单个函数
+    #  
     if not os.path.exists(join(cve_code_path, "prepatch", "code_back")):
         subprocess.run(['cp', '-r', pre_code_dir, join(cve_code_path, "prepatch", "code_back")])
         vuln_code_extract(pre_file_path, method_name, pre_file_path)

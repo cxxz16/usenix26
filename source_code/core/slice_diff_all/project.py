@@ -31,7 +31,7 @@ class ProjectJoern:
 
     def build_pdgs(self, pdg_dir: str):
         dot_names = os.listdir(pdg_dir)
-        # 读取每个函数的 PDG
+        #  PDG
         pdgs: dict[tuple[int, str, str], joern.PDG] = {}
         for dot in dot_names:
             dot_path = os.path.join(pdg_dir, dot)
@@ -858,8 +858,8 @@ class Method:
                 code_with_placeholder += self.rel_lines[line] + "\n"
                 last_line = line
             return code_with_placeholder, place_holder_map
-    # 切片中使用的 node 都是 PDG 中的 node
-    # 如果是 variable slice 的话，这里 pdg 下面在
+    #  node  PDG  node
+    #  variable slice  pdg 
     @staticmethod
     def backward_slice(criteria_lines: set[int], criteria_nodes: list[PDGNode], criteria_identifier: dict[int, set[str]], all_nodes: dict[int, list[PDGNode]], level: int) -> tuple[set[int], list[PDGNode]]:
         result_lines = criteria_lines.copy()
@@ -867,7 +867,7 @@ class Method:
         if level == 0:
             level = 1000
 
-        # 先把 criteria_lines 中的节点的前驱 CFG 节点加入结果
+        #  criteria_lines  CFG 
         # for slice_line in criteria_lines:
         #     for node in all_nodes[slice_line]:
         #         if node.type == "METHOD" or "METHOD_RETURN" in ast.literal_eval(node.type):
@@ -878,7 +878,7 @@ class Method:
         #             result_lines.add(int(pred_node.line_number))
         #             result_nodes.append(pred_node)
 
-        # DDG 切片
+        # DDG 
         for sline in criteria_lines:
             for node in all_nodes[sline]:
                 if node.type == "METHOD" or "METHOD_RETURN" in ast.literal_eval(node.type):
@@ -919,7 +919,7 @@ class Method:
         result_nodes = criteria_nodes.copy()
         if level == 0:
             level = 1000
-        # 把 criteria_lines 中的节点的后继 CFG 节点加入结果
+        #  criteria_lines  CFG 
         # for slice_line in criteria_lines:
         #     for node in all_nodes[slice_line]:
         #         if node.type == "METHOD" or "METHOD_RETURN" in ast.literal_eval(node.type):
@@ -973,7 +973,7 @@ class Method:
             line: self.pdg.get_nodes_by_line_number(line) for line in all_lines
         }
         criteria_nodes: list[PDGNode] = []
-        for line in criteria_lines:   # 获得在 criteria_lines 中的 pdg 节点
+        for line in criteria_lines:   #  criteria_lines  pdg 
             for node in self.pdg.get_nodes_by_line_number(line):
                 node.is_patch_node = True
                 node.add_attr("color", "red")
@@ -983,10 +983,10 @@ class Method:
         slice_result_lines |= self.header_lines
         slice_result_lines.add(self.end_line)
 
-        # 对 criteria identifier 进行数据流分析，例如他是否参与了赋值，那赋值的变量也要进来
+        #  criteria identifier 
         criteria_identifier = self.cri_identifier_propagation(criteria_identifier)
 
-        # PDG 切片
+        # PDG 
         result_lines, backward_nodes = self.backward_slice(
             criteria_lines, criteria_nodes, criteria_identifier, all_nodes, backward_slice_level)
         slice_result_lines.update(result_lines)
@@ -1000,7 +1000,7 @@ class Method:
         print(f"[+] Slice result lines: (before AST completion)\n")
         print(self.code_by_lines(slice_result_rel_lines))
 
-        # 从这开始切片结束，下面是根据 ast 补全符号
+        #  ast 
         if self.length < 10:
             slice_result_rel_lines = self.rel_line_set
             slice_result_lines = set([line + self.start_line - 1 for line in slice_result_rel_lines])
@@ -1014,7 +1014,7 @@ class Method:
             body_node = ast.query_oneshot("(function_definition body: (compound_statement)@body)")
             if body_node is None:
                 return
-            slice_result_rel_lines = self.ast_add(ast, body_node, slice_result_rel_lines) # 把 goto 的情况添加到切片中
+            slice_result_rel_lines = self.ast_add(ast, body_node, slice_result_rel_lines) #  goto 
             slice_result_rel_lines = self.ast_trim(ast, body_node, slice_result_rel_lines)
         elif self.language == Language.PHP:
             body_node = ast.query_oneshot("(method_declaration body: (compound_statement)@body)")
@@ -1053,7 +1053,7 @@ class Method:
     def slice_by_diff_lines(self, backward_slice_level: int = 4, forward_slice_level: int = 4, need_criteria_identifier: bool = False, criteria_identifier_list: list = [], write_dot: bool = False):
         criteria_identifier = self.diff_identifiers if need_criteria_identifier else {}
 
-        # 根据传入污点信息过滤出污点变量
+        # 
         if len(criteria_identifier_list) > 0:
             taint_criteria_identifier: dict[int, set[str]] = {}
             for line, identifiers in criteria_identifier.items():
@@ -1104,7 +1104,7 @@ class Method:
             for node in self.pdg.get_nodes_by_line_number(line):
                 criteria_identifier_nodes.append(node)
         
-        # 获得 criteria_identifier_nodes 中节点的定义到达的所有节点，worklist算法
+        #  criteria_identifier_nodes worklist
         for node in criteria_identifier_nodes:
             if node.type == "METHOD" or "METHOD_RETURN" in ast.literal_eval(node.type):
                 continue
@@ -1305,7 +1305,7 @@ class Method:
             node_start_line = node.start_point[0] + 1
             node_end_line = node.end_point[0] + 1
             for sline in slice_lines:
-                if is_in_node(sline, node):     # 看切片行是否在当前 node 的范围内
+                if is_in_node(sline, node):     #  node 
                     tmp_lines.add(sline)
             if len(tmp_lines) == 0:
                 continue
@@ -1321,13 +1321,13 @@ class Method:
                 body_node = node.child_by_field_name("body")
                 if body_node is None:
                     continue
-                slice_lines.update([body_node.start_point[0] + 1, body_node.end_point[0] + 1]) #把if的 {} 加入进来
+                slice_lines.update([body_node.start_point[0] + 1, body_node.end_point[0] + 1]) #if {} 
                 self.ast_dive_php(body_node, slice_lines)
 
                 alternative_node = node.child_by_field_name("alternative")
                 if alternative_node is None:
                     continue
-                next_alternative_node = alternative_node.child_by_field_name("alternative") # 这里如果还有 alternative 就证明这个是 else if，后面还有 else，因此不处理当前 else if 的 } 因为这个 } 可能和 else 在一起
+                next_alternative_node = alternative_node.child_by_field_name("alternative") #  alternative  else if else else if  }  }  else 
                 if next_alternative_node is None:
                     slice_lines.update([alternative_node.start_point[0] + 1, alternative_node.end_point[0] + 1])
                 else:
@@ -1401,7 +1401,7 @@ class Method:
 
     def ast_trim(self, ast_parser: ASTParser, root: Node, slice_lines: set[int]) -> set[int]:
         if self.language == Language.PHP:
-            slice_lines = [lines + 1 for lines in slice_lines]  # PHP 代码额外添加了一个 <?php 的行
+            slice_lines = [lines + 1 for lines in slice_lines]  # PHP  <?php 
         if_statement_nodes = ast_parser.query_from_node(root, "(if_statement !alternative)@if")
         if_statement_nodes = [node[0] for node in if_statement_nodes if node[0].type == "if_statement"]
         for if_node in if_statement_nodes:
@@ -1424,7 +1424,7 @@ class Method:
 
     def ast_trim_php(self, ast_parser: ASTParser, root: Node, slice_lines: set[int]) -> set[int]:
         if self.language == Language.PHP:
-            slice_lines = set([lines + 1 for lines in slice_lines])  # PHP 代码额外添加了一个 <?php 的行
+            slice_lines = set([lines + 1 for lines in slice_lines])  # PHP  <?php 
         if_statement_nodes = ast_parser.query_from_node(root, "(if_statement !alternative)@if")
         if_statement_nodes = [node[0] for node in if_statement_nodes if node[0].type == "if_statement"]
         for if_node in if_statement_nodes:

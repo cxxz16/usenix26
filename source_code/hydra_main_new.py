@@ -34,38 +34,7 @@ from multiprocessing import Process, Queue, Manager
 
 
 API_KEY = [
-    "sk-c73wFHG0LGmHUnClGfa3xis3Ua8VpPaGuiu2Jn3T2rqt6H5X",
-    "sk-GrBlbhvpR8nDz8SPCC8PvuBYBvyBxVjPt0dWsCcIeaTb7Y8S",
-    "sk-s81ZDg1nbPS6Hq6i6baGRaL1z6kZq7j83ZmfhqV7uZ5j0sLi",
-    "sk-PW4F7PfwrkIFZCfkmdFrquAkS2QlZp1qPW6YZ9AnIpnW1GIx",
-    "sk-SfW8uk83a03rdyKHIWhZMjM7bppkorYhRBUwUFEsYrwTM1Ue",
-    "sk-fwUndq8TWV5wCjD6jd92QQd3Ed4yLf4xkOrLSUuDpe2YqNpv",
-    "sk-AU73f2aGwF1AtwPp8LuuJ0CswY7ihPV09b6ODYawo2CKBgHp",
-    "sk-vumLr4ZQqq9NASZCYcOQ1RddZP4hP1tuJxevxqUWViTXymBH",
-    "sk-Jx3j8VIvS9O8GUtUTt1jJRFZm6UBbhuiV00G8wlFvzmyXmWO",
-    "sk-e4qK3yIuDFOYrveZvKVzXaj1RgTAqv7ULlG2nMy14lPL7IuF",
-    "sk-TpGDKwB1DnX5AnjpZ1SqtnDOp0ieBzPsod2wXPtRQLScOTn0",
-    "sk-uxqkxzIXHZ6oJY9tfOdSWprnPriV0sTs8jhgSMbwYvkLwxWB",
-    "sk-raOQa8S37THEnZv6yr8w6P50xeuyepsAkZaU9M7LAyh7b5xV",
-    "sk-qHVV0Q7nv2jTGObFQUb2QBZYkLjAYaIdLoKK52RpOoRP6mzb",
-    "sk-upFKy1XMu9tTwvbgZxh9lEjPFBvA0oE7IAnWSFwDe7InTgwU",
-    "sk-kEe4FbAVUmsaso08MhkxOYuQ4Q1SJDFfHOdxmj1IlZWhKQOT",
-    "sk-4KyUipuVPh4rcOyhq6Qp7xSqhRI3nzqrqKa0QKg2jTvCn5xf",
-    "sk-WiqV2UxrXuCcccDC5pDGUoeBXGU7uOLqQnj9SEAWBAc3GkSP",
-    "sk-VzQEzFjrMKQKfogScHDuu9XjIi2smV8ECwjYUupVPAAnuTsD",
-    "sk-fjXz4nu3dApzGlpBsAXogsJfYKMMaS1X3qpIut9C5yv54T9o",
-    "sk-XVGJ8HzJmUn20C0TVwz7wcVqeNxlEuFoUhhozEv0PrQc66Qk",
-    "sk-SALD45NfVG1kVVXjQz7eWdi0y5iEVaeMbZZybNqDM3Nwq6mq",
-    "sk-1LblRohZoSv1mELf8223l62Vprb16NESr1gJDDasWsL5LRfO",
-    "sk-0JAL6AQhZMC3OI66ouO089hsXGFSMYhOkavWwm7WiEiCStNo",
-    "sk-n1gf1UCsMrLLwY3MgKBfb7RJa1h6WuOl83qTe2bdkvwKBJcR",
-    "sk-oNTIpD3yS4X6o2ptacD79DuOzPfnm7xm8AXJOH3W6MWtALsb",
-    "sk-r8IiIKMDodFqllg42Hghb39QiV24B6M6UeGT5DM3W16wJkjp",
-    "sk-oQ5PS1gO66ACZp9QPaNRCBXUmgRktGyy6m5HFppmMciJmX8P",
-    "sk-wgpYmwDEYj3p9rKYNQA7sloOfat2ZZYjUAuIG6rnFl6f2WrI",
-    "sk-5I7l0aPIDJ4fg8josBYswbMnxVQU3lNJuwbzUyPFVTqcmTPV",
-    "sk-UuW2WK8T5ieYRrTU258nH2YG58L6bFtPvakG33dQJ04a1ucG",
-    "sk-LFDPSuzWGG26LNmYCMvBmjNxNFVd22i0bov1MiW6Kwp1VeAb"
+
 ]
 
 
@@ -92,7 +61,7 @@ BASE_HTTP_PORT = 17474
 
 
 def llm_find_potential_source(potential_source_funcname: set, api_key: str, model: str) -> List[str]:
-    """使用指定的API key调用LLM"""
+    """API keyLLM"""
     from func_timeout import func_timeout, FunctionTimedOut
     
     try:
@@ -104,7 +73,7 @@ def llm_find_potential_source(potential_source_funcname: set, api_key: str, mode
 
 
 def _inner_llm_find_potential_source(potential_source_funcname: set, api_key: str, model="gpt-5") -> List[str]:
-    # TODO：  Input::get(page, 1) 这种比较迷惑  是不是需要弄下
+    # TODO  Input::get(page, 1)   
     # return ['get_request_var']
     prompt = """
 ### Task:
@@ -171,8 +140,8 @@ Please return only the function names, without parameters, and separate the func
         answer = response.split("<answer>")[1].split("</answer>")[0].strip()
         print("Extracted Answer:", answer)
 
-    # 把 answer 解析成 list
-    # 这里提取也有点问题  Input::get(page, 1)  这种会被当成两个
+    #  answer  list
+    #   Input::get(page, 1)  
     custom_sink_funcname_list = set()
     if answer.startswith("[") and answer.endswith("]"):
         items = answer[1:-1].split(",")
@@ -263,7 +232,7 @@ function reorder() {{
 
 def delete_intra_duplicate_slices(all_inter_to_intra_dir):
     """
-    删除所有过程内重复的切片文件
+    
     """
     for vuln_type_dir in os.listdir(all_inter_to_intra_dir):
         vuln_type_path = os.path.join(all_inter_to_intra_dir, vuln_type_dir)
@@ -275,7 +244,7 @@ def delete_intra_duplicate_slices(all_inter_to_intra_dir):
             if "_intra.php" in slice_file:
                 sink_id = slice_file.split("src_sink_path_")[-1].split("_")[0]
                 if sink_id in seen_sinks:
-                    # 重复的过程内切片，删除
+                    # 
                     os.remove(os.path.join(vuln_type_path, slice_file))
                     print(f"[+] Deleted duplicate intra slice file: {slice_file}")
                 else:
@@ -287,22 +256,22 @@ NEO4J_HOME = f"./detection_projects_neo4j"
 # Configuration
 PHPJOERN_HOME = ""
 def repo_to_neo4j_cpg(repo_dir, repo_name, cpg_project_dir, neo4j_home=None):
-    """为指定repo生成CPG并导入Neo4j"""
+    """repoCPGNeo4j"""
     os.environ["HEAP"] = "3G"
     
     neo4j_home = neo4j_home if neo4j_home is not None else NEO4J_HOME
     
-    # 检查Neo4j数据库是否已存在
+    # Neo4j
     if os.path.exists(os.path.join(neo4j_home, repo_name)):
         print(f"[+] cpg & neo4j for {repo_name} already exists. skip cpg generation.")
         return True, None
     
-    # 为该项目创建专用的CPG目录
+    # CPG
     nodes_path = os.path.join(cpg_project_dir, "nodes.csv")
     rels_path = os.path.join(cpg_project_dir, "rels.csv")
     
     def run_php2ast(file_path, output_nodes, output_rels):
-        """运行php2ast，输出到指定路径"""
+        """php2ast"""
         print(f'[{repo_name}] php2ast is running...')
         result = subprocess.run(
             ["php", 
@@ -323,7 +292,7 @@ def repo_to_neo4j_cpg(repo_dir, repo_name, cpg_project_dir, neo4j_home=None):
         return True
     
     def run_phpast2cpg(nodes_file, rels_file, output_dir):
-        """运行phpast2cpg"""
+        """phpast2cpg"""
         print(f'[{repo_name}] phpast2cpg is running...')
         result = subprocess.run(
             ["java", "-jar", os.path.join(PHPJOERN_HOME, "phpast2cpg.jar"), 
@@ -339,10 +308,10 @@ def repo_to_neo4j_cpg(repo_dir, repo_name, cpg_project_dir, neo4j_home=None):
         return True
     
     def run_java_import(db_filename, cpg_dir):
-        """运行Neo4j导入"""
+        """Neo4j"""
         print(f'[{repo_name}] neo4j database generating...')
         
-        # 根据是否为postpatch选择端口
+        # postpatch
         if db_filename.endswith("postpatch"):
             bolt_port = "17687"
             http_port = "17474"
@@ -350,7 +319,7 @@ def repo_to_neo4j_cpg(repo_dir, repo_name, cpg_project_dir, neo4j_home=None):
             bolt_port = "7687"
             http_port = "7474"
         
-        # 切换到cpg_dir执行导入（因为csv文件在这里）
+        # cpg_dircsv
         result = subprocess.run(
             ["bash", 
              os.path.join(PHPJOERN_HOME, "neo4j-admin-import_vari.sh"),
@@ -369,7 +338,7 @@ def repo_to_neo4j_cpg(repo_dir, repo_name, cpg_project_dir, neo4j_home=None):
         return True
     
     def cleanup_cpg_dir():
-        """清理CPG目录"""
+        """CPG"""
         if os.path.exists(cpg_project_dir):
             print(f"[{repo_name}] cleaning up {cpg_project_dir} due to failure")
             shutil.rmtree(cpg_project_dir, ignore_errors=True)
@@ -390,7 +359,7 @@ def repo_to_neo4j_cpg(repo_dir, repo_name, cpg_project_dir, neo4j_home=None):
             cleanup_cpg_dir()
             return False, "batch_import_pre"
         
-        print(f"[{repo_name}] ✅ 处理完成！")
+        print(f"[{repo_name}] ✅ ")
         return True, None
         
     except Exception as e:
@@ -475,7 +444,7 @@ def ss_in_inter(call_path):
 
 
 def clear_port_pool():
-    """清空端口池"""
+    """"""
     while not PORT_POOL.empty():
         try:
             PORT_POOL.get_nowait()
@@ -483,39 +452,39 @@ def clear_port_pool():
             break
 
 def initialize_port_pool(num_workers):
-    """初始化端口池"""
+    """"""
     for i in range(num_workers):
         bolt_port = BASE_BOLT_PORT + i
         http_port = BASE_HTTP_PORT + i
         PORT_POOL.put((bolt_port, http_port))
 
 def get_port_pair():
-    """从端口池获取端口对"""
+    """"""
     return PORT_POOL.get()
 
 
 def return_port_pair(bolt_port, http_port):
-    """归还端口对到池中"""
+    """"""
     PORT_POOL.put((bolt_port, http_port))
 
 
 def copy_database_with_port(original_db_name, bolt_port, http_port, split_num=1):
     """
-    复制数据库并修改端口配置
+    
     
     Args:
-        original_db_name: 原始数据库名称
-        bolt_port: Bolt端口
-        http_port: HTTP端口
+        original_db_name: 
+        bolt_port: Bolt
+        http_port: HTTP
     
     Returns:
-        新数据库的路径
+        
     """
     original_path = os.path.join(DATABASE_PATH, original_db_name)
     new_db_name = f"{original_db_name}_{bolt_port}"
     new_path = os.path.join(DATABASE_PATH, new_db_name)
     
-    # 如果已存在，先删除
+    # 
     if os.path.exists(new_path):
         print(f"[*] Database copy {new_db_name} already exists, skipping copy...")
         return new_db_name
@@ -523,7 +492,7 @@ def copy_database_with_port(original_db_name, bolt_port, http_port, split_num=1)
     print(f"[*] Copying database from {original_db_name} to {new_db_name}...")
     shutil.copytree(original_path, new_path)
     
-    # 修改配置文件中的端口
+    # 
     conf_file = os.path.join(new_path, "conf/neo4j.conf")
     change_jvmprocessor_port(conf_file, count=NUM_WORKERS//split_num)
     change_bolt_port(conf_file, bolt_port)
@@ -535,14 +504,14 @@ def copy_database_with_port(original_db_name, bolt_port, http_port, split_num=1)
 
 def create_database_copies(original_db_name, num_copies):
     """
-    创建指定数量的数据库副本
+    
     
     Args:
-        original_db_name: 原始数据库名称
-        num_copies: 副本数量
+        original_db_name: 
+        num_copies: 
     
     Returns:
-        数据库副本名称列表
+        
     """
     db_copies = []
     print(f"\n[*] Creating {num_copies} database copies for {original_db_name}...")
@@ -558,7 +527,7 @@ def create_database_copies(original_db_name, num_copies):
 
 
 def start_database_with_port(db_name, database_path=None):
-    """启动指定的数据库"""
+    """"""
     if database_path is None:
         database_path = DATABASE_PATH
     db_path = os.path.join(database_path, db_name)
@@ -567,7 +536,7 @@ def start_database_with_port(db_name, database_path=None):
         print(f"[!] Database path {db_path} does not exist.")
         return False
     
-    # 检查是否已运行
+    # 
     result = subprocess.run(
         [f"{db_path}/bin/neo4j", "status"],
         capture_output=True,
@@ -581,7 +550,7 @@ def start_database_with_port(db_name, database_path=None):
             print(f"[*] {db_name} is already running.")
             return True
     
-    # 启动数据库
+    # 
     print(f"[*] Starting database {db_name}...cmd: {db_path}/bin/neo4j")
     subprocess.run(
         [f"{db_path}/bin/neo4j", "start"],
@@ -590,10 +559,10 @@ def start_database_with_port(db_name, database_path=None):
         check=False
     )
     
-    # 等待启动完成
+    # 
     time.sleep(10)
     
-    # 验证启动成功
+    # 
     for attempt in range(5):
         result = subprocess.run(
             [f"{db_path}/bin/neo4j", "status"],
@@ -611,7 +580,7 @@ def start_database_with_port(db_name, database_path=None):
 
 
 def stop_database_with_port(db_name, database_path=None):
-    """停止指定的数据库"""
+    """"""
     if database_path is None:
         database_path = DATABASE_PATH
     db_path = os.path.join(database_path, db_name)
@@ -630,7 +599,7 @@ def stop_database_with_port(db_name, database_path=None):
 
 
 def check_database_with_port(db_name, database_path=None):
-    """检查数据库状态"""
+    """"""
     if database_path is None:
         database_path = DATABASE_PATH
     db_path = os.path.join(database_path, db_name)
@@ -662,7 +631,7 @@ def check_database_with_port(db_name, database_path=None):
 
 
 def change_https_port(filepath, https_port):
-    """修改HTTP端口配置"""
+    """HTTP"""
     if not os.path.exists(filepath):
         return
     
@@ -678,7 +647,7 @@ def change_https_port(filepath, https_port):
 
 
 def change_bolt_port(filepath, bolt_port):
-    """修改Bolt端口配置"""
+    """Bolt"""
     if not os.path.exists(filepath):
         return
     
@@ -693,7 +662,7 @@ def change_bolt_port(filepath, bolt_port):
                 file.write(line)
 
 def change_jvmprocessor_port(filepath, count=96, workers=96):
-    """修改Bolt端口配置"""
+    """Bolt"""
     if not os.path.exists(filepath):
         return
     
@@ -713,7 +682,7 @@ def change_jvmprocessor_port(filepath, count=96, workers=96):
 
 
 def cleanup_database_copies(original_db_name, num_copies):
-    """清理所有数据库副本"""
+    """"""
     timeout=30
     poll_interval=0.5
     print(f"\n[*] Cleaning up database copies...")
@@ -738,7 +707,7 @@ def cleanup_database_copies(original_db_name, num_copies):
                 if last_pid:
                     print(f"[!] Timeout. Force killing {db_name} pid={last_pid} ...")
                     try:
-                        os.kill(last_pid, signal.SIGKILL)  # 等价 kill -9
+                        os.kill(last_pid, signal.SIGKILL)  #  kill -9
                     except ProcessLookupError:
                         print(f"[!] pid {last_pid} not found (already exited)")
                     except PermissionError:
@@ -777,16 +746,16 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
                                  all_not_source_funcname_list_path,
                                  api_key, model):
     """
-    处理单个sink节点，使用独立的数据库实例
+    sink
     """
-    # 获取端口对
+    # 
     # bolt_port, http_port = get_port_pair()
     bolt_port, http_port = BASE_BOLT_PORT, BASE_HTTP_PORT
     db_name = f"{original_db_name}_{bolt_port}"
     print(f"[Worker-{bolt_port}] use database {db_name} for SOURCE FINDER.")
     
     try:
-        # 检查是否已处理或超时
+        # 
         with processed_nodes_lock:
             if potential_sink.node_id in already_processed_sink_nodes:
                 print(f"[+] Skip already processed node {potential_sink.node_id}...")
@@ -797,7 +766,7 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
                 print(f"[+] Skip timeout node {potential_sink.node_id}...")
                 return
         
-        # 检查切片是否已存在
+        # 
         slice_dir = os.path.join(default_dir, target, VULN_TYPE_DICT[vuln_type].replace(" ", "_"))
         slice_dir_sp = os.path.join(slice_dir, f"sink_{potential_sink.node_id}")
         inter_to_intra_dir = os.path.join(default_dir, target, "inter_to_intra", 
@@ -814,12 +783,12 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
                 print(f"[+] Slice for sink {potential_sink.node_id} already exists. skip...")
                 return
         
-        # 启动数据库
+        # 
         if not start_database_with_port(db_name):
             print(f"[!] Failed to start database {db_name}")
             return
         
-        # 创建analyzer连接到该数据库
+        # analyzer
         config_dict = {
             "all_prepatch": {
                 "NEO4J_HOST": "localhost",
@@ -836,10 +805,10 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
                 analyzer_target = Neo4jEngine.from_dict(config_dict["all_prepatch"])
                 break
             except Exception as e:
-                print(f"连接 {bolt_port} 数据库失败，重试中... 错误信息: {e}")
+                print(f" {bolt_port} ... : {e}")
                 time.sleep(3)
         
-        # 执行切片分析
+        # 
         context_slicer = ContextSlicer(
             anchor_node=potential_sink,
             analyzer=analyzer_target,
@@ -854,7 +823,7 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
             try:
                 sink_funcname = future.result(timeout=TIMEOUT)
             except TimeoutError:
-                print(f"[timeout] 超时, 跳过该节点 {potential_sink.node_id}")
+                print(f"[timeout] ,  {potential_sink.node_id}")
                 with timeout_nodes_lock:
                     timeout_node_list.append(potential_sink.node_id)
                     with file_write_lock:
@@ -862,14 +831,14 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
                             json.dump(timeout_node_list, f, ensure_ascii=False, indent=4)
                 return
             
-        # 所有潜在的函数调用
+        # 
         potential_source_funcname_list = context_slicer.potential_source_funcname
         find_source_by_llm = False
         potential_source_funcname_list_by_llm = []
 
 
 
-        # 检查是否找到 内置 source
+        #   source
         if context_slicer.sources.__len__() == 0:
             with processed_nodes_lock:
                 already_processed_sink_nodes.add(potential_sink.node_id)
@@ -885,7 +854,7 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
 
 
         if potential_source_funcname_list:
-            # 如果存在外部函数调用
+            # 
             print(f"[+] First round found {potential_source_funcname_list.__len__()} potential funcalls.")
             
             with not_source_lock:
@@ -902,7 +871,7 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
                                    if func.split("(")[0].strip() not in all_potential_source]
 
             if not funcalls_to_check:
-                # 没有要交给LLM 识别的函数调用了，这时候分两种情况，有无 内置的source
+                # LLM  source
                 with processed_nodes_lock:
                     already_processed_sink_nodes.add(potential_sink.node_id)
                     with file_write_lock:
@@ -910,20 +879,20 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
                             json.dump(list(already_processed_sink_nodes), f, ensure_ascii=False, indent=4)
                 
                 if find_source_by_llm:
-                    print("[+] 存在一个或多个已知 source，且其他非 source 函数都已经判断过，跳过LLM检测")
+                    print("[+]  source source LLM")
                 else:
-                    print("[-] 所有外部函数调用都已经判断过且没有 source，跳过LLM检测")
+                    print("[-]  sourceLLM")
                     if find_source_builtin:
                         print("[+] But built-in source exists, continue slicing...")
                     else:
                         print("[-] No source found at all (builtin and llm), skip slicing...")
                         return
             else:
-                # 还有需要交给LLM 识别的函数调用
+                # LLM 
                 print("[*] Query LLM for potential sources...")
                 potential_source_funcname_list_by_llm = llm_find_potential_source(funcalls_to_check, api_key=api_key, model=model)
 
-                # 更新非source列表
+                # source
                 with not_source_lock:
                     for func in funcalls_to_check:
                         if func.split("(")[0].strip() not in potential_source_funcname_list_by_llm:
@@ -948,7 +917,7 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
                         all_potential_source.update(potential_source_funcname_list_by_llm)
                     find_source_by_llm = True
 
-            # 保存更新
+            # 
             with source_lock:
                 with file_write_lock:
                     with open(target_detection_source_finder_path, "w", encoding="utf-8") as f:
@@ -980,7 +949,7 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
             for idx, call_path in enumerate(merge_call_paths):
                 call_relateions = []
                 new_call_path = slicer.convert_backward_to_forward(call_path)
-                # 过程间
+                # 
                 if ss_in_inter(call_path):
                     output_file = f"{slice_dir_sp}/src_sink_path_{potential_sink.node_id}_{idx}_inter.php"
 
@@ -994,7 +963,7 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
                     print(f"[+] Source and sink are in different functions for sink node {potential_sink.node_id}.")
                 
                 else: 
-                    # 过程内就不要切片了，直接保存当前整个文件就行了
+                    # 
                     sink_source_belong_file = new_call_path[0].get("location", {}).get("file", None)
                     sink_source_belong_file = slicer.transform_path(sink_source_belong_file)
                     output_file = f"{slice_dir_sp}/src_sink_path_{potential_sink.node_id}_{idx}_intra.php"
@@ -1018,28 +987,28 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
                     code_output = slicer.export_slice_code(slice_result, output_file, call_relateions)
                 print(f"[+] Export slice code to {output_file}")
 
-        # 转换代码
+        # 
         # inter_to_intra_dir = os.path.join(slice_dir, "inter_to_intra")
-        # 转换代码
+        # 
         print("[+] Start LLM fixing and merging sliced code...")
 
         with file_write_lock:
             os.makedirs(inter_to_intra_dir, exist_ok=True)
         
-        # 这里拆分成两个 prompt，如果是过程内的 只做语义修复。如果是过程间的就做修复+整合
+        #  prompt +
         for src_sink_slice in os.listdir(slice_dir_sp):
             with open(os.path.join(slice_dir_sp, src_sink_slice), 'r') as f:
                 ss_code = f.read()
             idx = src_sink_slice.split("src_sink_path_")[-1].split(".php")[0]
             inter_flag = "_inter" in src_sink_slice
             
-            # 这里控制一下 LLM 的使用
+            #  LLM 
             if os.path.exists(f"{inter_to_intra_dir}/{idx}.php"):
                 print(f"[+] {inter_to_intra_dir}/{idx}.php already exists. skip LLM processing ...")
                 continue
 
             if inter_flag: 
-                # LLM 修复 + 判断是否存在漏洞
+                # LLM  + 
                 if ss_code.strip().split("\n").__len__() > 300 or ss_code.strip().split("\n").__len__() < 3:
                     with open(f"{inter_to_intra_dir}/{idx}.php", "w") as f:
                         f.write("<?php\n phpinfo();\n")
@@ -1050,10 +1019,10 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
                         ss_code, inter_to_intra_dir, idx, model=model, api_key=api_key
                     )
             else:
-                # 把代码拷贝过去，不需要修复
+                # 
                 os.system(f"cp {os.path.join(slice_dir_sp, src_sink_slice)} {inter_to_intra_dir}/{idx}.php")
         
-        # 标记为已处理
+        # 
         with processed_nodes_lock:
             already_processed_sink_nodes.add(potential_sink.node_id)
             with file_write_lock:
@@ -1065,15 +1034,15 @@ def process_single_sink_with_db(potential_sink, vuln_type, already_processed_sin
         traceback.print_exc()
     finally:
         pass
-        # 停止数据库
+        # 
         # stop_database_with_port(db_name)
-        # 归还端口
+        # 
         # return_port_pair(bolt_port, http_port)
 
 
 def run_capture_potential_src_sink_multithread(target, extend_vuln_model, num_workers, num_neo4j_instances=4) -> bool:
     """
-    多线程处理sink节点，每个线程使用独立的数据库实例
+    sink
     """
 
     print("extend_vuln_model:")
@@ -1083,15 +1052,15 @@ def run_capture_potential_src_sink_multithread(target, extend_vuln_model, num_wo
 
     clear_port_pool()
     
-    # 初始化端口池
+    # 
     initialize_port_pool(num_neo4j_instances)
     
-    # 创建数据库副本
-    print(f"\n[*] 创建 {num_neo4j_instances} 个Neo4j数据库副本...")
+    # 
+    print(f"\n[*]  {num_neo4j_instances} Neo4j...")
     create_database_copies(original_db_name, num_neo4j_instances)
     
     try:
-        # 使用第一个数据库副本加载sink信息
+        # sink
         bolt_port, http_port = get_port_pair()
         first_db_name = f"{original_db_name}_{bolt_port}"
         
@@ -1099,15 +1068,15 @@ def run_capture_potential_src_sink_multithread(target, extend_vuln_model, num_wo
             print(f"[-] Failed to start first database for sink loading")
             return set(), False
         
-        # input("按回车继续...")
+        # input("...")
         
-        # 加载或查找potential sinks
+        # potential sinks
         if os.path.exists(f"./potential_sinks_detection_{STAR_RANGE}/{target}.pkl"):
             print("Loading potential sinks from cache...")
             with open(f"./potential_sinks_detection_{STAR_RANGE}/{target}.pkl", "rb") as f:
                 potential_sink_dict = pickle.load(f)
         else:
-            # 使用并行版本的cc_run
+            # cc_run
             from core.target_sink_finder import cc_run_parallel
             
             start_time = time.time()
@@ -1140,9 +1109,9 @@ def run_capture_potential_src_sink_multithread(target, extend_vuln_model, num_wo
             print("Saved potential sinks to cache.")
         
         
-        # input("按回车继续...")
+        # input("...")
         return_port_pair(bolt_port, http_port)
-        # 目录设置
+        # 
         default_dir = f"./detection_inter_slice_result_{STAR_RANGE}"
         intra_source_sink_dir = "./detection_intra_source_sink_record"
         detection_source_finder_dir = "./detection_source_finder"
@@ -1157,7 +1126,7 @@ def run_capture_potential_src_sink_multithread(target, extend_vuln_model, num_wo
         os.makedirs(intra_source_sink_dir, exist_ok=True)
         project_potential_inter_ss_record_path = os.path.join(intra_source_sink_dir, f"{target}_inter_source_sink_record.json")
 
-        # 加载已有数据
+        # 
         if os.path.exists(target_detection_source_finder_path):
             with open(target_detection_source_finder_path, "r", encoding="utf-8") as f:
                 all_potential_source = set(json.load(f))
@@ -1182,7 +1151,7 @@ def run_capture_potential_src_sink_multithread(target, extend_vuln_model, num_wo
         else:
             inter_source_sink_record = dict()
         
-        # 创建线程锁
+        # 
         processed_nodes_lock = threading.Lock()
         timeout_nodes_lock = threading.Lock()
         file_write_lock = threading.Lock()
@@ -1191,20 +1160,20 @@ def run_capture_potential_src_sink_multithread(target, extend_vuln_model, num_wo
         intra_record_lock = threading.Lock()
         inter_record_lock = threading.Lock()
         
-        all_tasks = []  # 存储所有任务: (sink, vuln_type, metadata)
-        vuln_type_metadata = {}  # 存储每个漏洞类型的元数据
+        all_tasks = []  # : (sink, vuln_type, metadata)
+        vuln_type_metadata = {}  # 
 
         for vuln_type in VULN_TYPE_DICT.keys():
             # if vuln_type in {10}:
             #     continue
-            print(f"准备 {VULN_TYPE_DICT[vuln_type]} 类型的任务...")
+            print(f" {VULN_TYPE_DICT[vuln_type]} ...")
             
-            # 准备文件路径
+            # 
             already_processed_sink_nodes_file = f"./detection_record_{STAR_RANGE}/{target}/{VULN_TYPE_DICT[vuln_type]}_already_processed_nodes.json"
             os.makedirs(os.path.join(f"./detection_record_{STAR_RANGE}", target), exist_ok=True)
             timeout_nodes_file = f"./detection_record_{STAR_RANGE}/{target}/{VULN_TYPE_DICT[vuln_type]}_timeout_nodes.txt"
             
-            # 加载已处理和超时节点
+            # 
             already_processed_sink_nodes = set()
             if os.path.exists(already_processed_sink_nodes_file):
                 with open(already_processed_sink_nodes_file, "r", encoding="utf-8") as f:
@@ -1216,7 +1185,7 @@ def run_capture_potential_src_sink_multithread(target, extend_vuln_model, num_wo
             else:
                 timeout_node_list = []
             
-            # 保存元数据
+            # 
             vuln_type_metadata[vuln_type] = {
                 'already_processed_file': already_processed_sink_nodes_file,
                 'timeout_file': timeout_nodes_file,
@@ -1224,11 +1193,11 @@ def run_capture_potential_src_sink_multithread(target, extend_vuln_model, num_wo
                 'timeout_nodes': timeout_node_list
             }
             
-            # 获取该类型的sink列表
+            # sink
             potential_sink_list = potential_sink_dict[vuln_type]
             
             if len(potential_sink_list) == 0:
-                print(f"  [-] {VULN_TYPE_DICT[vuln_type]}: 0 个节点")
+                print(f"  [-] {VULN_TYPE_DICT[vuln_type]}: 0 ")
                 continue
             
             unprocessed_sinks = [
@@ -1237,22 +1206,22 @@ def run_capture_potential_src_sink_multithread(target, extend_vuln_model, num_wo
                 and sink.node_id not in timeout_node_list
             ]
             
-            print(f"  [+] {VULN_TYPE_DICT[vuln_type]}: {len(unprocessed_sinks)} 个待处理节点 (总共 {len(potential_sink_list)} 个)")
+            print(f"  [+] {VULN_TYPE_DICT[vuln_type]}: {len(unprocessed_sinks)}  ( {len(potential_sink_list)} )")
             
-            # 添加到统一任务列表
+            # 
             for sink in unprocessed_sinks:
                 all_tasks.append((sink, vuln_type))
         
         if not all_tasks:
-            print("[-] 没有需要处理的sink节点，跳过...")
+            print("[-] sink...")
             return all_potential_source, False
         
-        print(f"\n总计: {len(all_tasks)} 个sink节点待处理")
+        print(f"\n: {len(all_tasks)} sink")
         print("============================")
-        print("开始并行处理所有sink节点...")
+        print("sink...")
         print("============================\n")
         
-        # 统一并行处理所有任务
+        # 
         if all_tasks.__len__() < num_workers:
             num_workers = all_tasks.__len__()
         with ThreadPoolExecutor(max_workers=num_workers) as executor:
@@ -1283,36 +1252,36 @@ def run_capture_potential_src_sink_multithread(target, extend_vuln_model, num_wo
                 )
                 futures_to_task[future] = (sink, vuln_type)
             
-            # 使用tqdm显示进度
+            # tqdm
             completed_count = 0
             vuln_type_stats = {vt: {'completed': 0, 'total': 0} for vt in VULN_TYPE_DICT.keys()}
             
-            # 统计每个类型的总数
+            # 
             for _, vuln_type in all_tasks:
                 vuln_type_stats[vuln_type]['total'] += 1
             
-            for future in tqdm(as_completed(futures_to_task), total=len(all_tasks), desc="处理进度"):
+            for future in tqdm(as_completed(futures_to_task), total=len(all_tasks), desc=""):
                 sink_node, vuln_type = futures_to_task[future]
                 try:
                     future.result()
                     completed_count += 1
                     vuln_type_stats[vuln_type]['completed'] += 1
                 except Exception as e:
-                    print(f"\n[Error] 处理节点 {sink_node.node_id} ({VULN_TYPE_DICT[vuln_type]}) 时出错: {e}")
+                    print(f"\n[Error]  {sink_node.node_id} ({VULN_TYPE_DICT[vuln_type]}) : {e}")
 
-        # 打印统计信息
+        # 
         print("\n============================")
-        print("处理完成统计:")
+        print(":")
         print("============================")
         for vuln_type, stats in vuln_type_stats.items():
             if stats['total'] > 0:
-                print(f"  {VULN_TYPE_DICT[vuln_type]}: {stats['completed']}/{stats['total']} 个节点完成")
-        print(f"\n总计: {completed_count}/{len(all_tasks)} 个节点处理完成\n")
+                print(f"  {VULN_TYPE_DICT[vuln_type]}: {stats['completed']}/{stats['total']} ")
+        print(f"\n: {completed_count}/{len(all_tasks)} \n")
         
         return all_potential_source, True
         
     finally:
-        # 清理所有数据库副本
+        # 
         cleanup_database_copies(original_db_name, num_neo4j_instances)
     
 
@@ -1340,7 +1309,7 @@ def main():
             continue
         
         if target in buchuli_process_repo:
-            print(f"[-] {target} 不处理. skip ...")
+            print(f"[-] {target} . skip ...")
             continue
 
         print(f"\n\nProcessing {target}...\n")
@@ -1380,13 +1349,13 @@ def main():
                 )
                 
                 if not state:
-                    print("没有找到sink，没有生成新的切片和代码。跳过该项目。")
+                    print("sink")
                     all_detection_project.append(target)
                     with open(all_detection_project_path, "w", encoding="utf-8") as f:
                         json.dump(all_detection_project, f, ensure_ascii=False, indent=4)
                     continue
                 
-                print("找到了新的 source sink，生成了新的切片及其对应的 neo4j cpg")
+                print(" source sink neo4j cpg")
                 all_detection_project.append(target)
                 with open(all_detection_project_path, "w", encoding="utf-8") as f:
                     json.dump(all_detection_project, f, ensure_ascii=False, indent=4)
@@ -1396,12 +1365,12 @@ def main():
                 all_potential_source = set(target_source_data)
             if run_sig_source_sink(f"{_map_key_1}_prepatch", all_potential_source, {9: potential_sinks}, NUM_WORKERS):
                 print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} The target {target} is vulnerable")
-                # 更新 all_detection_project
+                #  all_detection_project
                 all_detection_project.append(target)
                 with open(all_detection_project_path, "w", encoding="utf-8") as f:
                     json.dump(all_detection_project, f, ensure_ascii=False, indent=4)
             else:
-                print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} {target} 在生成签名时失败！")
+                print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} {target} ")
             
         except Exception as e:
             print(traceback.format_exc())
@@ -1409,7 +1378,7 @@ def main():
 
 
 def run_sig_source_sink(target, potential_source, extend_vuln_model, num_workers) -> bool:
-    print("\n开始生成可以sink签名的表达式！！！！\n")
+    print("\nsink\n")
     task = "detection"
 
     detection_intra_source_sink_record_dir = f"./{task}_intra_source_sink_record_{STAR_RANGE}/"
@@ -1430,7 +1399,7 @@ def run_sig_source_sink(target, potential_source, extend_vuln_model, num_workers
     final_sink_context = {'inter': {}}
     final_dataflow_str_list = {'inter': []}
 
-    # 检查 Neo4j 数据库目录是否存在
+    #  Neo4j 
     target_neo4j_path = os.path.join(detection_inter_slice_result_neo4j_dir, target)
     if not os.path.exists(target_neo4j_path):
         print(f"[-] Neo4j database not found for {target} at {target_neo4j_path}")
@@ -1450,7 +1419,7 @@ def run_sig_source_sink(target, potential_source, extend_vuln_model, num_workers
         }
     }
 
-    # 等待数据库启动并建立连接
+    # 
     print("[+] Connecting to Neo4j database...")
     max_retries = 10
     retry_count = 0
@@ -1488,7 +1457,7 @@ def run_sig_source_sink(target, potential_source, extend_vuln_model, num_workers
             base_bolt_port=7687,
             base_http_port=7474
         )
-        TIMEOUT_SECONDS = 360  # 6分钟超时
+        TIMEOUT_SECONDS = 360  # 6
         MULTI_THREADING_ENABLED = True
         for vuln_type in VULN_TYPE_DICT.keys():
             # if vuln_type not in {9}:
@@ -1505,18 +1474,18 @@ def run_sig_source_sink(target, potential_source, extend_vuln_model, num_workers
             print(f"[+] Timeout per sink: {TIMEOUT_SECONDS}s")
             print(f"[+] Max concurrent workers: {num_workers}")
             
-            # 初始化该漏洞类型的结果字典
+            # 
             final_sink_context['inter'][vuln_type] = {}
             
-            # 统计信息
+            # 
             total_processed = 0
             total_timeout = 0
             total_error = 0
             total_success = 0
             
-            # 使用线程池处理（因为真正的超时控制在 process_single_sink_with_timeout 内部）
+            #  process_single_sink_with_timeout 
             with ThreadPoolExecutor(max_workers=num_workers) as executor:
-                # 提交所有任务
+                # 
                 future_to_sink = {
                     executor.submit(
                         process_single_sink_with_timeout,
@@ -1528,7 +1497,7 @@ def run_sig_source_sink(target, potential_source, extend_vuln_model, num_workers
                     for sink in sinks_for_type
                 }
                 
-                # 处理完成的任务
+                # 
                 for future in tqdm(
                     as_completed(future_to_sink),
                     total=len(future_to_sink),
@@ -1540,24 +1509,24 @@ def run_sig_source_sink(target, potential_source, extend_vuln_model, num_workers
                     try:
                         node_id, contexts, dataflow = future.result()
                         
-                        # 判断是否超时或失败（空结果）
+                        # 
                         if not contexts and not dataflow:
                             total_timeout += 1
                         else:
                             total_success += 1
                         
-                        # 保存结果
+                        # 
                         final_sink_context['inter'][vuln_type][node_id] = contexts
-                        if dataflow:  # 只添加非空的 dataflow
+                        if dataflow:  #  dataflow
                             final_dataflow_str_list['inter'].append(dataflow)
                         
                     except Exception as e:
                         total_error += 1
                         print(f"\n[-] Exception processing sink {sink.node_id}: {e}")
-                        # 记录失败的 sink（空结果）
+                        #  sink
                         final_sink_context['inter'][vuln_type][sink.node_id] = {}
             
-            # 打印统计信息
+            # 
             print(f"\n[+] Vulnerability type {vuln_type} processing complete:")
             print(f"    - Total processed: {total_processed}")
             print(f"    - Successful: {total_success}")
@@ -1576,7 +1545,7 @@ def run_sig_source_sink(target, potential_source, extend_vuln_model, num_workers
         stop_database_with_port(target, detection_inter_slice_result_neo4j_dir)
     
     
-    # 保存结果到文件
+    # 
     print("\n[+] Saving results...")
     try:
         with open(target_detection_inter_slice_result_signature_path, "w", encoding="utf-8") as f:
@@ -1592,7 +1561,7 @@ def run_sig_source_sink(target, potential_source, extend_vuln_model, num_workers
         return False
     
     print("\n" + "="*60)
-    print("啊啊啊啊啊！sink 签名和数据流提取完毕！！！！")
+    print("sink ")
     print("="*60 + "\n")
     
     return True
@@ -1600,54 +1569,54 @@ def run_sig_source_sink(target, potential_source, extend_vuln_model, num_workers
 
 
 def init_worker():
-    """初始化工作进程，忽略 SIGINT 信号避免 KeyboardInterrupt 传播"""
+    """ SIGINT  KeyboardInterrupt """
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
 def process_single_sink_with_timeout(sink, target, potential_source, timeout_seconds):
     """
-    带超时控制的 sink 处理函数（包装器）
+     sink 
     
     Args:
-        sink: potential_sink 对象
-        target: 目标项目名称
-        potential_source: 自定义 source 列表
-        timeout_seconds: 超时时间（秒）
+        sink: potential_sink 
+        target: 
+        potential_source:  source 
+        timeout_seconds: 
         
     Returns:
-        tuple: (node_id, contexts_dict, dataflow_dict) 或 (node_id, {}, {}) 如果超时
+        tuple: (node_id, contexts_dict, dataflow_dict)  (node_id, {}, {}) 
     """
     manager = Manager()
     result_queue = manager.Queue()
     
     def worker():
-        """实际的工作进程"""
+        """"""
         try:
             result = process_single_sink(sink, target, potential_source)
             result_queue.put(('success', result))
         except Exception as e:
             result_queue.put(('error', str(e)))
     
-    # 创建并启动进程
+    # 
     process = Process(target=worker)
     process.start()
     process.join(timeout=timeout_seconds)
     
-    # 检查是否超时
+    # 
     if process.is_alive():
-        # 超时，强制终止进程
+        # 
         print(f"\n[-] Process for sink {sink.node_id} timeout, terminating...")
         process.terminate()
         process.join(timeout=5)
         
-        # 如果 terminate 失败，使用 kill
+        #  terminate  kill
         if process.is_alive():
             process.kill()
             process.join()
         
         return sink.node_id, {}, {}
     
-    # 获取结果
+    # 
     if not result_queue.empty():
         status, data = result_queue.get()
         if status == 'success':
@@ -1656,26 +1625,26 @@ def process_single_sink_with_timeout(sink, target, potential_source, timeout_sec
             print(f"\n[-] Error in worker for sink {sink.node_id}: {data}")
             return sink.node_id, {}, {}
     
-    # 进程异常退出
+    # 
     return sink.node_id, {}, {}
 
 
 def process_single_sink(sink, target, potential_source):
     """
-    独立进程执行的函数 - 处理单个 sink
-    必须是顶层函数才能被 pickle 序列化
+     -  sink
+     pickle 
     
     Args:
-        sink: potential_sink 对象
-        target: 目标项目名称
-        potential_source: 自定义 source 列表
+        sink: potential_sink 
+        target: 
+        potential_source:  source 
         
     Returns:
         tuple: (node_id, contexts_dict, dataflow_dict)
     """
     node_id = sink.node_id
     
-    # 特殊函数直接跳过
+    # 
     if sink.func_name in {"preg_replace", "array_map"}:
         return node_id, {}, {}
     
@@ -1690,17 +1659,17 @@ def process_single_sink(sink, target, potential_source):
                 "NEO4J_PROTOCOL": "bolt"
             }
         }
-        # 创建 Neo4j 连接
+        #  Neo4j 
         analyzer_target = Neo4jEngine.from_dict(config_dict["all_prepatch"])
         
-        # 创建上下文切片器
+        # 
         context_slicer = ContextSlicerSig(
             anchor_node=sink,
             analyzer=analyzer_target,
             custom_sources=potential_source
         )
         
-        # 运行切片并提取表达式
+        # 
         contexts = []
         context_series = context_slicer.run()
         
@@ -1710,7 +1679,7 @@ def process_single_sink(sink, target, potential_source):
             )
             contexts.append(list(set(args_expr)))
         
-        # 获取 sink 所属文件
+        #  sink 
         sink_file = analyzer_target.fig_step.get_belong_file(
             analyzer_target.get_node_itself(sink.node_id)
         )
@@ -1728,7 +1697,7 @@ def process_single_sink(sink, target, potential_source):
         return node_id, {}, {}
     
     finally:
-        # 确保关闭数据库连接
+        # 
         pass
 
 

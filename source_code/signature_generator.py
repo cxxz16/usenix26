@@ -1,5 +1,3 @@
-# 有两种方式可以生成签名，一种是通过读取 cve 信息，然后通过 patch 来自动生成。另一种是通过手动指定的 cve 信息来自动生成签名。
-
 import os
 import subprocess
 import json
@@ -33,7 +31,7 @@ from pydriller import Commit, Git
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
-repo_dir = "./rcs_meta/repository_cache"
+repo_dir = "./repository_cache"
 PROJECTS_DIR = "./projects"
 PROJECTS_NEO4J_DIR = "./projects_neo4j"
 PATCH_ANALYSIS_CACHE_DIR = "./intermediate_results/sig_from_patch"
@@ -95,7 +93,6 @@ def get_vuln_commit(repo_name, commit_hash):
         if not clone_repo(repo_name):
             return False, "clone_repo"
 
-    # 取得 parent commit
     pd_git = Git(local_repo_path)
     try:
         cmt = pd_git.get_commit(commit_hash)
@@ -191,7 +188,6 @@ Please output a list of the methods/functions that meet the criteria, wrapped in
         answer = response.split("<answer>")[1].split("</answer>")[0].strip()
         print("Extracted Answer:", answer)
 
-    # 把 answer 解析成 list
     custom_sink_funcname_list = set()
     if answer.startswith("[") and answer.endswith("]"):
         items = answer[1:-1].split(",")
@@ -204,8 +200,6 @@ Please output a list of the methods/functions that meet the criteria, wrapped in
 
 
 def llm_find_potential_source(potential_source_funcname: set) -> List[str]:
-    # TODO：  Input::get(page, 1) 这种比较迷惑  是不是需要弄下
-    # return ['get_request_var']
     prompt = """
 ### Task:
 You are a senior PHP expert. Your task is to fully utilize your existing knowledge of PHP frameworks, third-party libraries, and the semantics of the given functions/methods, to carefully determine which ones **retrieve input from the client**, or **serve as wrapper interfaces that extract input** (including HTTP request bodies, query parameters, form fields, headers, cookies, etc.).
@@ -251,8 +245,6 @@ Please return only the function names, without parameters, and separate the func
         print("Extracted Answer:", answer)
 
 
-    # 把 answer 解析成 list
-    # 这里提取也有点问题  Input::get(page, 1)  这种会被当成两个
     custom_sink_funcname_list = set()
     if answer.startswith("[") and answer.endswith("]"):
         items = answer[1:-1].split(",")
@@ -274,20 +266,14 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
     config_dict_2 = json.load(open(neo4j_config_path, 'r'))[_map_key_2]
     analyzer_post = Neo4jEngine.from_dict(config_dict_2)
 
-    print("[ 2.0 ] 分析 patch ...")
     patch_analyzer = PatchAnalyzer(analyzer_pre, analyzer_post,
                                    commit_url=GIT_URL_DICT[git_repository.lower()] + '/commit/' + commit_id,
                                    commit_id=commit_id, cve_id=cve_id, fixing_file=fixing_file)
     patch_analyzer.run_result()
-    # config_level 决定 callee depth 的深度  这里已经失效了
     default_config_level, is_find_flag = 1, False
     anchor_node_list = []
     start_time1 = time.time()
 
-    # 找 sink
-
-    print("[ 2.1 ] 根据 patch 寻找 sink ...")
-    print("[+] 查找缓存是否处理过 ...")
     potential_sink_funcname_list_json = os.path.join(PATCH_ANALYSIS_CACHE_DIR, "potential_sink_funcname_list.json")
     if not os.path.exists(potential_sink_funcname_list_json):
         with open(potential_sink_funcname_list_json, 'w') as f:
@@ -309,7 +295,6 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
          if str(e.get('commit_id')) == str(commit_id) and str(e.get('cve_id')) == str(cve_id)),
         None
     )
-    print("[+] 缓存中不存在，开始查找 sink ...")
     potential_anchor_finder = CVESinkFinder(analyzer_pre,
                                         commit_id=commit_id,
                                         vuln_type=vuln_type,
@@ -323,21 +308,17 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
     if existing_entry is not None:
         potential_sink_funcname_list = existing_entry.get('potential_sink_funcname_list', [])
         print(f"[+] Found cached potential sinks for vuln_type={vt_key}, commit={commit_id}: {potential_sink_funcname_list}")
-        # 已经处理过但没有 sink
         if len(potential_sink_funcname_list) == 0:
-            print("[-] 缓存中存在且为空，说明处理过没有找到，跳过当前 cve...")
             return 0, 0
 
     # os.makedirs(slice_dir, exist_ok=True)
 
     else:
-        print("[+] 缓存中不存在，开始查找 sink ...")
 
         # if vuln_type != 9:
         if True:
             nodes = potential_anchor_finder.potential_anchor_nodes
             if not nodes:
-                # 保存空记录表示已经处理且无 sink
                 entry = {
                     'cve_id': cve_id,
                     'commit_id': commit_id,
@@ -346,10 +327,8 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
                 potential_sink_funcname_data[vt_key].append(entry)
                 with open(potential_sink_funcname_list_json, 'w') as f:
                     json.dump(potential_sink_funcname_data, f, indent=4)
-                print("[-] 没有找到任何 sink 节点 !!!")
                 return 0, 0
             else:
-                # 其他类型的漏洞找到了预定义的 sink
                 potential_sink_funcname_list = list(set([node.func_name for node in nodes]))
                 print(f"[+] Statically find {len(potential_sink_funcname_list)} builtin potential sinks.")
                 entry = {
@@ -364,10 +343,7 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
         end_time1 = time.time()
         print(f"[+] First round traversal time cost: {end_time1 - start_time1:.2f}s")
         
-        # 只有 sql 注入需要 llm 帮忙找 sink
-        # if (potential_sink_funcname_list is None or len(potential_sink_funcname_list) == 0) and vuln_type == 9:
-        # 无论是否是内置的  都用 llm 来辅助判断一遍
-        if vuln_type == 9:
+        if vuln_type in {9, 2, 1}:
             potential_sink_funcname_list = llm_find_potential_sink(potential_anchor_finder.potential_sink_funcname)
 
             if not potential_sink_funcname_list:
@@ -379,7 +355,6 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
                 potential_sink_funcname_data[vt_key].append(entry)
                 with open(potential_sink_funcname_list_json, 'w') as f:
                     json.dump(potential_sink_funcname_data, f, indent=4)
-                print("[-] 借助 LLM 也没有找到任何 sink 节点 !!!")
                 return 0, 0
             print(f"[+] LLM find {len(potential_sink_funcname_list)} potential sinks: {potential_sink_funcname_list}")
             entry = {
@@ -392,15 +367,15 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
                 json.dump(potential_sink_funcname_data, f, indent=4)
 
     if not potential_sink_funcname_list:
-        print("[-] 最终没有找到任何 sink 节点 !!!")
+        print("[-]  sink  !!!")
         return 0, 0
     
-    print("[ 2.2 ] 找到潜在的 sink， 开始进行 patch-to-sink 切片 ...")
-    # 对前面收集的 call path 进行过滤，只保留包含潜在 sink 的路径
+    print("[ 2.2 ]  sink  patch-to-sink  ...")
+    #  call path  sink 
     slicer = InterproceduralForwardSlicer(analyzer_pre)
     slice_dir = slice_results
     patch_sink_paths = filter_patch_sink_paths(potential_anchor_finder.all_paths, potential_sink_funcname_list)
-    # 这里执行的是跨过程切片，如果没有跨过程，则 callsite_function_dict 和 call_path_patch_node 都是空的
+    #  callsite_function_dict  call_path_patch_node 
     slice_dir_ps = os.path.join(slice_dir, "patch_to_sink")
     if os.path.exists(slice_dir_ps) and len(os.listdir(slice_dir_ps)) > 0:
         print(f"[+] {os.path.join(slice_dir, 'patch_to_sink')} already exists. skip patch_to_sink slicing ...")
@@ -438,8 +413,8 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
 
         os.makedirs(slice_dir_ps, exist_ok=True)
         
-        # 先判断是否是跨过程的，如果不是则直接按照 patch 切
-        # TODO 切片这里还有问题：一是前面 traversal 的时候需要记录 funcid 才可以，二是做改写，和下面的逻辑一样
+        #  patch 
+        # TODO  traversal  funcid 
         if potential_anchor_finder.all_paths.__len__() == 0:    # 
             patch_staments = []
             for file, affected_line in potential_anchor_finder.patch_analysis_result.items():
@@ -458,9 +433,9 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
                                 }
                         }
                     patch_staments.append(patch_node_info)
-            # 1. 执行切片 获取 node_id list
+            # 1.   node_id list
             slice_result = slicer.forward_slice_intra(patch_statements=patch_staments)
-            # 2. 导出代码
+            # 2. 
             code_output = slicer.export_slice_code(slice_result, output_file=f"{slice_dir_ps}/ps_path_0.php")
             # print(code_output)
             print(f"[+] Export slice code to {slice_dir_ps}/ps_path_0.php")
@@ -468,17 +443,17 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
         else:
             for idx, call_path in enumerate(potential_anchor_finder.all_paths):
                 if idx in call_path_patch_node:
-                # 1. 执行切片 获取 node_id list
+                # 1.   node_id list
                     slice_result = slicer.forward_slice(call_path, patch_statements=call_path_patch_node[idx])
 
-                    # 2. 导出代码
+                    # 2. 
                     code_output = slicer.export_slice_code(slice_result, output_file=f"{slice_dir_ps}/ps_path_{idx}.php")
                     # print(code_output)
                     print(f"[+] Export slice code to {slice_dir_ps}/ps_path_{idx}.php")
 
 
-    # 找 source
-    print("[ 2.3 ] 找到潜在的 sink，开始寻找潜在的 source ...")
+    #  source
+    print("[ 2.3 ]  sink source ...")
     end_time = time.time()
     print("[+] Patch analysis for SOURCE location ...")
     example_node = potential_anchor_finder.patch_analysis_result[list(potential_anchor_finder.patch_analysis_result.keys())[0]][0].root_node
@@ -494,7 +469,7 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
     signature_generator = ContextSlicer(anchor_node=anchor_node, analyzer=analyzer_pre, commit_id=commit_id, cve_id=cve_id, vuln_type=vuln_type)
     signature_series = signature_generator.run()
 
-    # 这里要处理一下 全局变量 sources 和 source function call 的关系
+    #   sources  source function call 
     potential_source_funcname_list_json = os.path.join(PATCH_ANALYSIS_CACHE_DIR, "potential_source_funcname_list.json")
     if not os.path.exists(potential_source_funcname_list_json):
         with open(potential_source_funcname_list_json, 'w') as f:
@@ -538,8 +513,8 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
 
 
 
-    print("[ 2.4 ] 找到潜在的 source， 开始进行 source-to-patch 切片 ...")
-    # 对前面收集的 call path 进行过滤，只保留包含潜在 source 的路径
+    print("[ 2.4 ]  source  source-to-patch  ...")
+    #  call path  source 
     patch_source_paths = filter_patch_sink_paths(signature_generator.backward_call_paths, potential_source_funcname_list)
 
     
@@ -547,7 +522,7 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
     if os.path.exists(slice_dir_sp) and len(os.listdir(slice_dir_sp)) > 0:
         print(f"[+] {os.path.join(slice_dir, 'source_to_patch')} already exists. skip source_to_patch slicing ...")
     else:
-        # 第i条调用路径的起始点所属的 function id
+        # i function id
         slicer = InterproceduralForwardSlicer(analyzer_pre, "sp")
         source_patch_callsite_function_dict = {} # call_path_idx: func_id
         for idx, call_path in enumerate(signature_generator.backward_call_paths):
@@ -614,7 +589,7 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
 
             else:
                 print(f"[+] Source and sink are in the same function for sink node {anchor_node.node_id}.")
-                # 1. 执行切片 获取 node_id list
+                # 1.   node_id list
                 slice_result = slicer.forward_slice_intra(patch_statements=patch_staments)
                 output_file = f"{slice_dir_sp}/src_sink_path_{idx}_intra.php"
                 
@@ -625,7 +600,7 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
             code_output = slicer.export_slice_code(slice_result, output_file, call_relateions)
             print(f"[+] Export slice code to {output_file}")
 
-    print("[ 2.5 ] 找到 sink 和 source，且对 source-to-patch 和 patch-to-sink 分别切片完成，可以合成 source-to-sink ...")
+    print("[ 2.5 ]  sink  source source-to-patch  patch-to-sink  source-to-sink ...")
     inter_to_intra_dir = os.path.join(slice_dir, "inter_to_intra")
     if os.path.exists(inter_to_intra_dir) and len(os.listdir(inter_to_intra_dir)) > 0:
         print(f"[+] {os.path.join(slice_dir, 'inter_to_intra')} already exists. skip inter_to_intra generation ...")
@@ -642,7 +617,7 @@ def patch_analysis_with_cve(_map_key_1, _map_key_2, vuln_type, cve_id, fixing_fi
                                     ", ".join(potential_sink_funcname_list),
                                     combined_code, inter_to_intra_dir, f"{sp_idx}_{ps_idx}")
 
-    print("[ 2.6 ] 合成 source-to-sink 切片完成，开始导入 neo4j ...")
+    print("[ 2.6 ]  source-to-sink  neo4j ...")
     if os.path.exists(os.path.join(sig_generate_slice_result_neo4j, cve_id)):
         print(f"[+] {os.path.join(sig_generate_slice_result_neo4j, cve_id)} already exists. skip importing to neo4j ...")
     else:
@@ -659,7 +634,7 @@ def cve_analysis(_map_key_1, vuln_type: int, cve_id: str, source_info: dict, sin
     analyzer_pre = Neo4jEngine.from_dict(config_dict)
 
     start_time = time.time()
-    # 找 sink
+    #  sink
     potential_anchor_finder = CVESinkFinder_1201(analyzer_pre,
                                             vuln_type=vuln_type,
                                             git_repository=git_repository,
@@ -673,7 +648,7 @@ def cve_analysis(_map_key_1, vuln_type: int, cve_id: str, source_info: dict, sin
     anchornode_list = potential_anchor_finder.potential_anchor_nodes
 
 
-    # 找 source
+    #  source
     slice_dir = os.path.join(default_dir, cve_id)
     for anchor_node in anchornode_list:
         signature_generator = ContextSlicer(
@@ -685,12 +660,12 @@ def cve_analysis(_map_key_1, vuln_type: int, cve_id: str, source_info: dict, sin
             max_callee_depth=ss_depth.get('callee_depth', 1)
         )
 
-        # TODO 类内的 class 成员函数找不到数据流
+        # TODO  class 
         # $sql=mysql_query("select * from tb_admin where name='".$this->name."'",$conn); 
-        # 对于类间属性的连接，后期再处理吧。
-        # 例子是 cve-2020-18544  match (n) where n.id=214316 return n
-        # 这个节点是 class 节点，他的子节点有一个 AST_TOPLEVEL 节点。这个节点里面才记录了类属性之类的，后面看这种情况多不多  多的话算是 implementation 中的一个贡献了，
-        # 思路就是可以维护一个类属性到变量的映射表，然后在数据流中进行连接
+        # 
+        #  cve-2020-18544  match (n) where n.id=214316 return n
+        #  class  AST_TOPLEVEL    implementation 
+        # 
 
         signature_series = signature_generator.run("DETECTION")
 
@@ -709,20 +684,20 @@ def cve_analysis(_map_key_1, vuln_type: int, cve_id: str, source_info: dict, sin
                         print(f"[+] Found specified source function: {source_func}")
                         break
             else:
-                print("[-] 给定了source信息但没有找到任何source函数 !!!")
+                print("[-] sourcesource !!!")
                 continue
 
-        # 获取 call path 生成调用关系， 辅助LLM整合切片后的代码
+        #  call path  LLM
 
 
         patch_source_paths = filter_source_sink_paths(signature_generator.backward_call_paths, [source_info['function_name']])
 
         if signature_generator.backward_call_paths.__len__() == 0:
-            # 从 build-in 切？
+            #  build-in 
             pass
         else:
-            # 获得切片 and 获得签名
-            # 对于过程内漏洞来说，直接获取原始签名。切片是为了获取代码然后变体用的
+            #  and 
+            # 
             slicer = InterproceduralForwardSlicer(analyzer_pre, direction="sp")
             slice_dir_sp = os.path.join(slice_dir, f"sink_{anchor_node.node_id}")
             os.makedirs(slice_dir_sp, exist_ok=True)
@@ -730,11 +705,11 @@ def cve_analysis(_map_key_1, vuln_type: int, cve_id: str, source_info: dict, sin
             merge_call_paths = merge_call_path(signature_generator.backward_call_paths)
 
             for idx, call_path in enumerate(merge_call_paths):
-                # 归并 call paths
-                # 因为目前的 call path 既包含了垂直的 call chain，也包含了水平的 call trace，因此需要在切片前归并. (已完成合并)
+                #  call paths
+                #  call path  call chain call trace. ()
 
-                # 过程内和过程间的 call path 要根据路径上的 funcid 区分，对于当前函数来说，call 了两个函数但是都没进入函数内，也算是函数内切片，但是 call path 也已经形成
-                # 对于函数内和函数间要采取不同的切片方法
+                #  call path  funcid call  call path 
+                # 
                 call_relateions = []
                 new_call_path = slicer.convert_backward_to_forward(call_path)
                 if ss_in_inter(call_path):
@@ -751,8 +726,8 @@ def cve_analysis(_map_key_1, vuln_type: int, cve_id: str, source_info: dict, sin
                     
                     print(f"[+] Source and sink are in different functions for sink node {anchor_node.node_id}.")
 
-                else: # 过程内，就是正常的后向+前向切片 截至到 sink 之前，sink 之后的就不需要切了
-                    # TODO：对于 source 前面可能还需要控制流的判断，如果有 check 截断也有必要判断。
+                else: # +  sink sink 
+                    # TODO source  check 
                     output_file = f"{slice_dir_sp}/src_sink_path_{idx}_intra.php"
                     if os.path.exists(output_file):
                         print(f"[+] {output_file} already exists. skip slicing ...")
@@ -768,7 +743,7 @@ def cve_analysis(_map_key_1, vuln_type: int, cve_id: str, source_info: dict, sin
                 print(f"[+] Export slice code to {output_file}")
 
     new_code_flag = False
-    # 经过LLM 将多过程的路径整合为过程内的。同时对代码进行语义恢复
+    # LLM 
     inter_to_intra_dir = os.path.join(slice_dir, "inter_to_intra")
     from core.intro_to_inter_llm import source_sink_slice_fix_and_merge, source_sink_slice_fix_only
     if os.path.exists(inter_to_intra_dir) and len(os.listdir(inter_to_intra_dir)) > 0:
@@ -776,7 +751,7 @@ def cve_analysis(_map_key_1, vuln_type: int, cve_id: str, source_info: dict, sin
     else:
         os.makedirs(inter_to_intra_dir, exist_ok=True)
         
-        # 这里拆分成两个 prompt，如果是过程内的 只做语义修复。如果是过程间的就做修复+整合
+        #  prompt +
         for sink_dir in os.listdir(slice_dir):
             if not sink_dir.startswith("sink_"):
                 continue
@@ -788,13 +763,13 @@ def cve_analysis(_map_key_1, vuln_type: int, cve_id: str, source_info: dict, sin
                 idx = src_sink_slice.split("src_sink_path_")[-1].split(".php")[0]
                 inter_flag = "_inter" in src_sink_slice
                 if inter_flag: 
-                    # LLM 修复 + 判断是否存在漏洞
+                    # LLM  + 
                     source_sink_slice_fix_and_merge(", ".join([source_info.get('function_name')] if source_info else potential_source_funcname_list), ", ".join([sink_info['function_name']]), ss_code, inter_to_intra_dir, idx)
                 else:
-                    # LLM 只做修复
+                    # LLM 
                     source_sink_slice_fix_only(ss_code, inter_to_intra_dir, idx)
 
-    # 先 check，check不通过则移除当前目录，到 slice_merge_but_no_vuln 目录下
+    #  checkcheck slice_merge_but_no_vuln 
     from variant_agent import vuln_check
     for src_file in os.listdir(inter_to_intra_dir):
         result = vuln_check(cve_id, os.path.join(inter_to_intra_dir, src_file))
@@ -804,11 +779,11 @@ def cve_analysis(_map_key_1, vuln_type: int, cve_id: str, source_info: dict, sin
             os.rename(os.path.join(inter_to_intra_dir, src_file), os.path.join(slice_dir, "slice_merge_but_no_vuln", src_file))
 
 
-    print(f"[+] Patch analysis for {cve_id} completed, time cost: {time.time() - start_time:.2f}s\n 找到 sink 和 source 啦！！！")
+    print(f"[+] Patch analysis for {cve_id} completed, time cost: {time.time() - start_time:.2f}s\n  sink  source ")
     if os.path.exists(os.path.join(sig_generate_slice_result_neo4j, cve_id)):
         print(f"[+] {os.path.join(sig_generate_slice_result_neo4j, cve_id)} already exists. skip importing to neo4j ...")
     else:
-        # 为 slice_dir 生成新的 neo4j cpg
+        #  slice_dir  neo4j cpg
         if os.listdir(inter_to_intra_dir).__len__() == 0:
             repo_to_neo4j_cpg(inter_to_intra_dir, sig_generate_slice_result_neo4j)
 
@@ -816,7 +791,7 @@ def cve_analysis(_map_key_1, vuln_type: int, cve_id: str, source_info: dict, sin
 
 
 def pure_sink_generate_expr(potential_sink, analyzer_target: Neo4jEngine, custom_source, commit_id=None, cve_id=None):
-    # 单纯的生成 sink 的表达式
+    #  sink 
     context_slicer = ContextSlicerSig(
         anchor_node=potential_sink,
         analyzer=analyzer_target,
@@ -842,7 +817,7 @@ def pure_sink_generate_expr(potential_sink, analyzer_target: Neo4jEngine, custom
 
 def run_sig_source_sink(target, potential_source, extend_vuln_model, task, cve_id=None, neoconfig_path=None, model=None):
     from core.anchor_node import AnchorNode
-    print("[ 3.1 ]开始生成可以sink签名的表达式！！！！\n")
+    print("[ 3.1 ]sink\n")
 
     if task == "sig":
         neo4j_config_path = "./config/neo4j_siggene.json"
@@ -920,14 +895,14 @@ def run_sig_source_sink(target, potential_source, extend_vuln_model, task, cve_i
         # finally:
         stop_databases_w_database(os.path.join(detection_inter_slice_result_neo4j_dir, cve_id), cve_id)
     
-    # 保存结果
+    # 
     with open(target_detection_inter_slice_result_signature_path, "w", encoding="utf-8") as f:
         json.dump(final_sink_context, f, ensure_ascii=False, indent=4)
 
     with open(target_detection_inter_slice_result_dataflow_str_path, "w", encoding="utf-8") as f:
         json.dump(final_dataflow_str_list, f, ensure_ascii=False, indent=4)
     
-    print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} {cve_id} 的签名和数据流提取完毕！")
+    print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} {cve_id} ")
     return True
 
 
@@ -949,7 +924,7 @@ def generate_signatures_from_patch(cve_info_file, target_cve=None):
     with open(cpg_generate_timeout_path, 'r') as f:
         cpg_generate_timeout_cve = set(json.load(f))
 
-    # 对于已经处理过的 并且保存到了 /mnt hdd data 中的不再处理
+    #   /mnt hdd data 
     with open(already_built_neo4j_path, 'r') as f:
         already_built_neo4j = set(json.load(f))
 
@@ -959,7 +934,7 @@ def generate_signatures_from_patch(cve_info_file, target_cve=None):
     target_cve_flag = False
     with concurrent.futures.ThreadPoolExecutor() as executor:
         print("======================================================")
-        print("=====   patch analysis: 分析已知漏洞 patch 信息   =====")
+        print("=====   patch analysis:  patch    =====")
         print("======================================================")
         for vuln_type, cve_data in cve_collection.items():
             vuln_type_str = vuln_type
@@ -980,7 +955,7 @@ def generate_signatures_from_patch(cve_info_file, target_cve=None):
 
                 process_count_perbatch -= 1
                 if process_count_perbatch <= 0:
-                    banner_print("[+] 本 batch 处理数量已达上限，提前结束，等待下一 batch 继续处理 ...")
+                    banner_print("[+]  batch  batch  ...")
                     break
 
 
@@ -990,8 +965,8 @@ def generate_signatures_from_patch(cve_info_file, target_cve=None):
                 fixing_file = cve_dict['fixing_files'][0]
                 print(f"\n\nProcessing CVE: {cve_id}, Repo: {cve_repo}, Commit: {commit_id}")
 
-                # 这部分还涉及到一个问题，就是由于内存不够，当前的 patch 生成是需要分批次进行的，有的 neo4j 已经生成但是被移动到了 /mnt
-                # 所以这里可以进行一个判断，如果所需的 neo4j 已经存在于 /mnt 中的话，就不再重新生成，暂时直接跳过
+                #  patch  neo4j  /mnt
+                #  neo4j  /mnt 
                 if cve_id in already_built_neo4j:
                     banner_print(f"[+] {cve_id} neo4j already built and saved to /mnt. skip ...")
                     continue
@@ -1009,15 +984,15 @@ def generate_signatures_from_patch(cve_info_file, target_cve=None):
                     banner_print(f"[+] {cve_id} in cpg_generate_timeout_cve. skip ...")
                     continue
 
-                intra_slice_results = os.path.join(sig_generate_slice_result, cve_id)  # 存放切片和LLM转义后的结果
+                intra_slice_results = os.path.join(sig_generate_slice_result, cve_id)  # LLM
                 intra_slice_results_neo4j = os.path.join(sig_generate_slice_result_neo4j, cve_id)
                 if os.path.exists(intra_slice_results_neo4j):
                     banner_print(f"[+] {cve_id} after slice neo4j already exists. skip ...")
                     continue
 
-                banner_print(f"正式开始处理 {cve_id}")
+                banner_print(f" {cve_id}")
                 
-                print("[ 0.  ] 搜索 hdd data cache ...")
+                print("[ 0.  ]  hdd data cache ...")
                 find_cve_in_hdd = False
                 find_cve_in_hdd = search_cve_in_hdd_data_cache(cve_repo, commit_id)            
                 if not find_cve_in_hdd:
@@ -1028,8 +1003,8 @@ def generate_signatures_from_patch(cve_info_file, target_cve=None):
                         print(f"[!] Skipping {cve_id} due to error in getting vuln commit.")
                         continue
 
-                    # 生成 cpg 并导入 neo4j
-                    print("[ 1.  ] 生成 cpg 并导入 neo4j ...")
+                    #  cpg  neo4j
+                    print("[ 1.  ]  cpg  neo4j ...")
                     print(f"    processing {vuln_repo_prepatch} ...")
                     future = executor.submit(repo_to_neo4j_cpg, vuln_repo_prepatch, PROJECTS_NEO4J_DIR)
                     try:
@@ -1064,19 +1039,19 @@ def generate_signatures_from_patch(cve_info_file, target_cve=None):
                             json.dump(list(already_processed_cve), f)
                         continue
                     
-                    print(f"[+] {cve_id} patch 前后的 cpg 及 neo4j 生成完成。")
+                    print(f"[+] {cve_id} patch  cpg  neo4j ")
                 
                 
 
                 _map_key_1 = f"{cve_repo}-{commit_id}_prepatch"
                 _map_key_2 = f"{cve_repo}-{commit_id}_postpatch"
-                print("[ 1.5 ] 重置生成签名时 neo4j 数据库的接口 ...")
+                print("[ 1.5 ]  neo4j  ...")
                 change_conn_port(os.path.join(PROJECTS_NEO4J_DIR, _map_key_1, "conf/neo4j.conf"), "7689", "7475")
                 change_conn_port(os.path.join(PROJECTS_NEO4J_DIR, _map_key_2, "conf/neo4j.conf"), "17689", "17475")
 
                 change_neo4j_conf(_map_key_1, _map_key_2, neo4j_config_path)
 
-                print("[ 2.  ] 进入根据 patch 寻找 source 和 sink 的阶段 ...")
+                print("[ 2.  ]  patch  source  sink  ...")
                 if not start_databases_with_database(os.path.join(PROJECTS_NEO4J_DIR, _map_key_1), _map_key_1) or not start_databases_with_database(os.path.join(PROJECTS_NEO4J_DIR, _map_key_2), _map_key_2):
                     print(f"[-] Skipping {cve_id} due to error in starting neo4j databases.")
                     already_processed_cve.add(cve_id)
@@ -1109,9 +1084,9 @@ def generate_signatures_from_patch(cve_info_file, target_cve=None):
                     stop_databases_w_database(os.path.join(PROJECTS_NEO4J_DIR, _map_key_1), _map_key_1)
                     stop_databases_w_database(os.path.join(PROJECTS_NEO4J_DIR, _map_key_2), _map_key_2)
 
-                banner_print(f"[+] {cve_id} source-patch-sink 定位与整合完成！")
+                banner_print(f"[+] {cve_id} source-patch-sink ")
 
-                # 删除 neo4j 数据库以释放空间
+                #  neo4j 
                 if find_cve_in_hdd:
                     delete_neo4j_database(os.path.join(PROJECTS_NEO4J_DIR, _map_key_1))
                     delete_neo4j_database(os.path.join(PROJECTS_NEO4J_DIR, _map_key_2))
@@ -1120,8 +1095,8 @@ def generate_signatures_from_patch(cve_info_file, target_cve=None):
 
 
 def dataflow_get_and_sig_gene(cve_collection, cve_id_to_vuln_type):
-    banner_print("CVE patch 分析完成。现在获取数据流并生成签名。")
-    # 遍历已经生成的 neo4j ，根据 source sink 来获取数据流并生成签名
+    banner_print("CVE patch ")
+    #  neo4j  source sink 
     potential_sink_funcname_dict_path = os.path.join(PATCH_ANALYSIS_CACHE_DIR, "potential_sink_funcname_list.json")
     potential_source_funcname_dict_path = os.path.join(PATCH_ANALYSIS_CACHE_DIR, "potential_source_funcname_list.json")
 
@@ -1136,7 +1111,7 @@ def dataflow_get_and_sig_gene(cve_collection, cve_id_to_vuln_type):
     cve_1201_collection = json.load(fp=open(cve_1201_stage3_file, 'r', encoding='utf-8'))
     for cve_id in os.listdir(sig_generate_slice_result_neo4j):
         try:
-            banner_print(f"开始为 {cve_id} 生成签名 ...")
+            banner_print(f" {cve_id}  ...")
             signature_dir = os.path.join(sig_generate_dir, "signature_results", f"{cve_id}_sig_info")
             if os.path.exists(os.path.join(signature_dir, f"{cve_id}_prepatch_final_sink_context.json")):
                 print(f"[+] {cve_id} signature already exists. skip ...")
@@ -1204,7 +1179,7 @@ def generate_signatures_from_manually(cve_info_file, target_cve=None):
     with open(cpg_generate_timeout_path, 'r') as f:
         cpg_generate_timeout_cve = set(json.load(f))
 
-    # 对于已经处理过的 并且保存到了 /mnt hdd data 中的不再处理
+    #   /mnt hdd data 
     with open(already_built_neo4j_path, 'r') as f:
         already_built_neo4j = set(json.load(f))
 
@@ -1214,7 +1189,7 @@ def generate_signatures_from_manually(cve_info_file, target_cve=None):
     target_cve_flag = False
     with concurrent.futures.ThreadPoolExecutor() as executor:
         print("======================================================")
-        print("=====   patch analysis: 分析已知漏洞 patch 信息   =====")
+        print("=====   patch analysis:  patch    =====")
         print("======================================================")
         for vuln_type, cve_data in cve_collection.items():
             vuln_type_str = vuln_type
@@ -1255,18 +1230,18 @@ def generate_signatures_from_manually(cve_info_file, target_cve=None):
                     continue
 
                 
-                intra_slice_results = os.path.join(sig_generate_slice_result, cve_id)  # 存放切片和LLM转义后的结果
-                banner_print(f"正式开始处理 {cve_id}")
+                intra_slice_results = os.path.join(sig_generate_slice_result, cve_id)  # LLM
+                banner_print(f" {cve_id}")
                 
                 _map_key_1 = f"{cve_repo}-{cve_id}_prepatch"
                 _map_key_2 = f"{cve_repo}-{cve_id}_postpatch"
-                print("[ 1.5 ] 重置生成签名时 neo4j 数据库的接口 ...")
+                print("[ 1.5 ]  neo4j  ...")
                 change_conn_port(os.path.join(PROJECTS_NEO4J_DIR, cve_id, "conf/neo4j.conf"), "7689", "7475")
                 # change_conn_port(os.path.join(PROJECTS_NEO4J_DIR, cve_id, "conf/neo4j.conf"), "17689", "17475")
 
                 change_neo4j_conf(_map_key_1, _map_key_2, neo4j_config_path)
 
-                print("[ 2.  ] 进入根据手动指定 source 和 sink 寻找 source 和 sink 的阶段 ...")
+                print("[ 2.  ]  source  sink  source  sink  ...")
                 if not start_databases_with_database(os.path.join(PROJECTS_NEO4J_DIR, cve_id), _map_key_1):
                     print(f"[-] Skipping {cve_id} due to error in starting neo4j databases.")
                     already_processed_cve.add(cve_id)
@@ -1304,12 +1279,12 @@ if __name__ == '__main__':
     os.environ["all_proxy"] = proxy
 
     
-    # 写个 argparer 来选择生成方式，第一种是通过 cve 信息生成，第二种是通过手动指定 cve 信息来生成， 一共解析两个参数：一个方法参数，一个 cve 信息文件的路径
+    #  argparer  cve  cve   cve 
     import argparse
     parser = argparse.ArgumentParser(description="Generate signatures for CVEs")
     parser.add_argument("--method", choices=["cve_info", "manual"], required=True, help="Method to generate signatures: from patch or manual")
     parser.add_argument("--cve_file", type=str, help="Path to the CVE information file.")
-    parser.add_argument("--cve", type=str, help="指定处理的 CVE ID.")
+    parser.add_argument("--cve", type=str, help=" CVE ID.")
     args = parser.parse_args()
 
     cve_info_patch_default_path = "./cve_dataset/cve_data/php_dataset/cve_1118_stage3.json"
@@ -1317,12 +1292,12 @@ if __name__ == '__main__':
 
     if args.method == "cve_info":
         if not args.cve_file:
-            print("[-] 没有指定 cve info file，使用默认路径.")
-            print(f"[+] 使用：{cve_info_patch_default_path}")
-        # 调用通过 cve 信息生成签名的函数
+            print("[-]  cve info file.")
+            print(f"[+] {cve_info_patch_default_path}")
+        #  cve 
         generate_signatures_from_patch(args.cve_file if args.cve_file else cve_info_patch_default_path, args.cve)
         print(f"Generating signatures from CVE info file: {args.cve_file}")
     elif args.method == "manual":
-        # 调用通过手动指定 cve 信息生成签名的函数
+        #  cve 
         generate_signatures_from_manually(args.cve_file if args.cve_file else cve_info_manual_default_path, args.cve)
         print(f"Generating signatures manually from CVE info file: {args.cve_file}")
