@@ -101,7 +101,6 @@ def process_one_cve(cve_sig_info):
     cve_id_sink_funcname = cve_id_sink_source_dict.get(cve_id, {}).get("sink", [])
     cve_id_sink_funcname = ",".join(cve_id_sink_funcname)
 
-    # skip 逻辑保持不变
     if os.path.exists(variant_code_cve) and len(os.listdir(variant_code_cve)) >= 3:
         print(f"[+] {variant_code_cve} already exists. skip variant generation ...")
         return ("skip", cve_id, variant_code_cve)

@@ -1273,22 +1273,16 @@ def generate_signatures_from_manually(cve_info_file, target_cve=None):
 
 if __name__ == '__main__':
     # subprocess.run(["zsh", "-i", "-c", "setjavaversion 7"])
-    proxy = "http://192.168.115.81:10811"
-    os.environ["http_proxy"] = proxy
-    os.environ["https_proxy"] = proxy
-    os.environ["all_proxy"] = proxy
-
     
     #  argparer  cve  cve   cve 
     import argparse
     parser = argparse.ArgumentParser(description="Generate signatures for CVEs")
-    parser.add_argument("--method", choices=["cve_info", "manual"], required=True, help="Method to generate signatures: from patch or manual")
+    parser.add_argument("--method", choices=["cve_info"], required=True)
     parser.add_argument("--cve_file", type=str, help="Path to the CVE information file.")
     parser.add_argument("--cve", type=str, help=" CVE ID.")
     args = parser.parse_args()
 
     cve_info_patch_default_path = "./cve_dataset/cve_data/php_dataset/cve_1118_stage3.json"
-    cve_info_manual_default_path = "./cve_dataset/cve_data/php_dataset/cve_1201_stage3.json"
 
     if args.method == "cve_info":
         if not args.cve_file:
@@ -1297,7 +1291,3 @@ if __name__ == '__main__':
         #  cve 
         generate_signatures_from_patch(args.cve_file if args.cve_file else cve_info_patch_default_path, args.cve)
         print(f"Generating signatures from CVE info file: {args.cve_file}")
-    elif args.method == "manual":
-        #  cve 
-        generate_signatures_from_manually(args.cve_file if args.cve_file else cve_info_manual_default_path, args.cve)
-        print(f"Generating signatures manually from CVE info file: {args.cve_file}")

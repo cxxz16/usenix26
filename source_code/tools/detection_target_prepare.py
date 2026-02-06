@@ -535,9 +535,9 @@ def main(num_workers):
                     result = future.result()
                     if result:
                         completed_projects.append(result)
-                        print(f"\n✅ Successfully completed: {result}")
+                        print(f"\n Successfully completed: {result}")
                 except Exception as e:
-                    print(f"\n❌ Error processing {project}: {e}")
+                    print(f"\n Error processing {project}: {e}")
                 finally:
                     pbar.update(1)
     
